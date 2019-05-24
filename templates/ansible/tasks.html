@@ -1,0 +1,23 @@
+{% extends "../base_public.html" %}
+
+{% block content %}
+<div class="container" style="width:80%;padding-left: 180px;">
+      <table class="table table-bordered">
+          <th><td>AnsibleID</td><td>CeleryID</td><td>GroupName</td><td>playbook</td><td>AnsibleResult</td><td>CeleryResult</td></th>
+        {% for t in AnsibleTasks reversed %}
+        <tr>
+            <td>{{ t.id }}</td>
+            <td><a href="/ansible/get_Ansible_Tasks/?dataKey={{t.AnsibleID}}">{{ t.AnsibleID }}</a></td>
+            <td>{{ t.CeleryID }}</td>
+            <td>{{ t.GroupName }}</td>
+            <td>{{ t.playbook }}</td>
+            <!-- <td>{{ t.AnsibleResult }}</td> -->
+            <td><a href="/ansible/get_Ansible_Tasks/?dataKey={{t.AnsibleID}}">查看结果内容</a></td>
+            <td>{{ t.CeleryResult }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+
+{% endblock %}

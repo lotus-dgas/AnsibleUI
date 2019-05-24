@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ title| default:"AnsibleUI" }}</title>
+        <link rel="shortcut icon" href="/static/favicon.ico">
+        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.min.css">
+        <script src="/static/jquery.min.js"></script>
+        <script src="/static/echarts.min.js"></script>
+        <script src="/static/jsonformat.js"></script>
+        <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+        <style type="text/css">
+            body {
+                background-image: url('/static/images/019.jpg');
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+            }
+            /* .container {
+                width: 100%;
+            } */
+            .myleft {
+                z-index: 9999;
+                position: fixed ! important;
+                left: 0px;
+                top: 49px;
+                height: 100%;
+                width: 180px;
+                border-right: 1px solid #8080801f;
+                /* background-color: #edfaf3; */
+                /* opacity: 0.8; */
+            }
+        </style>
+    </head>
+
+    <body style="padding-top: 70px;">
+        <!-- <nav class="navbar navbar-default navbar-static-top navbar-fixed-top"> -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+            <a class="navbar-brand" href="/ansible/">AnsibleUI</a>
+            <ul class="nav navbar-nav navbar-right">
+                    <a class="navbar-brand"href="/admin">后台管理</a>
+        {% if request.user %}
+                <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.first_name }}({{ user }})&nbsp;&nbsp;<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="/accounts/changepwd">修改密码</a></li>
+                          <li role="separator" class="divider"></li>
+                          <li><a href="#" data-toggle="modal" data-target="#myModal"><d>设置邮箱</d></a></li>
+                          <li role="separator" class="divider"></li>
+                          <li><a href="/accounts/usersetting">用户页面</a></li>
+                        </ul>
+                      </li>
+                 &nbsp&nbsp
+                 <a class="navbar-brand"href="/logout">注销</a>
+                {% else %}
+                <a class="navbar-brand"href="/login">登录</a>
+            </ul>
+
+        {% endif %}
+
+
+        </div>
+        </nav>
+        <!-- <div class="container">
+            <div class="row">
+                <div class="col-md-6"></div>
+            </div>
+        </div> -->
+        <div class="myleft" ><br>
+                <ul class="list-group">
+                        <li class="list-group-item"><a href="/ansible/">首页</a></li>
+                        <li class="list-group-item"><a href="/ansible/dashboard">统计信息</a></li>
+                </ul>
+                <ul class="list-group">
+                        <li class="list-group-item"><a href="/ansible/get_groups">查看组</a></li>
+                        <li class="list-group-item"><a href="/ansible/get_hosts">查看主机</a></li>
+                        <li class="list-group-item"><a href="/ansible/get_Ansible_Tasks">查看任务</a></li>
+                        <li class="list-group-item"><a href="/ansible/get_funcs">查看功能</a></li>
+                </ul>
+                <ul class="list-group">
+                        <li class="list-group-item"><a href="/ansible/push_task">添加任务模块</a></li>
+                        <li class="list-group-item"><a href="/ansible/push_task">添加Playbook</a></li>
+                </ul>
+                <ul class="list-group">
+                        <li class="list-group-item"><a href="/ansible/push_task">执行任务</a></li>
+                        <li class="list-group-item"><a href="/ansible/push_task">执行Playbook</a></li>
+                </ul>
+        </div>
+
+        {% block content %}
+            <div class="container" style="margin-left: 180px;">
+                <h3 style="text-align: center">Ansible 操作控制平台</h3><div class="line"></div>
+
+                <!-- <div class="row"> -->
+                        <div id="main" class="col-md-6" style="height:400px;border: 1px solid gray;"></div>
+                        <div id="main2" class="col-md-6" style="height:400px;border: 1px solid gray;"></div>
+                <!-- </div> -->
+            </div>
+
+            <script type="text/javascript">
+                var myChart = echarts.init(document.getElementById('main'));
+                    // 指定图表的配置项和数据
+                    var option = {
+                        title: {
+                            // text: '数据',
+                            subtext: '执行统计',
+                            subtextStyle: {
+                                color: 'blue',
+                                align: 'left',
+                            }
+                        },
+                        textStyle: {
+                                color: 'red',   //图形文子的颜色
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: {{ x|safe }}, // 传递数据
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [{
+                            data: {{ y|safe }},
+                            type: 'line',
+                            smooth: true
+                        }]
+                    };
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                
+                    option2 = {
+                        tooltip : {
+                            formatter: "{a} <br/>{b} : {c}%"
+                        },
+                        toolbox: {
+                            feature: {
+                                restore: {},
+                                saveAsImage: {}
+                            }
+                        },
+                        series: [
+                            {
+                                name: '业务指标',
+                                type: 'gauge',
+                                detail: {formatter:'{value}%'},
+                                data: [{value: 50, name: '完成率'}]
+                            }
+                        ]
+                    };
+                    option2.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
+                    myChart2 = echarts.init(document.getElementById('main2'));
+                    myChart2.setOption(option2, true);
+
+                </script>
+
+
+        {% endblock %}
+
+    </body>
+    <script type="text/javascript">
+        console.log(document.location.origin + "/accounts/register")
+        if(document.referrer === document.location.origin + "/accounts/register"){
+            console.info("注册账户后处于未激活状态，无法登录")
+        }
+    </script>
+
+    
+</html>

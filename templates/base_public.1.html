@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ title| default:"AnsibleUI" }}</title>
+        <link rel="shortcut icon" href="/static/favicon.ico">
+        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.min.css">
+        <script src="/static/jquery.min.js"></script>
+        <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+        <style type="text/css">
+            /* * { font-size:12px; font-family:Verdana,宋体; } */
+            .myhead {
+                z-index: 9999;
+                position: fixed ! important;
+                left: 0px;
+                top: 0px;
+                height: 20px;
+                width: 100%;
+                background-color: #80808014;
+            }
+            .myleft {
+                z-index: 9999;
+                position: fixed ! important;
+                left: 0px;
+                top: 20px;
+                height: 100%;
+                width: 180px;
+                background-color: #80808014;
+            }
+            .mywindow {
+                z-index: 9999; position: fixed ! important; left: 0px; top: 150px;
+            }
+            .mywindow:hover img {
+                display: none
+            }
+            .mywindow:hover #mydiv {
+                display: inline;
+            }
+            .rwindow {
+                z-index: 9999; position: fixed ! important; right: 0px; top: 150px;
+            }
+            .rwindow:hover img {
+                display: none
+            }
+            .rwindow:hover #mydiv {
+                display: inline;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            ...
+        </div>
+        </nav> -->
+        <div class="myhead" >
+            <div class="row">
+                    <div class="col-sm-3">Ansible操作平台</div>
+                    <div class="col-sm-6"><a href="/admin">管理</a></div>
+                    <div class="col-sm-2">
+                            {% if request.user %}
+                                {{ request.user.username }} &nbsp&nbsp<a href="/logout">注销</a>
+                            {% else %}
+                                <a href="/login">登录</a>
+                            {% endif %}
+                    </div>
+            </div>
+        </div><br>
+        <div class="myleft">
+                <ul class="list-group">
+                        <li class="list-group-item"><a href="/ansible/">首页</a></li>
+                        <li class="list-group-item"><a href="/ansible/dashboard">统计信息</a></li>
+                </ul>
+                <ul class="list-group">
+                        <li class="list-group-item"><a href="/ansible/get_groups">查看组</a></li>
+                        <li class="list-group-item"><a href="/ansible/get_hosts">查看主机</a></li>
+                        <li class="list-group-item"><a href="/ansible/get_Ansible_Tasks">查看任务</a></li>
+                        <li class="list-group-item"><a href="/ansible/get_funcs">查看功能</a></li>
+                </ul>
+                <ul class="list-group">
+                        <li class="list-group-item"><a href="/ansible/push_task">添加任务模块</a></li>
+                        <li class="list-group-item"><a href="/ansible/push_task">添加Playbook</a></li>
+                </ul>
+                <ul class="list-group">
+                        <li class="list-group-item"><a href="/ansible/push_task">执行任务</a></li>
+                        <li class="list-group-item"><a href="/ansible/push_task">执行Playbook</a></li>
+                </ul>
+        </div>
+
+        {% block content %}
+            <div class="container">
+                <h3 style="text-align: center">Ansible 操作控制平台</h3><div class="line"></div>
+                {% for f in base_content %}
+                    <a class="btn btn-default" href="{{f.uri}}">{{f.name}}</a>
+                {% endfor %}
+            </div>
+        {% endblock %}
+
+        <!-- <div class="mywindow" >
+            <img src="/static/img/jerry.jpeg" width="50px">
+            <div class="panel panel-success" id="mydiv" hidden>
+                <div class="panel-heading">导航</div>
+                <div class="panel-body" style="background-color: #a8ab1d17">
+                    <a href="/">首页</a><br>
+                    {% for f in base_content %}
+                        <a href="{{f.uri}}">{{f.name}}</a><br>
+                    {% endfor %}
+                </div>
+              </div>
+        </div>
+        <div class="rwindow" >
+                <img src="/static/img/tom-2.jpeg" width="80px">
+                <div class="panel panel-success" id="mydiv" hidden>
+                    <div class="panel-heading">导航</div>
+                    <div class="panel-body" style="background-color: #a8ab1d17">
+                            <a href="/ansible/getGroups" class="btn btn-link" type="button" target="view_window">Ansible Groups</a>
+                            <a href="/ansible/getHosts" class="btn btn-link" type="button"target="view_window">Ansible Hosts</a>
+                            <a href="/ansible/getLogs" class="btn btn-link" type="button"target="view_window">Ansible Logs</a>
+                            <a href="/ansible/getPlaybooks" class="btn btn-link" type="button"target="view_window">Ansible Playbooks</a>
+                    </div>
+                  </div>
+        </div> -->
+    </body>
+    <script type="text/javascript">
+        console.log(document.location.origin + "/accounts/register")
+        if(document.referrer === document.location.origin + "/accounts/register"){
+            console.info("注册账户后处于未激活状态，无法登录")
+        }
+    </script>
+</html>

@@ -1,0 +1,71 @@
+{% extends "../base_public.html" %}
+
+{% block content %}
+
+<style type="text/css">
+.cframe {
+    border-top:1px solid #00F;
+    border-bottom:1px solid #00F;
+    border-left:1px solid #00F;
+    border-right:1px solid #00F;
+    border-radius:5px;
+    /* border-width: 10px; */
+    padding: 10px
+}
+.line {
+    margin-top: 10px;
+    height: 1px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    margin-bottom: 10px;
+}
+pre {
+    padding: 5px; 
+    height: 500px;
+    background: white;
+    }
+.string { color: green; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: red; }
+</style>
+
+<div class="container" style="width:80%;padding-left: 180px;">
+
+    <!-- <div class="table-responsive"> -->
+      <table class="table table-bordered">
+        <tr><td>Name</td><td>Content</td></tr>
+        <tr>
+            <td>AnsibleID</td>
+            <td>{{ t.AnsibleID }}</td>
+        </tr>
+        <tr>
+                <td>CeleryID</td>
+                <td>{{ t.CeleryID }}</td>
+        </tr>
+        <tr>
+                <td>GroupName</td>
+                <td>{{ t.GroupName }}</td>
+        </tr>
+        <tr>
+                <td>playbook</td>
+                <td>{{ t.playbook }}</td>
+        </tr>
+        <tr>
+                <td>AnsibleResult</td>
+                <!-- <td><pre style="white-space: pre-wrap;word-wrap: break-word">{{ t.AnsibleResult }}</pre></td> -->
+                <td ><pre id='ar'></pre>  </td>
+        </tr>
+        <tr>
+                <td>CeleryResult</td>
+                <td>{{ t.CeleryResult }}</td>
+        </tr>
+      </table>
+    <!-- </div> -->
+</div>
+<script type="text/javascript">
+        $('#ar')[0].innerHTML = syntaxHighlight({{ t.AnsibleResult|safe }})     // 格式化结果
+
+</script>
+{% endblock %}
