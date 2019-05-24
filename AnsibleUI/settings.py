@@ -76,15 +76,15 @@ WSGI_APPLICATION = 'AnsibleUI.wsgi.application'
 #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #    }
 # }
-
+from tools.config import MYSQL_HOST, MYSQL_PASS, MYSQL_PORT, MYSQL_USER
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':'AnsibleUI',
-        'USER':'root',
-        'PASSWORD':'newpass',
-        'HOST':'10.20.88.215',
-        'PORT':23309,
+        'USER':MYSQL_USER,
+        'PASSWORD':MYSQL_PASS,
+        'HOST':MYSQL_HOST,
+        'PORT':MYSQL_PORT,
         #'OPTIONS': {'charset': 'utf8mb4'},
     }
 }

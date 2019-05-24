@@ -14,7 +14,7 @@ from ansible.utils.ssh_functions import check_for_controlpersist
 import ansible.constants as C
 import redis
 import datetime
-from tools.config import REDIS_ADDR, REDIS_PORT,REDIS_PD, ansible_remote_user
+from tools.config import REDIS_ADDR, REDIS_PORT,REDIS_PD, ansible_remote_user, ansible_result_redis_db
 import logging, logging.handlers
 
 class ResultCallback(CallbackBase):
@@ -25,7 +25,7 @@ class ResultCallback(CallbackBase):
         super(ResultCallback, self).__init__()
         self.id = id
         self.results = []
-        self.r = redis.Redis(host=REDIS_ADDR, port=REDIS_PORT, password=REDIS_PD, db=10)
+        self.r = redis.Redis(host=REDIS_ADDR, port=REDIS_PORT, password=REDIS_PD, db=ansible_result_redis_db)
         self.log = logging.getLogger('AnsibleApiLog')
         spath = logging.handlers.RotatingFileHandler("logs/ansible_api.log", "a", 0, 1)
         spath.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
@@ -255,4 +255,4 @@ if __name__ == "__main__":
     # vars = {"project": "Lotus"} #额外参数
     # AnsibleApi("AnsibleApi-%s" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S"), "t", tasks, sources, vars)
     # AnsiblePlaybookApi("AnsiblePlayBookApi-%s" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S"), ["playbooks/t.yml"], sources)
-    AnsiblePlaybookApi_v2("AnsiblePlayBookApi-%s" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S"), ["playbooks/t.yml"], sources)
+    AnsiblePlaybookApi_v2("AnsiblePlayBookApi-%s" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S"), ["playbooks/test_debug.yml"], sources)
