@@ -4,18 +4,35 @@
 <div class="container" style="width:80%;padding-left: 180px;">
 {% if hosts %}
     <table class="table table-bordered">
-    <tr><td>主机名</td><td>IP</td></tr>
+    <tr><td>主机名</td><td>IP</td><td>所在组</td></tr>
     {% for h in hosts %}
-        <tr><td>{{ h.hostName }}</td><td>{{ h.hostAddr }}</td></tr>
-
+        <tr>
+            <td>{{ h.hostName }}</td>
+            <td>{{ h.hostAddr }}</td>
+            <td>
+                    {% for g in h.projectgroups_set.all %}
+                    {{  g.nickName }} 、
+                    {% endfor %}
+            </td>
+            
+        </tr>
     {% endfor %}
     </table>
 {% endif %}
 {% if groups %}
     <table class="table table-bordered">
-    <tr><td>组名</td><td>信息</td><td>主机</td></tr>
+    <tr><td>组名</td><td>信息</td><td>主机</td><td>描述</td></tr>
     {% for h in groups %}
-        <tr><td>{{ h.groupName }}</td><td>{{ h.nickName }}</td><td>{{ h.remark }}</td></tr>
+        <tr>
+            <td>{{ h.groupName }}</td>
+            <td>{{ h.nickName }}</td>
+            <td>
+                    {% for g in h.hostList.all %}
+                    {{ g.hostName }}、
+                    {% endfor %}
+            </td>
+            <td>{{ h.remark }}</td>
+        </tr>
     {% endfor %}
     </table> 
 {% endif %}

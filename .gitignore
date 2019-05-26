@@ -34,5 +34,5 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
-logs/
-files/
+logs/*
+files/*

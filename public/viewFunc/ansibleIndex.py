@@ -86,6 +86,10 @@ class AnsibleData:  #Ansible 数据接口
         return json.loads(ret.decode())
     def push_task(self, dataKey, *args, **kw):  #
         return render(self.request, 'ansible/push.html', {})
+    def push_playbook(self, dataKey, *args, **kw):  #
+        groups = ProjectGroups.objects.all()
+        functions = Functions.objects.all()
+        return render(self.request, 'ansible/playbook_index.html', {'groups': groups, 'functions': functions})
 
 class AnsibleTask(View):    #ansibe Http 任务推送接口
     def get(self, request, *args, **kw):

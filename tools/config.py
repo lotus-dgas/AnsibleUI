@@ -23,20 +23,3 @@ MYSQL_HOST = '10.20.88.215'
 MYSQL_PORT = 23309
 MYSQL_USER = 'root'
 MYSQL_PASS = 'newpass'
-
-
-# class Env:
-#     if os.getenv("AnsibleEnv") == "product":
-#         ansible_result_redis_host = "127.0.0.1"
-#         ansible_result_redis_port = 6379
-#         env = 'product'
-#     else:
-#         ansible_result_redis_host = "10.20.88.215"
-#         ansible_result_redis_port = 6379
-#         env = 'test'
-
-# REDIS = "10.20.88.215"
-
-# #Ansible 
-# ansible_callback_redis_addr = "10.20.88.215"
-# ansible_callback_redis_port = 6379
