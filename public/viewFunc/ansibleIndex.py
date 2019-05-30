@@ -2,8 +2,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
-import json, datetime, redis
+import json, datetime, redis, os
 from myCelery import ansiblePlayBook_v2, ansibleExec, syncAnsibleResult
 from public.models import *
 from decorators.Proxy import ProxyAuth
@@ -13,15 +14,12 @@ class AnsibleOpt:       #ansible 执行 jiekou , 传如香港参赛
     @staticmethod
     def ansible_playbook(groupName, playbook, user=None, extra_vars={}):
         tid = "AnsibleApiPlaybook-%s" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-        extra_vars["groupName"] = groupName
+        # extra_vars["groupName"] = groupName
         # celeryTask = ansiblePlayBook_v2.delay(tid, playbook, extra_vars)
         logger.info("添加Ansilb-Playbook执行；%s" % playbook)
         celeryTask = ansiblePlayBook_v2.apply_async((tid, playbook, extra_vars), link=syncAnsibleResult.s(tid=tid)) # ansible结果保持
-        # celeryTask = ansiblePlayBook_v2.apply_async((tid, playbook, extra_vars))
-        AnsibleTasks(AnsibleID=tid,
-                CeleryID=celeryTask.task_id,
-                # taskUser=user,
-                GroupName=groupName,
+        AnsibleTasks(AnsibleID=tid, CeleryID=celeryTask.task_id,TaskUser=user,
+                GroupName=groupName, ExtraVars=extra_vars,
                 playbook=playbook).save()
         return {"playbook": playbook, "extra_vars": extra_vars, "tid": tid, "celeryTask": celeryTask.task_id, "groupName": groupName}
     @staticmethod
@@ -38,25 +36,42 @@ class AnsibleOpt:       #ansible 执行 jiekou , 传如香港参赛
 class AnsibleData:  #Ansible 数据接口
     def __init__(self, request=None, *args, **kw):
         self.request = request
-        self.is_ajax = request.is_ajax()
+        self.is_ajax = request.GET.get('is_ajax') or request.is_ajax()
         self.rType = request.GET.get("rType") or kw.get("rType") or "html"
         self.ua = "phone" if ( "iPhone" in request.META.get("HTTP_USER_AGENT") or "Android" in  request.META.get("HTTP_USER_AGENT")) else ""
         self.args = args
         self.kw = kw
         self.dataKey = kw.get("dataKey") or request.GET.get("dataKey") or ""
         self.ret = ret = {"args": args, "kw": kw, "get": request.GET}
-        print("\33[46mrType: %s, ua: %s, args: %s, kw: %s, dataKey: %s\33[0m" % (self.rType, self.ua, self.args, self.kw, self.dataKey))
+        print("\33[36mrType: %s, ua: %s, args: %s, kw: %s, dataKey: %s\33[0m" % (self.rType, self.ua, self.args, self.kw, self.dataKey))
     def dashboard(self, *args, **kw):
-        return render(self.request, "ansible/dashboard.html", {})
+        hosts_count = HostsLists.objects.count()
+        groups_count = ProjectGroups.objects.count()
+        tasks_count = AnsibleTasks.objects.count()
+        return render(self.request, "ansible/dashboard.html", {'hosts_count': hosts_count, 'groups_count': groups_count, 'tasks_count':tasks_count})
+
     def get_hosts(self, *args, **kw):
         hosts = HostsLists.objects.all()
         return render(self.request, "ansible/lookup.html", {'hosts': hosts})
-    def get_groups(self, *args, **Kw):
-        groups = ProjectGroups.objects.all()
+
+    def get_groups(self, *args, **kw):
+        if args[0] and self.is_ajax:
+            groups = ProjectGroups.objects.filter(groupName=args[0])
+            if groups.count() == 1:
+                hosts = list(groups[0].hostList.values('hostName', 'hostAddr'))
+                return JsonResponse({'groupName': groups[0].groupName, 'nickName': groups[0].nickName,'hosts': hosts})
+        else:
+            groups = ProjectGroups.objects.all()
         return render(self.request, "ansible/lookup.html", {'groups': groups})
+
     def get_funcs(self, *args, **kw):
         funcs = Functions.objects.all()
         return render(self.request, "ansible/lookup.html", {'funcs': funcs})
+
+    def get_playbooks(self, *args, **kw):
+        playbooks = os.listdir('playbooks')
+        return render(self.request, "ansible/lookup.html", {'playbooks', playbooks})
+
     def get_Ansible_Tasks(self, *args, **kw):   # 获取任务
         print("dataKey: %s" % args)
         if args[0]:
@@ -91,13 +106,15 @@ class AnsibleData:  #Ansible 数据接口
         functions = Functions.objects.all()
         return render(self.request, 'ansible/playbook_index.html', {'groups': groups, 'functions': functions})
 
-class AnsibleTask(View):    #ansibe Http 任务推送接口
+class AnsibleTask(LoginRequiredMixin, View):    #ansibe Http 任务推送接口
     def get(self, request, *args, **kw):
         # print()
         user = request.META.get("HTTP_WEICHAT_USER")
+        user = request.user
         myfunc = request.GET.get("function", None)
         playbook = request.GET.get("playbook", None)
-        extra_vars = dict(request.GET)
+        var = request.GET.get('vars')
+        extra_vars = json.loads(var) if var else {}
         if myfunc and not playbook:
             f = Functions.objects.filter(funcName=myfunc)[0]
             playbook =  f.playbook
@@ -119,15 +136,17 @@ class AnsibleTask(View):    #ansibe Http 任务推送接口
 def tasks(request, *gs, **kw):
     return render(request, "ansible/index.html", {})
 
-class AnsibleRequestApi(View):
-    def get(self, request, *k, **kw):
+class AnsibleRequestApi(LoginRequiredMixin, View):
+    login_url = '/account/login'
+    redirect_field_name = 'redirect_to'
+    def get(self, request, *args, **kw):
         dataName = kw.get("dataName", "")
         dataKey = kw.get("dataKey") or request.GET.get("dataKey") or ""
-        ad = AnsibleData(request, *k, **kw)
+        ad = AnsibleData(request, *args, **kw)
         if hasattr(ad, dataName):
             if callable(ad.__getattribute__(dataName)):
                 data = ad.__getattribute__(dataName)(dataKey, **kw)   #V3;
-                if type(data) is HttpResponse:
+                if type(data) in [ HttpResponse, JsonResponse ]:
                     return data
             else:
                 data = ad.__getattribute__(dataName)
@@ -137,7 +156,7 @@ class AnsibleRequestApi(View):
             # return HttpResponse(json.dumps(data, ensure_ascii=False),status=403)
             return render(request, 'ansible/error.html', data, status=403)
         ret = {"args": args, "kw": kw, "get": request.GET ,"data": data}
-        return JsonResponse({'data': {'k': k, 'kw':kw}})
+        return JsonResponse({'data': {'args': args, 'kw':kw}})
 
     def post(self, request, *k, **kw):
         return JsonResponse({'data': {'k': k, 'kw': kw}})

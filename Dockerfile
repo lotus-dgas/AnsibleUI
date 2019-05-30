@@ -12,12 +12,16 @@ RUN yum -y install gcc-c++ openssl-devel python-pip python-devel make libffi-dev
 
 ADD ./files/Python-3.7.3.tgz /usr/local/src/
 WORKDIR /usr/local/src/Python-3.7.3
-RUN ./configure --prefix=/usr/local/python3 && make && make install
+RUN ./configure --prefix=/usr/local/PyAnsibleUI && make && make install
 
 WORKDIR /data/
-ENV PATH /usr/local/python3/bin:$PATH
+ENV PATH /usr/local/PyAnsibleUI/bin:$PATH
 
-RUN /usr/local/python3/bin/pip3 install --find-links=/data/files --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+RUN /usr/local/PyAnsibleUI/bin/pip3 install --find-links=/data/files --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+# 数据库建表
+# RUN /usr/local/python3/bin/python3 manage.py makemigrations     
+# RUN /usr/local/python3/bin/python3 manage.py migrate
+
 
 EXPOSE 10089
 

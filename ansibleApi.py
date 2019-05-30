@@ -205,6 +205,7 @@ class MyPlaybookExecutor_V2(PlaybookExecutor):  #PlaybookExecutor 本身
         check_for_controlpersist(C.ANSIBLE_SSH_EXECUTABLE)
 
 def AnsiblePlaybookApi_v2(tid, playbooks, sources, extra_vars={}): # 最终调用
+    print('\33[33mextra_vars:%s\33[0m' % extra_vars)
     # with open("/tmp/celery.log", "a") as f:
     #     f.write(json.dumps([tid, playbooks, sources, extra_vars])+"\n")
     Options = namedtuple('Options', [

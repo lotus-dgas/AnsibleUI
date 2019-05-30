@@ -85,10 +85,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGDIR = os.path.join(BASE_DIR, "AnsibleUI")
+# LOGDIR = os.path.join(BASE_DIR, "AnsibleUI")
+LOGDIR = os.path.join(BASE_DIR, "logs")
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
     'formatters': {
         'verbose': {
             'format': '%(asctime)s %(levelname)s %(funcName)s %(pathname)s:%(lineno)s %(message)s'
@@ -139,12 +140,12 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
-        # 'django.db.backends': {
-        #     'handlers': ['file-db'],
-        #     'level': 'DEBUG',
-        #     'propagate': True,
-        #     'formatter': 'verbose'
-        # },
+        'django.db.backends': {
+            'handlers': ['file-db'],
+            'level': 'WARNING',
+            'propagate': True,
+            'formatter': 'verbose'
+        },
         'ansible.ui': {
             'handlers': ['file-ui'],
             'level': 'DEBUG',
@@ -165,3 +166,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
+LOGIN_URL = '/account/login'

@@ -14,6 +14,12 @@ AnsibleUI 是基于Django + Ansible + Celery 的WEB平台，用以批量处理�
 2. xxxx
 3. xxxx
 
+#### 配置项
+tools/config.py
+    ansible 远程连接用户
+    Redis 存放Celery
+    MYSLQ
+
 #### 使用说明
 0. 需外部提供MySQl和Redis，参数在tools/config.py内修改
 1. xxxx

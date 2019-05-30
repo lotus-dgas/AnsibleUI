@@ -21,7 +21,7 @@
 }
 pre {
     padding: 5px; 
-    height: 500px;
+    height: 450px;
     background: white;
     }
 .string { color: green; }
@@ -32,8 +32,6 @@ pre {
 </style>
 
 <div class="container" style="width:80%;padding-left: 180px;">
-
-    <!-- <div class="table-responsive"> -->
       <table class="table table-bordered">
         <tr style="background-color: #7e737359;text-align: center; color:white;"><td>Name</td><td>Content</td></tr>
         <tr>
@@ -54,18 +52,17 @@ pre {
         </tr>
         <tr>
                 <td>AnsibleResult</td>
-                <!-- <td><pre style="white-space: pre-wrap;word-wrap: break-word">{{ t.AnsibleResult }}</pre></td> -->
                 <td ><pre id='ar'></pre>  </td>
         </tr>
         <tr>
                 <td>CeleryResult</td>
-                <td>{{ t.CeleryResult }}</td>
+                <td ><pre id='cr' style="height:auto"></pre>  </td>
         </tr>
       </table>
     <!-- </div> -->
 </div>
 <script type="text/javascript">
         $('#ar')[0].innerHTML = syntaxHighlight({{ t.AnsibleResult|safe }})     // 格式化结果
-
+        $('#cr')[0].innerHTML = syntaxHighlight({{ t.CeleryResult|safe }})     // 格式化结果
 </script>
 {% endblock %}

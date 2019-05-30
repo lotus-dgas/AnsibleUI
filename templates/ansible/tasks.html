@@ -1,7 +1,6 @@
 {% extends "../base_public.html" %}
-
 {% block content %}
-<div class="container" style="width:80%;padding-left: 180px;">
+<div class="container-fluid" style="margin-left: 180px;">
       <table class="table table-bordered">
           <th><td>AnsibleID</td><td>CeleryID</td><td>GroupName</td><td>playbook</td><td>AnsibleResult</td><td>CeleryResult</td></th>
         {% for t in AnsibleTasks reversed %}
@@ -11,9 +10,8 @@
             <td>{{ t.CeleryID }}</td>
             <td>{{ t.GroupName }}</td>
             <td>{{ t.playbook }}</td>
-            <!-- <td>{{ t.AnsibleResult }}</td> -->
             <td><a href="/ansible/get_Ansible_Tasks/?dataKey={{t.AnsibleID}}">查看结果内容</a></td>
-            <td>{{ t.CeleryResult }}</td>
+            <td>{% if t.CeleryResult %}执行完成{% else %}正在执行{% endif %}</td>
         </tr>
         {% endfor %}
       </table>

@@ -9,9 +9,11 @@
             <div class="form-group">
                 <label for="exampleInputEmail1">组列表</label>
                 <select name="groupName" class="form-control">
-                    <option>无需该参数</option>
+                    <option value="None">无需该参数</option>
                     {% for g in groups %}
-                        <option value={{ g.groupName }}>{{ g.nickName }}</option>
+                        <option value={{ g.groupName }}>
+                            {{ g.nickName|default:g.groupName }}&nbsp;<------>&nbsp;{{ g.groupName }}
+                        </option>
                     {% endfor %}
                 </select>
               </div>
@@ -20,22 +22,73 @@
             <div class="form-group">
                 <label for="exampleInputPassword1">任务组</label>
                 <select class="form-control" name="playbook">
+                    <option value="None">选择一个任务组</option>
                     {% for f in functions %}
-                        <option value="{{ f.playbook }}">{{ f.nickName }}</option>
+                        <option value="{{ f.playbook }}">{{ f.nickName|default:f.playbook }}</option>
                     {% endfor %}
                 </select>
               </div>
         </div>
 
     </div>
-
-
   <div class="form-group">
-    <label for="exampleInputPassword1">参数</label>
-    <input type="text" class="form-control" name="vars" placeholder="参数">
+    <label for="exampleInputPassword1">输入所需要的参数</label>
+    <textarea type="text" class="form-control" name="vars" rows=9></textarea>
   </div>
-  <button type="submit" class="btn btn-default">提交</button>
+  <button type="submit" id="push" class="btn btn-default">提交</button><input type="checkbox" style="margin-left: 50px;"> 🔐&nbsp提交锁
 </form>
+    <div calss="row">
+        <hr style="height:1px;border:none;border-top:1px solid #555555;">
+        <div class="panel panel-default" id="mydata" hidden>
+                <div class="panel-body"></div>
+              </div>
+            <button id="check_group"class="btn btn-default">查看选中组</button>
+            <button id="check_playbook" class="btn btn-default">查看选中PlayBook</button>
+            <button id="close_win" class="btn btn-info">关闭信息窗口</button>
+    </div>
 </div>
+
+</div>
+<script type="text/javascript">
+    $('#check_group').click(function(){
+        v = $("select[name='groupName'] option:selected")[0].value
+        if(v==="None"){
+            alert("未选择组")
+        }else{
+            $.ajax({
+                url: "/ansible/get_groups/"+v,
+                success: function(msg){
+                    $('#mydata')[0].hidden = false
+                    s = "组名: " + msg.groupName + '<br>描述: ' + msg.nickName + '<br>主机列表:'
+                    $.each(msg.hosts, function(a,b){
+                        s += b.hostName + '、'
+                    })
+                    $('#mydata')[0].children[0].innerHTML = s
+                    console.log(msg)
+                }
+            })
+        }
+
+    })
+    $('#check_playbook').click(function(){
+        console.log("AAA")
+    })
+    $('#close_win').click(function(){
+        $('#mydata')[0].hidden = true
+    })
+    $('#push').click(function(){
+        if($("select[name='playbook'] option:selected")[0].value=="None"){
+            alert('必须选择一个操作组')
+            return false    // 阻止提交
+        }else if($('input[type="checkbox"]')[0].checked===false){
+            alert('请打开锁 🔐')
+            return false
+        }else{
+            return true
+        }   
+
+    })
+
+</script>
 
 {% endblock %}

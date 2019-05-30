@@ -11,10 +11,9 @@
             <td>{{ h.hostAddr }}</td>
             <td>
                     {% for g in h.projectgroups_set.all %}
-                    {{  g.nickName }} 、
+                    {{  g.nickName|default:g.groupName }} 、
                     {% endfor %}
             </td>
-            
         </tr>
     {% endfor %}
     </table>
@@ -28,7 +27,7 @@
             <td>{{ h.nickName }}</td>
             <td>
                     {% for g in h.hostList.all %}
-                    {{ g.hostName }}、
+                    {{ g.hostName|default:g.hostAddr }}、
                     {% endfor %}
             </td>
             <td>{{ h.remark }}</td>
@@ -45,6 +44,16 @@
     {% endfor %}
     </table> 
 {% endif %}
+
+<!-- {% if playbooks %}
+    <table class="table table-bordered">
+    <tr><td>名称</td><td>信息</td><td>执行操作</td></tr>
+    {% for h in playbooks %}  
+        <tr><td>{{ h.funcName }}</td><td>{{ h.nickName }}</td><td>{{ h.playbook }}</td></tr>
+    {% endfor %}
+    </table> 
+{% endif %} -->
+
 
 </div>
 

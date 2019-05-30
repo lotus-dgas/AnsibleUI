@@ -121,7 +121,7 @@ def OAuthSession(func):
         return func(request, *args, **kw)
     return wrapped_func
 
-OTokenList = ["R82TOSgrj10IoP7pZU4uvwthNqE5LY3fklJ"]
+OTokenList = [""]
 def OAuthToken(func):
     @wraps(func)
     def wrapped_func(request, *args, **kw):

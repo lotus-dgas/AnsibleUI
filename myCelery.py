@@ -12,7 +12,7 @@ import json
 import time
 from celery import Celery
 from ansibleApi import *
-from tools.config import BACKEND, BROKER, REDIS_ADDR, REDIS_PORT, REDIS_PD
+from tools.config import BACKEND, BROKER, REDIS_ADDR, REDIS_PORT, REDIS_PD, ansible_result_redis_db
 from celery.app.task import Task
 from celery.utils.log import get_task_logger
 from celery.result import AsyncResult
@@ -54,8 +54,10 @@ import sys
 import django
 path=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0,path)
-#os.environ.update(DJANGO_SETTING_MODULE='cms.settings')
-os.environ['DJANGO_SETTINGS_MODULE']='AnsibleUI.settings'
+if sys.version.startswith('3.7'):
+    os.environ['DJANGO_SETTINGS_MODULE']='AnsibleUI.settings'
+else:
+    os.environ['DJANGO_SETTINGS_MODULE']='ansibleUI.settings'
 django.setup()
 from public.models import *
 
@@ -66,12 +68,15 @@ def syncAnsibleResult(self, ret, *a, **kw):     # 执行结束，结果保持至
     celery_logger.info(c.result)
     tid = kw.get('tid', None)
     if tid:
-        r = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=10)
+        r = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=ansible_result_redis_db)
+        a = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=4)
         rlist = r.lrange(tid, 0, -1)
         if rlist:
             print(rlist)
             at = AnsibleTasks.objects.filter(AnsibleID=tid)[0]
             at.AnsibleResult = json.dumps([ json.loads(i.decode()) for i in rlist ])
+            ct = a.get('celery-task-meta-%s' % at.CeleryID).decode()
+            at.CeleryResult = ct
             at.save()
             print("同步结果至db: syncAnsibleResult !!!!!: parent_id: %s" % self.request.get('parent_id'), a, kw)
     else: pass
@@ -96,6 +101,7 @@ if __name__ == "__main__":
     appCelery.worker_main()
 
 # celery -A myCelery worker -l info
-# celery multi start 1 -A myCelery -l info -c4 --pidfile=/tmp/celery_%n.pid -f logs/celery.log
-# celery multi restart 1 -A myCelery -l info -c4 --pidfile=/tmp/celery_%n.pid -f logs/celery.log
+# celery multi start 1 -A myCelery -l info -c4 --pidfile=tmp/celery_%n.pid -f logs/celery.log
+# celery multi start 3 -A myCelery -l info -c4 --pidfile=tmp/celery_%n.pid -f logs/celery.log
+# celery multi restart 1 -A myCelery -l info -c4 --pidfile=tmp/celery_%n.pid -f logs/celery.log
 # celery multi stop 1 -A myCelery -l info -c4 --pidfile=logs/celery_%n.pid

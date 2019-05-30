@@ -32,5 +32,5 @@ def AnsibleResult(obj):
 
 @admin.register(AnsibleTasks)
 class AnsibleTasksAdmin(admin.ModelAdmin):
-    list_display = ['AnsibleID', 'CeleryID',
-        'GroupName', 'playbook', AnsibleResult, 'CeleryResult']
+    list_display = ['AnsibleID', 'CeleryID', 'TaskUser',
+        'GroupName', 'playbook', 'ExtraVars', AnsibleResult, 'CeleryResult']
