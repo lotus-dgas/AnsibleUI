@@ -16,7 +16,8 @@ class AnsibleOpt:       #ansible 执行 jiekou , 传如香港参赛
         tid = "AnsibleApiPlaybook-%s" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
         # extra_vars["groupName"] = groupName
         # celeryTask = ansiblePlayBook_v2.delay(tid, playbook, extra_vars)
-        logger.info("添加Ansilb-Playbook执行；%s" % playbook)
+        logger.info("添加Ansilb-Playbook执行；(%s - %s - %s)" % (playbook, groupName, extra_vars))
+        extra_vars['groupName'] = groupName
         celeryTask = ansiblePlayBook_v2.apply_async((tid, playbook, extra_vars), link=syncAnsibleResult.s(tid=tid)) # ansible结果保持
         AnsibleTasks(AnsibleID=tid, CeleryID=celeryTask.task_id,TaskUser=user,
                 GroupName=groupName, ExtraVars=extra_vars,
@@ -29,7 +30,7 @@ class AnsibleOpt:       #ansible 执行 jiekou , 传如香港参赛
         celeryTask = ansibleExec.delay(tid, groupName, tasks)
         return {'tid': tid, 'celeryTask': celeryTask.task_id, "groupName": groupName}
     
-    @staticmethod
+    @staticmethod  
     def push_task():
         return {}
 
@@ -43,12 +44,15 @@ class AnsibleData:  #Ansible 数据接口
         self.kw = kw
         self.dataKey = kw.get("dataKey") or request.GET.get("dataKey") or ""
         self.ret = ret = {"args": args, "kw": kw, "get": request.GET}
-        print("\33[36mrType: %s, ua: %s, args: %s, kw: %s, dataKey: %s\33[0m" % (self.rType, self.ua, self.args, self.kw, self.dataKey))
     def dashboard(self, *args, **kw):
         hosts_count = HostsLists.objects.count()
         groups_count = ProjectGroups.objects.count()
         tasks_count = AnsibleTasks.objects.count()
-        return render(self.request, "ansible/dashboard.html", {'hosts_count': hosts_count, 'groups_count': groups_count, 'tasks_count':tasks_count})
+
+        with open('playbooks/etcd.md')as f:
+            s = f.read()
+        data = {'hosts_count': hosts_count, 'groups_count': groups_count, 'tasks_count':tasks_count, 'article': s}
+        return render(self.request, "ansible/dashboard.html", data)
 
     def get_hosts(self, *args, **kw):
         hosts = HostsLists.objects.all()
@@ -65,8 +69,16 @@ class AnsibleData:  #Ansible 数据接口
         return render(self.request, "ansible/lookup.html", {'groups': groups})
 
     def get_funcs(self, *args, **kw):
-        funcs = Functions.objects.all()
-        return render(self.request, "ansible/lookup.html", {'funcs': funcs})
+        if args[0]:
+            fs = Functions.objects.filter(id=args[0])
+            if fs.count() == 1:
+                pb = fs[0].playbook
+                with open('playbooks/%s' % pb)as f:
+                    s = f.read()
+            return render(self.request, "ansible/playbook_display.html", {'article': '```yaml\n%s\n```' % s})
+        else:     
+            funcs = Functions.objects.all()
+            return render(self.request, "ansible/lookup.html", {'funcs': funcs})
 
     def get_playbooks(self, *args, **kw):
         playbooks = os.listdir('playbooks')

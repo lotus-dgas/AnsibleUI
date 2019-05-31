@@ -13,8 +13,6 @@ class FunctionsAdmin(admin.ModelAdmin):
 class HostsListsAdmin(admin.ModelAdmin):
     list_display = ['hostName', 'hostAddr']
 
-
-
 def hostList(obj):
     s = list(obj.hostList.values_list("hostAddr"))
     if s:
@@ -25,7 +23,7 @@ def hostList(obj):
 @admin.register(ProjectGroups)
 class ProjectGroupsAdmin(admin.ModelAdmin):
     list_display = ['groupName', 'nickName', 'remark' ]
-
+    filter_horizontal = ('hostList', 'possessFuncs')
 
 def AnsibleResult(obj):
     return obj.AnsibleResult[:200]

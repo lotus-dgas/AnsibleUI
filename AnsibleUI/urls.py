@@ -38,10 +38,11 @@ from django.http import HttpResponse
 def myApply(request):
     return HttpResponse('<h2 style="text-align: center;">无法申请<a href="/">反回</a></h2>')
 
+import extraViews
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ansible/', include('public.urls'),),
-
+    path('note/', include('public.urls'),),
     path('account/login', myLogin),
     path('account/logout', myLogout),
     path('account/apply', myApply),

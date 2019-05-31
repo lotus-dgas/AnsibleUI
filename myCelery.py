@@ -23,12 +23,25 @@ sources = "scripts/inventory"
 
 class MyTask(Task): #毁掉
     def on_success(self, retval, task_id, args, kwargs):
-        # print("retval: %s, task_id: %s, args: %s, kwargs: %s" % (retval, task_id, args, kwargs))
-        # r = redis.Redis(host=REDIS_ADDR, REDIS_PORT, db=10)
+        print("执行成功 notice from on_success")
         return super(MyTask, self).on_success(retval, task_id, args, kwargs)
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
-        print('task fail, reason: {0}'.format(exc))
+        # print('Celery Task Exec Fail, reason: {0}'.format(exc))
+        # print('Celery Task Exec Fail, %s - %s - %s - %s' % (task_id, args, kwargs, einfo))
+        # task_id 是celery ID， args[0] 为ansibleID
+        r = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=ansible_result_redis_db)
+        a = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=4)
+        tid = args[0]
+        rlist = r.lrange(tid, 0, -1)
+        try:
+            at = AnsibleTasks.objects.filter(AnsibleID=tid)[0]
+            at.AnsibleResult = json.dumps([ json.loads(i.decode()) for i in rlist ])
+            ct = a.get('celery-task-meta-%s' % at.CeleryID).decode()
+            at.CeleryResult = ct
+            at.save()
+            print("同步结果至db: syncAnsibleResult !!!!!: parent_id: %s" % self.request.get('parent_id'), a, kw)
+        except: pass
         return super(MyTask, self).on_failure(exc, task_id, args, kwargs, einfo)
 
 @appCelery.task
@@ -42,8 +55,8 @@ def ansiblePlayBook(tid, pb=["playbooks/t.yml"]):
     AnsiblePlaybookApi(tid, pb, sources)
     return None
 
-@appCelery.task
-def ansiblePlayBook_v2(tid, pb, extra_vars, **kw):
+@appCelery.task(bind=True,base=MyTask)  # 
+def ansiblePlayBook_v2(self,tid, pb, extra_vars, **kw):
     psources = kw.get('sources') or extra_vars.get('sources') or sources
     print("PlayBook File: %s，groupName: %s, psources: %s, Vars: %s" % (pb, extra_vars.get("groupName", "None"), psources, extra_vars))
     AnsiblePlaybookApi_v2(tid, ["playbooks/%s"%pb], psources, extra_vars)
@@ -72,7 +85,6 @@ def syncAnsibleResult(self, ret, *a, **kw):     # 执行结束，结果保持至
         a = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=4)
         rlist = r.lrange(tid, 0, -1)
         if rlist:
-            print(rlist)
             at = AnsibleTasks.objects.filter(AnsibleID=tid)[0]
             at.AnsibleResult = json.dumps([ json.loads(i.decode()) for i in rlist ])
             ct = a.get('celery-task-meta-%s' % at.CeleryID).decode()
