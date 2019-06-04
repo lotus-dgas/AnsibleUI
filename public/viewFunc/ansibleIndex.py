@@ -6,6 +6,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 import json, datetime, redis, os
 from myCelery import ansiblePlayBook_v2, ansibleExec, syncAnsibleResult
+from tools.config import REDIS_ADDR, REDIS_PORT, REDIS_PD, ansible_result_redis_db
+from public.templatetags.custom_markdown import ansible_result
+# from django.core.cache import caches
+from django.core.cache import cache
 from public.models import *
 from decorators.Proxy import ProxyAuth
 import logging
@@ -42,26 +46,27 @@ class AnsibleData:  #Ansible 数据接口
         self.ua = "phone" if ( "iPhone" in request.META.get("HTTP_USER_AGENT") or "Android" in  request.META.get("HTTP_USER_AGENT")) else ""
         self.args = args
         self.kw = kw
-        self.dataKey = kw.get("dataKey") or request.GET.get("dataKey") or ""
+        self.dataKey = request.GET.get("dataKey") or kw.get("dataKey") or ""
         self.ret = ret = {"args": args, "kw": kw, "get": request.GET}
     def dashboard(self, *args, **kw):
         hosts_count = HostsLists.objects.count()
         groups_count = ProjectGroups.objects.count()
         tasks_count = AnsibleTasks.objects.count()
-
-        with open('playbooks/etcd.md')as f:
-            s = f.read()
-        data = {'hosts_count': hosts_count, 'groups_count': groups_count, 'tasks_count':tasks_count, 'article': s}
+        data = {'hosts_count': hosts_count, 'groups_count': groups_count, 'tasks_count':tasks_count, }
         return render(self.request, "ansible/dashboard.html", data)
 
     def get_hosts(self, *args, **kw):
-        hosts = HostsLists.objects.all()
+        print(args)
+        if args[0]:
+            hosts = HostsLists.objects.filter(hostAddr=args[0])
+        else:
+            hosts = HostsLists.objects.all()
         return render(self.request, "ansible/lookup.html", {'hosts': hosts})
 
     def get_groups(self, *args, **kw):
-        if args[0] and self.is_ajax:
+        if args[0]:
             groups = ProjectGroups.objects.filter(groupName=args[0])
-            if groups.count() == 1:
+            if groups.count() == 1 and self.request.is_ajax():
                 hosts = list(groups[0].hostList.values('hostName', 'hostAddr'))
                 return JsonResponse({'groupName': groups[0].groupName, 'nickName': groups[0].nickName,'hosts': hosts})
         else:
@@ -76,7 +81,7 @@ class AnsibleData:  #Ansible 数据接口
                 with open('playbooks/%s' % pb)as f:
                     s = f.read()
             return render(self.request, "ansible/playbook_display.html", {'article': '```yaml\n%s\n```' % s})
-        else:     
+        else:
             funcs = Functions.objects.all()
             return render(self.request, "ansible/lookup.html", {'funcs': funcs})
 
@@ -85,8 +90,7 @@ class AnsibleData:  #Ansible 数据接口
         return render(self.request, "ansible/lookup.html", {'playbooks', playbooks})
 
     def get_Ansible_Tasks(self, *args, **kw):   # 获取任务
-        print("dataKey: %s" % args)
-        if args[0]:
+        if args[0]: # 特定任务
             at = AnsibleTasks.objects.filter(AnsibleID=args[0])
             return render(self.request, "ansible/result.html", {'t': at[0]})
         else:
@@ -95,14 +99,15 @@ class AnsibleData:  #Ansible 数据接口
             return render(self.request, "ansible/tasks.html", {'AnsibleTasks': at})
         return list(at)
     def get_Ansible_Results(self, *args, **kw):     #获取结果
-        if self.rType in ["html"] :
-            return render(self.request, "ansible/tasks.html", {})
-        r = redis.Redis(host=Env.ansible_result_redis_host, port=Env.ansible_result_redis_port, db=10)
+        r = redis.Redis(host=REDIS_ADDR, port=REDIS_PORT, password=REDIS_PD,db=ansible_result_redis_db)
         if self.dataKey:
             ret = r.lrange(self.dataKey, 0, -1)
         else:
             ret = []
-        return [ json.loads(i.decode()) for i in ret ]
+        # data = [ json.loads(i.decode()) for i in ret ]
+        data = json.dumps([ json.loads(i.decode()) for i in ret ])
+        s = ansible_result(data)
+        return HttpResponse(s)
     def get_Celery_Result(self, dataKey, *args, **kw):  # 获取Celery 结果
         r = redis.Redis(host=Env.ansible_result_redis_host, port=Env.ansible_result_redis_port, db=4)
         dataKey = kw.get("dataKey") or args[0] or ""

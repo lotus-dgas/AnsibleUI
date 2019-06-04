@@ -38,11 +38,35 @@ from django.http import HttpResponse
 def myApply(request):
     return HttpResponse('<h2 style="text-align: center;">无法申请<a href="/">反回</a></h2>')
 
-import extraViews
+import os
+from django.core.cache import cache
+from tools.config import note_base_dirt
+def notes(request, *k, **kw):
+    dataKey = request.GET.get('dataKey')
+    data = cache.get("note_%s" % dataKey)
+    if not data:
+        if dataKey:
+            fl = '%s/%s' % (note_base_dirt, dataKey)
+            if os.path.isfile(fl):
+                with open(fl)as f:
+                    s = f.read()
+            else: s = "错误❎"
+            files = []
+        else:
+            files = os.listdir(note_base_dirt)
+            s = ""
+        data = {"msg": s, "files": files}
+        cache.set("note_%s" % dataKey, data)
+    else: print("Cache: %s" % dataKey)
+    return render(request, "notes.html", data)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ansible/', include('public.urls'),),
-    path('note/', include('public.urls'),),
+
+    path('notes/', notes),
+    # re_path(r'notes/(?P<dataKey>\w+)', notes),
+
     path('account/login', myLogin),
     path('account/logout', myLogout),
     path('account/apply', myApply),

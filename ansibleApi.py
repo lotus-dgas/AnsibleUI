@@ -27,15 +27,14 @@ class ResultCallback(CallbackBase):
         self.results = []
         self.r = redis.Redis(host=REDIS_ADDR, port=REDIS_PORT, password=REDIS_PD, db=ansible_result_redis_db)
         self.log = logging.getLogger('AnsibleApiLog')
+        self.log.propagate = False
         spath = logging.handlers.RotatingFileHandler("logs/ansible_api.log", "a", 0, 1)
         spath.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
         self.log.addHandler(spath)
-        self.log.propagate = False
         self.log.setLevel(logging.DEBUG)
 
-    def __del__(self):
+    def __del__(self):  # 设置生存时间
         self.log.info("Ansible API Self Redis __del__")
-        # print("\33[33mAnsible API Self Redis __del__\33[0m")
         # self._write_to_save(json.dumps({"msg": "执行完成"}, ensure_ascii=False))
         # super(ResultCallback, self).__del__()
         self.r.expire(self.id, 3600)
@@ -46,22 +45,35 @@ class ResultCallback(CallbackBase):
     def playbook_on_start(self):
         self.log.info('开始执行PlayBook')
         print("开始执行PlayBook")
+    def v2_playbook_on_play_start(self, play):
+        name = play.get_name().strip()
+        if not name:
+            msg = u"PLAY"
+        else:
+            msg = u"PLAY [%s]" % name
+        print(msg)
     def v2_on_any(self,result, *args, **kwargs):
         print("v2_on_any", json.dumps(result, indent=4))
-    def v2_runner_on_ok(self, result, **kwargs):
+    def v2_runner_on_ok(self, result, **kwargs):    #执行成功，
         host = result._host
         if "ansible_facts" in result._result.keys():
             print("SetUp 操作，不Save结果")
         else:
             self.log.info("%s: %s, %s" % ("v2_runner_on_ok", host.name, result._result))
-            # print("%s: %s, %s" % ("v2_runner_on_ok", host.name, result._result))
-            self._write_to_save(json.dumps({"host": host.name, "result": result._result, "task": result.task_name}))
-    def v2_runner_on_failed(self, result, **kwargs):
+            self._write_to_save(json.dumps({"host": host.name, "result": result._result, "task": result.task_name, "status": "success"}))
+    def v2_runner_on_failed(self, result, ignore_errors=False, **kwargs):    # 执行失败
         host = result._host
         self.log.error("%s: %s, %s" % ("v2_runner_on_failed", host.name, result._result))
-        self._write_to_save(json.dumps({host.name: result._result}))
-    def v2_runner_on_skipped(self, *args, **kwargs):
+        if ignore_errors:
+            status = "ignoring"
+        else:
+            status = 'failed'
+        self._write_to_save(json.dumps({"host": host.name, "result": result._result, "task": result.task_name, "status": status}))
+    def v2_runner_on_skipped(self, result, *args, **kwargs):    # 任务跳过
         print("v2_runner_on_skipped", args, kwargs)
+        self._write_to_save(json.dumps({"host": result._host.get_name(), "result": result._result, "task": result.task_name, "status": "skipped"}))
+    def v2_runner_on_unreachable(self, result, **kwargs):   ##  主机不可达
+        self._write_to_save(json.dumps({"host": result._host.get_name(), "status": "unreachable", "task": result.task_name, "result": {"msg": "UNREACHABLE"}}))
     def v2_playbook_on_play_start(self, play):
         name = play.get_name().strip()
         if not name:

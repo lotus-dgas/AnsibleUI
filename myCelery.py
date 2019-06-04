@@ -94,16 +94,16 @@ def syncAnsibleResult(self, ret, *a, **kw):     # 执行结束，结果保持至
     else: pass
 
 ############  TEST  ###########
-@appCelery.task(bind=True,base=MyTask)
-def myTest(self, g, *a, **kw):     #bind 将获取自身信息
-    celery_logger.info(self.request.__dict__)
-    print("myTest: %s, %s, %s" % (g, a, kw))
-    return g
+# @appCelery.task(bind=True,base=MyTask)
+# def myTest(self, g, *a, **kw):     #bind 将获取自身信息
+#     celery_logger.info(self.request.__dict__)
+#     print("myTest: %s, %s, %s" % (g, a, kw))
+#     return g
 
-@appCelery.task()
-def myLink(key, *a, **kw):
-    print("%s, %s, %s" % (key, a, kw))
-    return "%s: %s" % (key, "Link")
+# @appCelery.task()
+# def myLink(key, *a, **kw):
+#     print("%s, %s, %s" % (key, a, kw))
+#     return "%s: %s" % (key, "Link")
 
 # def on_result_ready(result):
 #     # myTask.delay("a").then(on_result_ready)

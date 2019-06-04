@@ -8,6 +8,7 @@ from decorators import *
 from django.views.generic.base import RedirectView
 from public.views import Index
 
+
 urlpatterns = [
     path('tasks/', tasks),
     re_path('opt_task/', ProxyAuth(AnsibleTask.as_view())),

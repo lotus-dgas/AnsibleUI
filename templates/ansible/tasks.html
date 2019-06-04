@@ -1,4 +1,5 @@
 {% extends "../base_public.html" %}
+{% load custom_markdown %}
 {% block content %}
 <div class="container-fluid" style="margin-left: 180px;">
       <table class="table table-bordered">
@@ -11,11 +12,9 @@
             <td>{{ t.GroupName }}</td>
             <td>{{ t.playbook }}</td>
             <td><a href="/ansible/get_Ansible_Tasks/?dataKey={{t.AnsibleID}}">查看结果内容</a></td>
-            <td>{% if t.CeleryResult %}执行完成{% else %}正在执行{% endif %}</td>
+            <td>{{ t.CeleryResult|celery_status }}</td>
         </tr>
         {% endfor %}
       </table>
     </div>
-
-
 {% endblock %}

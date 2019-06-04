@@ -85,11 +85,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': 'tmp/django_cache',
+    }
+}
+
 # LOGDIR = os.path.join(BASE_DIR, "AnsibleUI")
 LOGDIR = os.path.join(BASE_DIR, "logs")
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
             'format': '%(asctime)s %(levelname)s %(funcName)s %(pathname)s:%(lineno)s %(message)s'
@@ -100,6 +107,9 @@ LOGGING = {
         'simple': {
             'format': '%(asctime)s %(levelname)s %(module)s %(message)s'
         },
+        'basic': {
+            'format': '%(asctime)s %(levelname)s %(message)s'
+        }
     },
     'filters': {},
     'handlers': {
@@ -121,6 +131,12 @@ LOGGING = {
             'filename': 'logs/django-request.log',
             'formatter': 'verbose'
         },
+        'file-server': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/django-server.log',
+            'formatter': 'basic'
+        },
         'file-ui': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
@@ -132,24 +148,29 @@ LOGGING = {
         'django': {
             'handlers': ['file'],
             'level': 'DEBUG',
-            'propagate': True,
+            'propagate': False,
             'formatter': 'verbose'
         },
         'django.request': {
             'handlers': ['file-request'],
             'level': 'DEBUG',
-            'propagate': True,
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['file-server'],
+            'level': 'DEBUG',
+            'propagate': False,
         },
         'django.db.backends': {
             'handlers': ['file-db'],
-            'level': 'WARNING',
-            'propagate': True,
+            'level': 'DEBUG',
+            'propagate': False,
             'formatter': 'verbose'
         },
         'ansible.ui': {
             'handlers': ['file-ui'],
             'level': 'DEBUG',
-            'propagate': True,
+            'propagate': False,
             'formatter': 'verbose'
         },
     },

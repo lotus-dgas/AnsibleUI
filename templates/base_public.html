@@ -5,9 +5,10 @@
         <link rel="shortcut icon" href="/static/favicon.ico">
         <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/static/codecss/default.css">
         <script src="/static/jquery.min.js"></script>
         <script src="/static/echarts.min.js"></script>
-        <script src="/static/jsonformat.js"></script>
+        <script src="/static/jsonformat.js"></script>   
         <script src="/static/bootstrap/js/bootstrap.min.js"></script>
         <style type="text/css">
             body {
@@ -15,9 +16,6 @@
                 background-repeat: no-repeat;
                 background-attachment: fixed;
             }
-            /* .container {
-                width: 100%;
-            } */
             .myleft {
                 z-index: 9999;
                 position: fixed ! important;
@@ -29,9 +27,6 @@
                 /* background-color: #edfaf3; */
                 /* opacity: 0.8; */
             }
-            .line {
-                
-            }
         </style>
     </head>
 
@@ -41,6 +36,7 @@
             <div class="container">
             <a class="navbar-brand" href="/ansible/">AnsibleUI</a>
             <ul class="nav navbar-nav navbar-right">
+                    <a class="navbar-brand"href="/notes">文档记录</a>
                     <a class="navbar-brand"href="/admin">后台管理</a>
         {% if request.user %}
                 <li class="dropdown">
@@ -58,17 +54,9 @@
                 {% else %}
                 <a class="navbar-brand"href="/account/login">登录</a>
             </ul>
-
         {% endif %}
-
-
         </div>
         </nav>
-        <!-- <div class="container">
-            <div class="row">
-                <div class="col-md-6"></div>
-            </div>
-        </div> -->
         <div class="myleft" ><br>
                 <ul class="list-group">
                         <li class="list-group-item"><a href="/ansible/">首页</a></li>

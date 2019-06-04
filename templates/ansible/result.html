@@ -1,5 +1,5 @@
 {% extends "../base_public.html" %}
-
+{% load custom_markdown %}
 {% block content %}
 
 <style type="text/css">
@@ -31,12 +31,12 @@ pre {
 .key { color: red; }
 </style>
 
-<div class="container" style="width:80%;padding-left: 180px;">
+<div class="container-fluid" style="padding-left: 180px;">
       <table class="table table-bordered">
         <tr style="background-color: #7e737359;text-align: center; color:white;"><td>Name</td><td>Content</td></tr>
         <tr>
             <td>AnsibleID</td>
-            <td>{{ t.AnsibleID }}</td>
+            <td id="ansible_id">{{ t.AnsibleID }}</td>
         </tr>
         <tr>
                 <td>CeleryID</td>
@@ -51,18 +51,35 @@ pre {
                 <td>{{ t.playbook }}</td>
         </tr>
         <tr>
-                <td>AnsibleResult</td>
-                <td ><pre id='ar'></pre>  </td>
+                <td>
+                        AnsibleResult<br>
+                        <button id="nr"class="btn btn-default" style="margin-top:50px">结果轮寻</button>
+                </td>
+                <td >
+                        <pre id='ar' style="background: #a5a3a3">{{ t.AnsibleResult|ansible_result }}</pre>
+                </td>
         </tr>
         <tr>
                 <td>CeleryResult</td>
                 <td ><pre id='cr' style="height:auto"></pre>  </td>
         </tr>
       </table>
+      <div hidden><pre id="ext"></pre></div>
     <!-- </div> -->
 </div>
 <script type="text/javascript">
-        $('#ar')[0].innerHTML = syntaxHighlight({{ t.AnsibleResult|safe }})     // 格式化结果
+$('#nr').click(function(){
+        k = $('#ansible_id')[0].innerText
+        $.ajax({
+                url: "/ansible/get_Ansible_Results/?dataKey="+k,
+                success: function(msg){
+                        $('#ar')[0].innerHTML = msg
+                }
+        })
+})
+</script>
+<script type="text/javascript">
+        $('#ext')[0].innerHTML = syntaxHighlight({{ t.AnsibleResult|safe }})     // 格式化结果
         $('#cr')[0].innerHTML = syntaxHighlight({{ t.CeleryResult|safe }})     // 格式化结果
 </script>
 {% endblock %}
