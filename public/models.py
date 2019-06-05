@@ -37,5 +37,7 @@ class AnsibleTasks(models.Model):
     ExtraVars = models.TextField(blank=True, null=True)
     AnsibleResult = models.TextField(blank=True)
     CeleryResult  = models.TextField(blank=True)
+    class Meta:
+        ordering = ['id']
     def __str__(self):
         return self.AnsibleID

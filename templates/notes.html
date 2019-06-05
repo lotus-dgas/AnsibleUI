@@ -1,0 +1,21 @@
+{% extends "base_public.html" %}
+{% load custom_markdown %}
+{% block content %}
+<div class="container" style="width:90%;padding-left: 180px;">
+
+    {% if msg %}
+    <div>{{ msg|custom_markdown }}</div>
+    {% endif%}
+
+    <ul class="list-group">
+            {% for n in files %}
+            <li class="list-group-item"><a href="/notes/?dataKey={{ n }}">{{ n }}</a></li>
+            {% endfor %}
+    </ul>
+
+</div>
+
+{% endblock %}
+
+
+

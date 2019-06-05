@@ -114,6 +114,5 @@ if __name__ == "__main__":
 
 # celery -A myCelery worker -l info
 # celery multi start 1 -A myCelery -l info -c4 --pidfile=tmp/celery_%n.pid -f logs/celery.log
-# celery multi start 3 -A myCelery -l info -c4 --pidfile=tmp/celery_%n.pid -f logs/celery.log
 # celery multi restart 1 -A myCelery -l info -c4 --pidfile=tmp/celery_%n.pid -f logs/celery.log
-# celery multi stop 1 -A myCelery -l info -c4 --pidfile=logs/celery_%n.pid
+# celery multi stop 1 -A myCelery -l info -c4 --pidfile=tmp/celery_%n.pid

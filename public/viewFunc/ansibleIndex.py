@@ -10,6 +10,7 @@ from tools.config import REDIS_ADDR, REDIS_PORT, REDIS_PD, ansible_result_redis_
 from public.templatetags.custom_markdown import ansible_result
 # from django.core.cache import caches
 from django.core.cache import cache
+from tools.AnsibleModules import data as ansible_modules_gather
 from public.models import *
 from decorators.Proxy import ProxyAuth
 import logging
@@ -94,10 +95,8 @@ class AnsibleData:  #Ansible 数据接口
             at = AnsibleTasks.objects.filter(AnsibleID=args[0])
             return render(self.request, "ansible/result.html", {'t': at[0]})
         else:
-            at = AnsibleTasks.objects.values()
-        if self.rType in ["html"]:
-            return render(self.request, "ansible/tasks.html", {'AnsibleTasks': at})
-        return list(at)
+            at = AnsibleTasks.objects.all()
+        return render(self.request, "ansible/tasks.html", {'AnsibleTasks': at})
     def get_Ansible_Results(self, *args, **kw):     #获取结果
         r = redis.Redis(host=REDIS_ADDR, port=REDIS_PORT, password=REDIS_PD,db=ansible_result_redis_db)
         if self.dataKey:
@@ -117,11 +116,19 @@ class AnsibleData:  #Ansible 数据接口
             ret = b'{}'
         return json.loads(ret.decode())
     def push_task(self, dataKey, *args, **kw):  #
-        return render(self.request, 'ansible/push.html', {})
+        groups = ProjectGroups.objects.all()
+        return render(self.request, 'ansible/push.html', {'ansible_modules': ansible_modules_gather, 'groups': groups})
     def push_playbook(self, dataKey, *args, **kw):  #
         groups = ProjectGroups.objects.all()
         functions = Functions.objects.all()
         return render(self.request, 'ansible/playbook_index.html', {'groups': groups, 'functions': functions})
+    def get_modules(self, *args, **kw):
+        module_name = args[0]
+        if module_name:
+            return JsonResponse(ansible_modules_gather.get(module_name))
+        else:
+            return JsonResponse(ansible_modules_gather)
+
 
 class AnsibleTask(LoginRequiredMixin, View):    #ansibe Http 任务推送接口
     def get(self, request, *args, **kw):

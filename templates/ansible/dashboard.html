@@ -3,21 +3,18 @@
 {% load custom_markdown %}
 {% block content %}
 
-<div class="container" style="width:80%;padding-left: 180px;">
+<div class="container" style="width:90%;padding-left: 180px;">
 
         <div class="panel panel-default">
                 <div class="panel-body">
-                  主机数量：{{ hosts_count }}
+                  主机数量：{{ hosts_count }}；分组：{{ groups_count }}；
+                  执行任务：{{ tasks_count }}
                 </div>
         </div>
 
         <div >
           {{ article | custom_markdown }}
         </div>
-
-
-
-
 </div>
 
 {% endblock %}

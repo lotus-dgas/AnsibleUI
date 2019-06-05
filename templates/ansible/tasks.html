@@ -1,9 +1,17 @@
 {% extends "../base_public.html" %}
 {% load custom_markdown %}
 {% block content %}
-<div class="container-fluid" style="margin-left: 180px;">
+<div class="container-fluid" style="width:90%;margin-left: 180px;">
       <table class="table table-bordered">
-          <th><td>AnsibleID</td><td>CeleryID</td><td>GroupName</td><td>playbook</td><td>AnsibleResult</td><td>CeleryResult</td></th>
+          <tr style="font-weight: bold;">
+            <td>ID</td>
+            <td>AnsibleID</td>
+            <td>CeleryID</td>
+            <td>GroupName</td>
+            <td>playbook</td>
+            <td>AnsibleResult</td>
+            <td>CeleryResult</td>
+          </tr>
         {% for t in AnsibleTasks reversed %}
         <tr>
             <td>{{ t.id }}</td>

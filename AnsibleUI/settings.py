@@ -8,7 +8,6 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '@^^2s2_gw@$x(x8ooctybo5-m%tnmx^&1$46!gz+o-yz067k!b'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
@@ -98,18 +97,10 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'verbose': {
-            'format': '%(asctime)s %(levelname)s %(funcName)s %(pathname)s:%(lineno)s %(message)s'
-        },
-        'custom': {
-            'format': '%(asctime)s %(levelname)s %(module)s %(funcName)s %(pathname)s:%(lineno)s %(message)s'
-        },
-        'simple': {
-            'format': '%(asctime)s %(levelname)s %(module)s %(message)s'
-        },
-        'basic': {
-            'format': '%(asctime)s %(levelname)s %(message)s'
-        }
+        'verbose': {'format': '%(asctime)s %(levelname)s %(funcName)s %(pathname)s:%(lineno)s %(message)s'},
+        'custom': {'format': '%(asctime)s %(levelname)s %(module)s %(funcName)s %(pathname)s:%(lineno)s %(message)s'},
+        'simple': {'format': '%(asctime)s %(levelname)s %(module)s %(message)s'},
+        'basic': {'format': '%(asctime)s %(levelname)s %(message)s'}
     },
     'filters': {},
     'handlers': {

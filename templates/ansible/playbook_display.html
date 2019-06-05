@@ -1,0 +1,11 @@
+{% extends "../base_public.html" %}
+
+{% load custom_markdown %}
+{% block content %}
+
+<div class="container" style="width:80%;padding-left: 180px;">
+        <div >
+          {{ article | custom_markdown }}
+        </div>
+</div>
+{% endblock %}

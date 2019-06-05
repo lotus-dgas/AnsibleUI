@@ -22,7 +22,7 @@ def hostList(obj):
 
 @admin.register(ProjectGroups)
 class ProjectGroupsAdmin(admin.ModelAdmin):
-    list_display = ['groupName', 'nickName', 'remark' ]
+    list_display = ['groupName', 'nickName', hostList, 'remark' ]
     filter_horizontal = ('hostList', 'possessFuncs')
 
 def AnsibleResult(obj):
