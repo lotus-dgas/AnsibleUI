@@ -97,13 +97,20 @@ class AnsibleData:  #Ansible 数据接口
         else:
             at = AnsibleTasks.objects.all()
         return render(self.request, "ansible/tasks.html", {'AnsibleTasks': at})
-    def get_Ansible_Results(self, *args, **kw):     #获取结果
-        r = redis.Redis(host=REDIS_ADDR, port=REDIS_PORT, password=REDIS_PD,db=ansible_result_redis_db)
+    def get_Ansible_Results(self, *args, **kw):     #获取结果 from redis
         if self.dataKey:
-            ret = r.lrange(self.dataKey, 0, -1)
+            at = AnsibleTasks.objects.filter(AnsibleID=args[0])
+            if at and at[0].AnsibleResult:
+                data = at[0].AnsibleResult
+                return HttpResponse(ansible_result(data))
+            else:
+                r = redis.Redis(host=REDIS_ADDR, port=REDIS_PORT, password=REDIS_PD,db=ansible_result_redis_db)
+                if self.dataKey:
+                    ret = r.lrange(self.dataKey, 0, -1)
         else:
             ret = []
         # data = [ json.loads(i.decode()) for i in ret ]
+        
         data = json.dumps([ json.loads(i.decode()) for i in ret ])
         s = ansible_result(data)
         return HttpResponse(s)
@@ -129,15 +136,36 @@ class AnsibleData:  #Ansible 数据接口
         else:
             return JsonResponse(ansible_modules_gather)
 
+from django.views.decorators.csrf import csrf_exempt
+class AnsibleTaskApi(View):     # 跳过csrf保护机制
+    def post(self, request, *args, **kw):
+        if not request.META.get('REMOTE_ADDR') in ['172.31.72.6', '127.0.0.1']:
+            return HttpResponse('访问拒绝', status=403)
+        data = json.loads(request.body) if request.body else {}
+        myfunc = data.get("function", None)
+        playbook = data.get("playbook", None)
+        var = data.get('vars')
+        extra_vars = var
+        if myfunc and not playbook:
+            f = Functions.objects.filter(funcName=myfunc)[0]
+            playbook =  f.playbook
+        groupName = data.get("groupName", None)
+        print("playbook: %s, groupName: (%s), var: %s" % (playbook, groupName, var))
+        if not groupName:
+            return JsonResponse({"msg": "参数错误, 00001"})
+        if not playbook and not myfunc:
+            return JsonResponse({"msg": "参数错误, 00002"})
+        s = AnsibleOpt.ansible_playbook(groupName=groupName, playbook=playbook, extra_vars=extra_vars)
+        return JsonResponse(s)
 
 class AnsibleTask(LoginRequiredMixin, View):    #ansibe Http 任务推送接口
     def get(self, request, *args, **kw):
-        # print()
         user = request.META.get("HTTP_WEICHAT_USER")
         user = request.user
         myfunc = request.GET.get("function", None)
         playbook = request.GET.get("playbook", None)
         var = request.GET.get('vars')
+        var = var.replace(' ', '').replace('\'', '"').replace(',}', '}').replace(',]', ']')
         extra_vars = json.loads(var) if var else {}
         if myfunc and not playbook:
             f = Functions.objects.filter(funcName=myfunc)[0]
@@ -164,6 +192,7 @@ class AnsibleRequestApi(LoginRequiredMixin, View):
     login_url = '/account/login'
     redirect_field_name = 'redirect_to'
     def get(self, request, *args, **kw):
+        print(request.META.get('REMOTE_ADDR'))
         dataName = kw.get("dataName", "")
         dataKey = kw.get("dataKey") or request.GET.get("dataKey") or ""
         ad = AnsibleData(request, *args, **kw)

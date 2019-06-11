@@ -7,7 +7,7 @@ admin.site.site_title = "运维平台"
 
 @admin.register(Functions)
 class FunctionsAdmin(admin.ModelAdmin):
-    list_display = ['funcName', 'nickName', 'playbook']
+    list_display = ['playbook', 'funcName', 'nickName', ]
 
 @admin.register(HostsLists)
 class HostsListsAdmin(admin.ModelAdmin):

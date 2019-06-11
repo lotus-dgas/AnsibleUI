@@ -40,7 +40,7 @@
     <table class="table table-bordered">
     <tr style="font-weight: bold;"><td>名称</td><td>信息</td><td>执行操作</td></tr>
     {% for h in funcs %}  
-        <tr><td>{{ h.funcName }}</td><td>{{ h.nickName }}</td><td><a href="/ansible/get_funcs/{{ h.id }}">{{ h.playbook }}</a></td></tr>
+        <tr><td><a href="/ansible/get_funcs/{{ h.id }}">{{ h.playbook }}</a></td><td>{{ h.nickName }}</td><td>{{ h.funcName }}</td></tr>
     {% endfor %}
     </table> 
 {% endif %}
