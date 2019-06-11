@@ -45,7 +45,7 @@ AnsibleUI 是基于Django + Ansible + Celery 的WEB平台，用以批量处理�
                 expires      30d;
             }
         }
-```
+    ```
 
 #### 配置项
 
