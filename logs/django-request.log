@@ -1,0 +1,1101 @@
+2019-06-04 13:10:06,009 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/get_groups
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/decorators/Proxy.py", line 39, in wrapped_func
+    return func(request, *args, **kw)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 52, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 165, in get
+    data = ad.__getattribute__(dataName)(dataKey, **kw)   #V3;
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 74, in get_groups
+    return render(self.request, "ansible/lookup.html", {'groups': groups})
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/shortcuts.py", line 36, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/defaulttags.py", line 309, in render
+    return nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/defaulttags.py", line 209, in render
+    nodelist.append(node.render_annotated(context))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/defaulttags.py", line 166, in render
+    len_values = len(values)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 250, in __len__
+    self._fetch_all()
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 1186, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 54, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1065, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+2019-06-04 13:49:14,118 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/get_funcs/7
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/decorators/Proxy.py", line 39, in wrapped_func
+    return func(request, *args, **kw)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 52, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 165, in get
+    data = ad.__getattribute__(dataName)(dataKey, **kw)   #V3;
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 81, in get_funcs
+    with open('playbooks/%s' % pb)as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'playbooks/config_push.yml'
+2019-06-05 16:25:53,665 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/get_modules/None
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/decorators/Proxy.py", line 39, in wrapped_func
+    return func(request, *args, **kw)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 52, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 172, in get
+    data = ad.__getattribute__(dataName)(dataKey, **kw)   #V3;
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 128, in get_modules
+    return JsonResponse(ansible_modules_gather.get(module_name))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 552, in __init__
+    'In order to allow non-dict objects to be serialized set the '
+TypeError: In order to allow non-dict objects to be serialized set the safe parameter to False.
+2019-06-05 17:43:04,909 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/get_groups
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/decorators/Proxy.py", line 39, in wrapped_func
+    return func(request, *args, **kw)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 52, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 172, in get
+    data = ad.__getattribute__(dataName)(dataKey, **kw)   #V3;
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 75, in get_groups
+    return render(self.request, "ansible/lookup.html", {'groups': groups})
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/shortcuts.py", line 36, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/defaulttags.py", line 309, in render
+    return nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/defaulttags.py", line 209, in render
+    nodelist.append(node.render_annotated(context))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/defaulttags.py", line 166, in render
+    len_values = len(values)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 250, in __len__
+    self._fetch_all()
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 1186, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 54, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1065, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+2019-06-05 17:43:05,417 WARNING log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Not Found: /favicon.ico
+2019-06-06 11:22:25,292 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/get_hosts
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/decorators/Proxy.py", line 39, in wrapped_func
+    return func(request, *args, **kw)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 52, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 172, in get
+    data = ad.__getattribute__(dataName)(dataKey, **kw)   #V3;
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 65, in get_hosts
+    return render(self.request, "ansible/lookup.html", {'hosts': hosts})
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/shortcuts.py", line 36, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/defaulttags.py", line 309, in render
+    return nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/defaulttags.py", line 209, in render
+    nodelist.append(node.render_annotated(context))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/defaulttags.py", line 166, in render
+    len_values = len(values)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 250, in __len__
+    self._fetch_all()
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 1186, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 54, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1065, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+2019-06-06 11:22:25,848 WARNING log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Not Found: /favicon.ico
+2019-06-10 16:37:47,187 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/opt_task_api/
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 144, in get
+    return JsonResponse({"msg": "参数错误"}, ensure_ascii=False)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 559, in __init__
+    super().__init__(content=data, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 289, in __init__
+    super().__init__(*args, **kwargs)
+TypeError: __init__() got an unexpected keyword argument 'ensure_ascii'
+2019-06-10 16:37:48,686 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/opt_task_api/
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 144, in get
+    return JsonResponse({"msg": "参数错误"}, ensure_ascii=False)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 559, in __init__
+    super().__init__(content=data, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 289, in __init__
+    super().__init__(*args, **kwargs)
+TypeError: __init__() got an unexpected keyword argument 'ensure_ascii'
+2019-06-10 16:37:52,988 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/opt_task_api/
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 144, in get
+    return JsonResponse({"msg": "参数错误"}, ensure_ascii=False)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 559, in __init__
+    super().__init__(content=data, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 289, in __init__
+    super().__init__(*args, **kwargs)
+TypeError: __init__() got an unexpected keyword argument 'ensure_ascii'
+2019-06-10 16:37:56,466 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/opt_task_api/
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 144, in get
+    return JsonResponse({"msg": "参数错误"}, ensure_ascii=False)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 559, in __init__
+    super().__init__(content=data, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 289, in __init__
+    super().__init__(*args, **kwargs)
+TypeError: __init__() got an unexpected keyword argument 'ensure_ascii'
+2019-06-10 16:38:01,355 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/opt_task_api/
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 144, in get
+    return JsonResponse({"msg": "参数错误"}, ensure_ascii=False)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 559, in __init__
+    super().__init__(content=data, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 289, in __init__
+    super().__init__(*args, **kwargs)
+TypeError: __init__() got an unexpected keyword argument 'ensure_ascii'
+2019-06-10 16:38:02,628 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/opt_task_api/
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 144, in get
+    return JsonResponse({"msg": "参数错误"}, ensure_ascii=False)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 559, in __init__
+    super().__init__(content=data, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 289, in __init__
+    super().__init__(*args, **kwargs)
+TypeError: __init__() got an unexpected keyword argument 'ensure_ascii'
+2019-06-10 16:39:47,735 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/opt_task_api/
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 144, in get
+    return JsonResponse({"msg": "参数错误"}, ensure_ascii=False)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 559, in __init__
+    super().__init__(content=data, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 289, in __init__
+    super().__init__(*args, **kwargs)
+TypeError: __init__() got an unexpected keyword argument 'ensure_ascii'
+2019-06-10 16:39:58,306 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/opt_task_api/
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 144, in get
+    return JsonResponse({"msg": "参数错误"}, ensure_ascii=False)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 559, in __init__
+    super().__init__(content=data, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/http/response.py", line 289, in __init__
+    super().__init__(*args, **kwargs)
+TypeError: __init__() got an unexpected keyword argument 'ensure_ascii'
+2019-06-10 16:39:58,870 WARNING log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Not Found: /favicon.ico
+2019-06-10 19:02:24,011 WARNING http_method_not_allowed /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py:93 Method Not Allowed (GET): /ansible/opt_task_api/
+2019-06-10 19:02:24,013 WARNING log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Method Not Allowed: /ansible/opt_task_api/
+2019-06-10 19:02:25,028 WARNING http_method_not_allowed /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py:93 Method Not Allowed (GET): /ansible/opt_task_api/
+2019-06-10 19:02:25,030 WARNING log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Method Not Allowed: /ansible/opt_task_api/
+2019-06-10 19:52:40,729 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/push_playbook
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/decorators/Proxy.py", line 39, in wrapped_func
+    return func(request, *args, **kw)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 52, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 186, in get
+    print(request.META.REMOTE_HOST)
+AttributeError: 'dict' object has no attribute 'REMOTE_HOST'
+2019-06-10 20:27:56,401 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/get_groups/esign_product
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/decorators/Proxy.py", line 39, in wrapped_func
+    return func(request, *args, **kw)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 52, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 193, in get
+    data = ad.__getattribute__(dataName)(dataKey, **kw)   #V3;
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 71, in get_groups
+    hosts = list(groups[0].hostList.values('hostName', 'hostAddr'))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 268, in __iter__
+    self._fetch_all()
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 1186, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 106, in __iter__
+    for row in compiler.results_iter(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1017, in results_iter
+    results = self.execute_sql(MULTI, chunked_fetch=chunked_fetch, chunk_size=chunk_size)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1065, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+2019-06-10 20:27:58,188 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/get_groups/esign_product
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/decorators/Proxy.py", line 39, in wrapped_func
+    return func(request, *args, **kw)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 52, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 193, in get
+    data = ad.__getattribute__(dataName)(dataKey, **kw)   #V3;
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 71, in get_groups
+    hosts = list(groups[0].hostList.values('hostName', 'hostAddr'))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 268, in __iter__
+    self._fetch_all()
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 1186, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 106, in __iter__
+    for row in compiler.results_iter(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1017, in results_iter
+    results = self.execute_sql(MULTI, chunked_fetch=chunked_fetch, chunk_size=chunk_size)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1065, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+2019-06-10 20:27:58,685 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/get_groups/esign_product
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/decorators/Proxy.py", line 39, in wrapped_func
+    return func(request, *args, **kw)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 52, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 193, in get
+    data = ad.__getattribute__(dataName)(dataKey, **kw)   #V3;
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 71, in get_groups
+    hosts = list(groups[0].hostList.values('hostName', 'hostAddr'))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 268, in __iter__
+    self._fetch_all()
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 1186, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 106, in __iter__
+    for row in compiler.results_iter(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1017, in results_iter
+    results = self.execute_sql(MULTI, chunked_fetch=chunked_fetch, chunk_size=chunk_size)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1065, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+2019-06-10 20:27:58,897 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/get_groups/esign_product
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/decorators/Proxy.py", line 39, in wrapped_func
+    return func(request, *args, **kw)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 52, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 193, in get
+    data = ad.__getattribute__(dataName)(dataKey, **kw)   #V3;
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 71, in get_groups
+    hosts = list(groups[0].hostList.values('hostName', 'hostAddr'))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 268, in __iter__
+    self._fetch_all()
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 1186, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 106, in __iter__
+    for row in compiler.results_iter(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1017, in results_iter
+    results = self.execute_sql(MULTI, chunked_fetch=chunked_fetch, chunk_size=chunk_size)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1065, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+2019-06-10 20:27:59,072 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/get_groups/esign_product
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/decorators/Proxy.py", line 39, in wrapped_func
+    return func(request, *args, **kw)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 52, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 193, in get
+    data = ad.__getattribute__(dataName)(dataKey, **kw)   #V3;
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 71, in get_groups
+    hosts = list(groups[0].hostList.values('hostName', 'hostAddr'))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 268, in __iter__
+    self._fetch_all()
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 1186, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 106, in __iter__
+    for row in compiler.results_iter(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1017, in results_iter
+    results = self.execute_sql(MULTI, chunked_fetch=chunked_fetch, chunk_size=chunk_size)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1065, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+2019-06-10 20:27:59,240 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/get_groups/esign_product
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/decorators/Proxy.py", line 39, in wrapped_func
+    return func(request, *args, **kw)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 52, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 193, in get
+    data = ad.__getattribute__(dataName)(dataKey, **kw)   #V3;
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 71, in get_groups
+    hosts = list(groups[0].hostList.values('hostName', 'hostAddr'))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 268, in __iter__
+    self._fetch_all()
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 1186, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 106, in __iter__
+    for row in compiler.results_iter(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1017, in results_iter
+    results = self.execute_sql(MULTI, chunked_fetch=chunked_fetch, chunk_size=chunk_size)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1065, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+2019-06-10 20:27:59,660 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/get_groups/esign_product
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/decorators/Proxy.py", line 39, in wrapped_func
+    return func(request, *args, **kw)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 52, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 193, in get
+    data = ad.__getattribute__(dataName)(dataKey, **kw)   #V3;
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 71, in get_groups
+    hosts = list(groups[0].hostList.values('hostName', 'hostAddr'))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 268, in __iter__
+    self._fetch_all()
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 1186, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 106, in __iter__
+    for row in compiler.results_iter(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1017, in results_iter
+    results = self.execute_sql(MULTI, chunked_fetch=chunked_fetch, chunk_size=chunk_size)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1065, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+2019-06-11 15:34:46,795 ERROR log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Internal Server Error: /ansible/get_hosts
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/decorators/Proxy.py", line 39, in wrapped_func
+    return func(request, *args, **kw)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 52, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 201, in get
+    data = ad.__getattribute__(dataName)(dataKey, **kw)   #V3;
+  File "/Volumes/Transcend/code/AnsibleUI/public/viewFunc/ansibleIndex.py", line 65, in get_hosts
+    return render(self.request, "ansible/lookup.html", {'hosts': hosts})
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/shortcuts.py", line 36, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/defaulttags.py", line 309, in render
+    return nodelist.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/defaulttags.py", line 209, in render
+    nodelist.append(node.render_annotated(context))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/template/defaulttags.py", line 166, in render
+    len_values = len(values)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 250, in __len__
+    self._fetch_all()
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 1186, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/query.py", line 54, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/models/sql/compiler.py", line 1065, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/cursors.py", line 312, in _query
+    db.query(q)
+  File "/Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/MySQLdb/connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+django.db.utils.ProgrammingError: (1146, "Table 'AnsibleUI.public_projectgroups_hostList' doesn't exist")
+2019-06-11 15:34:47,334 WARNING log_response /Users/Rx_nlqs/envPy3.5/lib/python3.5/site-packages/django/utils/log.py:228 Not Found: /favicon.ico
