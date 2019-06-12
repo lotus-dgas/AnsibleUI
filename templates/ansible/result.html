@@ -22,9 +22,13 @@
                 <td>{{ t.playbook }}</td>
         </tr>
         <tr>
+                <td>ExtraVar</td>
+                <td>{{ t.ExtraVars }}</td>
+        </tr>
+        <tr>
                 <td>
                         AnsibleResult<br>
-                        <button id="nr"class="btn btn-default" style="margin-top:50px">结果轮寻</button>
+                        <button id="nr"class="btn btn-default" style="margin-top:50px" {% if t.AnsibleResult %}disabled{%endif%}>结果轮寻</button>
                 </td>
                 <td >
                         <pre id='ar' style="background: #a5a3a3">{{ t.AnsibleResult|ansible_result }}</pre>
@@ -33,6 +37,10 @@
         <tr>
                 <td>CeleryResult</td>
                 <td ><pre id='cr' style="height:auto"></pre>  </td>
+        </tr>
+        <tr>
+                <td>CreateTime</td>
+                <td >{{ t.CreateTime }}</td>
         </tr>
       </table>
       <div hidden><pre id="ext"></pre></div>

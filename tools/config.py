@@ -23,3 +23,9 @@ MYSQL_HOST = '10.20.88.215'
 MYSQL_PORT = 23309
 MYSQL_USER = 'root'
 MYSQL_PASS = 'newpass'
+
+
+######## Note
+note_base_dirt = 'notes'
+
+web_debug = True

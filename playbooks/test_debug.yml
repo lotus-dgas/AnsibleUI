@@ -1,5 +1,5 @@
 
-- hosts: all
+- hosts: "{{ groupName }}"
   tasks:
     - ping:
     - debug: msg="Hello, AnsibleUI"

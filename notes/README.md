@@ -2,7 +2,7 @@
 
 #### 介绍
 
-AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任务异步处理
+AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量处理任务
 
 #### 软件架构
 
@@ -23,7 +23,7 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
 *   服务启动
     * Celery启动，`celery multi start 1 -A myCelery -l info -c4 --pidfile=tmp/celery_%n.pid -f logs/celery.log`
     * 主程序启动，`uwsgi --socket 127.0.0.1:9801 --module AnsibleUI.wsgi --py-autoreload=1 --daemonize=logs/uwsgi.log`
-    * 静态资源及代理，nginx最简配置
+    * 静态资源及代理，nginx配置
     ```conf
         server {
             listen       10086;
@@ -47,7 +47,7 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
 tools/config.py
     ansible 远程连接用户
     Redis 存放Celery
-    MySLQ 
+    MYSLQ 
 
 #### 使用说明
 
@@ -74,19 +74,24 @@ tools/config.py
 
 
 ```mermaid
-graph LR
+graph LR 
+	 a[AnsibleUI执行流程]
+    style a fill:#ccf,stroke:#f66,stroke-width:2px,stroke-dasharray: 10,5
   
 	AnsibleUI(AnsibleUI) 
     Celery[Celery]
+    Celery 
     AnsibleApi[AnsibleApi]
     Redis[redis]
     MySQL[MySQL]
-	AnsibleUI -- 后端 --> MySQL
-	Celery -- 执行完成 --> MySQL
-    AnsibleUI -- 异步调用 --> Celery
+    AnsibleUI --> Celery
     Celery -- Broker/Backend --> Redis
     Celery -- 调用 --> AnsibleApi
     AnsibleApi -- 执行结果临时保存--> Redis
+    AnsibleUI -- 后端 --> MySQL
+    Celery -- 执行完成 --> MySQL
     
-  
+   
+
+
 ```

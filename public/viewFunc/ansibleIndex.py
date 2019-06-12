@@ -17,16 +17,15 @@ import logging
 logger = logging.getLogger('ansible.ui')
 class AnsibleOpt:       #ansible 执行 jiekou , 传如香港参赛
     @staticmethod
-    def ansible_playbook(groupName, playbook, user=None, extra_vars={}):
+    def ansible_playbook(groupName, playbook, user=None, extra_vars={}, **kw):
         tid = "AnsibleApiPlaybook-%s" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-        # extra_vars["groupName"] = groupName
-        # celeryTask = ansiblePlayBook_v2.delay(tid, playbook, extra_vars)
-        logger.info("添加Ansilb-Playbook执行；(%s - %s - %s)" % (playbook, groupName, extra_vars))
+        logger.info("添加Ansilb-Playbook执行；(%s - %s - %s - %s)" % (playbook, groupName, extra_vars, kw))
         extra_vars['groupName'] = groupName
         celeryTask = ansiblePlayBook_v2.apply_async((tid, playbook, extra_vars), link=syncAnsibleResult.s(tid=tid)) # ansible结果保持
+        label = kw.get('label', '')
         AnsibleTasks(AnsibleID=tid, CeleryID=celeryTask.task_id,TaskUser=user,
                 GroupName=groupName, ExtraVars=extra_vars,
-                playbook=playbook).save()
+                playbook=playbook, Label=label).save()
         return {"playbook": playbook, "extra_vars": extra_vars, "tid": tid, "celeryTask": celeryTask.task_id, "groupName": groupName}
     @staticmethod
     def ansible_opt():
@@ -136,28 +135,6 @@ class AnsibleData:  #Ansible 数据接口
         else:
             return JsonResponse(ansible_modules_gather)
 
-from django.views.decorators.csrf import csrf_exempt
-class AnsibleTaskApi(View):     # 跳过csrf保护机制
-    def post(self, request, *args, **kw):
-        if not request.META.get('REMOTE_ADDR') in ['172.31.72.6', '127.0.0.1']:
-            return HttpResponse('访问拒绝', status=403)
-        data = json.loads(request.body) if request.body else {}
-        myfunc = data.get("function", None)
-        playbook = data.get("playbook", None)
-        var = data.get('vars')
-        extra_vars = var
-        if myfunc and not playbook:
-            f = Functions.objects.filter(funcName=myfunc)[0]
-            playbook =  f.playbook
-        groupName = data.get("groupName", None)
-        print("playbook: %s, groupName: (%s), var: %s" % (playbook, groupName, var))
-        if not groupName:
-            return JsonResponse({"msg": "参数错误, 00001"})
-        if not playbook and not myfunc:
-            return JsonResponse({"msg": "参数错误, 00002"})
-        s = AnsibleOpt.ansible_playbook(groupName=groupName, playbook=playbook, extra_vars=extra_vars)
-        return JsonResponse(s)
-
 class AnsibleTask(LoginRequiredMixin, View):    #ansibe Http 任务推送接口
     def get(self, request, *args, **kw):
         user = request.META.get("HTTP_WEICHAT_USER")
@@ -177,7 +154,13 @@ class AnsibleTask(LoginRequiredMixin, View):    #ansibe Http 任务推送接口
             return JsonResponse({"msg": "参数错误"})
         print("playbook: %s, groupName: %s" % (playbook, groupName))
         print(json.dumps(dict(request.GET), indent=4))
-        s = AnsibleOpt.ansible_playbook(groupName=groupName, playbook=playbook, user=user, extra_vars=extra_vars)
+        s = AnsibleOpt.ansible_playbook(
+                groupName=groupName, 
+                playbook=playbook, 
+                user=user, 
+                extra_vars=extra_vars, 
+                **{'label': request.META.get('REMOTE_ADDR')}
+            )
         # s = extra_vars
         return redirect('/ansible/get_Ansible_Tasks/?dataKey=%s' % s.get('tid'))
         # 参数： groupName, (playbook | myfunc), 不支持 茉莉花 调用
@@ -206,7 +189,6 @@ class AnsibleRequestApi(LoginRequiredMixin, View):
                 print("AD 属性：%s, 内容: %s" % (dataName, data))
         else:
             data = {"msg": "非有效操作"}
-            # return HttpResponse(json.dumps(data, ensure_ascii=False),status=403)
             return render(request, 'ansible/error.html', data, status=403)
         ret = {"args": args, "kw": kw, "get": request.GET ,"data": data}
         return JsonResponse({'data': {'args': args, 'kw':kw}})

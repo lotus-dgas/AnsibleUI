@@ -3,7 +3,7 @@ from django.db import models
 class Functions(models.Model):
     funcName     = models.CharField(max_length=80,null=True,blank=True)
     nickName     = models.CharField(max_length=80,null=True,blank=True)
-    playbook     = models.CharField(max_length=80,null=True,blank=False)
+    playbook     = models.CharField(max_length=80,unique=True, null=True,blank=False)
     def __str__(self):
         return self.playbook
 
@@ -37,6 +37,8 @@ class AnsibleTasks(models.Model):
     ExtraVars = models.TextField(blank=True, null=True)
     AnsibleResult = models.TextField(blank=True)
     CeleryResult  = models.TextField(blank=True)
+    Label         = models.CharField(max_length=80, null=True,blank=True)
+    CreateTime      = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     class Meta:
         ordering = ['id']
     def __str__(self):

@@ -6,21 +6,27 @@
           <tr style="font-weight: bold;">
             <td>ID</td>
             <td>AnsibleID</td>
-            <td>CeleryID</td>
-            <td>GroupName</td>
-            <td>playbook</td>
-            <td>AnsibleResult</td>
-            <td>CeleryResult</td>
+            <!-- <td>CeleryID</td> -->
+            <td>User</td>
+            <!-- <td>GroupName</td> -->
+            <td>任务</td>
+            <td>参数</td>
+            <td>结果</td>
+            <td>状态</td>
+            <td>Label</td>
           </tr>
         {% for t in AnsibleTasks reversed %}
         <tr>
             <td>{{ t.id }}</td>
             <td><a href="/ansible/get_Ansible_Tasks/?dataKey={{t.AnsibleID}}">{{ t.AnsibleID }}</a></td>
-            <td>{{ t.CeleryID }}</td>
-            <td>{{ t.GroupName }}</td>
+            <!-- <td>{{ t.CeleryID }}</td> -->
+            <td>{{ t.TaskUser }}</td>
+            <!-- <td>{{ t.GroupName }}</td> -->
             <td>{{ t.playbook }}</td>
-            <td><a href="/ansible/get_Ansible_Tasks/?dataKey={{t.AnsibleID}}">查看结果内容</a></td>
+            <td>{{ t.ExtraVars }}</td>
+            <td><a href="/ansible/get_Ansible_Tasks/?dataKey={{t.AnsibleID}}">点击</a></td>
             <td>{{ t.CeleryResult|celery_status }}</td>
+            <td>{{ t.Label }}</td>
         </tr>
         {% endfor %}
       </table>

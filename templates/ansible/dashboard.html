@@ -3,7 +3,7 @@
 {% load custom_markdown %}
 {% block content %}
 
-<div class="container" style="width:90%;padding-left: 180px;">
+<div class="container-fluid" style="width:90%;padding-left: 180px;">
 
         <div class="panel panel-default">
                 <div class="panel-body">
@@ -11,7 +11,75 @@
                   执行任务：{{ tasks_count }}
                 </div>
         </div>
+        <div class="row">
+          <div class="col-lg-3 col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-database  fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ hosts_count }}</div>
+                            <div>主机数</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/ansible/get_hosts">
+                    <div class="panel-footer">
+                        <span class="pull-left">查看所有</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-tasks  fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ groups_count }}</div>
+                            <div>分组数</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/ansible/get_groups">
+                    <div class="panel-footer">
+                        <span class="pull-left">查看所有</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="panel panel-yellow">
+              <div class="panel-heading">
+                  <div class="row">
+                      <div class="col-xs-3">
+                          <i class="fa fa-bar-chart  fa-5x"></i>
+                      </div>
+                      <div class="col-xs-9 text-right">
+                          <div class="huge">{{ tasks_count }}</div>
+                          <div>Tasks</div>
+                      </div>
+                  </div>
+              </div>
+              <a href="/ansible/get_funcs">
+                  <div class="panel-footer">
+                      <span class="pull-left">查看所有</span>
+                      <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                      <div class="clearfix"></div>
+                  </div>
+              </a>
+          </div>
+      </div>
 
+        </div>
         <div >
           {{ article | custom_markdown }}
         </div>

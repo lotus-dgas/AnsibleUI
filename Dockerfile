@@ -17,7 +17,9 @@ RUN ./configure --prefix=/usr/local/PyAnsibleUI && make && make install
 WORKDIR /data/
 ENV PATH /usr/local/PyAnsibleUI/bin:$PATH
 
-RUN /usr/local/PyAnsibleUI/bin/pip3 install --find-links=/data/files --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+# RUN /usr/local/PyAnsibleUI/bin/pip3 install --find-links=/data/files --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+RUN /usr/local/PyAnsibleUI/bin/pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+
 # 数据库建表
 # RUN /usr/local/python3/bin/python3 manage.py makemigrations     
 # RUN /usr/local/python3/bin/python3 manage.py migrate

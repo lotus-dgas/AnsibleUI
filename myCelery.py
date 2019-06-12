@@ -58,7 +58,7 @@ def ansiblePlayBook(tid, pb=["playbooks/t.yml"]):
 @appCelery.task(bind=True,base=MyTask)  # 
 def ansiblePlayBook_v2(self,tid, pb, extra_vars, **kw):
     psources = kw.get('sources') or extra_vars.get('sources') or sources
-    print("PlayBook File: %s，groupName: %s, psources: %s, Vars: %s" % (pb, extra_vars.get("groupName", "None"), psources, extra_vars))
+    print("myCelery.py PlayBook File: %s，groupName: %s, psources: %s, Vars: %s" % (pb, extra_vars.get("groupName", "None"), psources, extra_vars))
     AnsiblePlaybookApi_v2(tid, ["playbooks/%s"%pb], psources, extra_vars)
     return 'success!!'
 
@@ -84,13 +84,12 @@ def syncAnsibleResult(self, ret, *a, **kw):     # 执行结束，结果保持至
         r = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=ansible_result_redis_db)
         a = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=4)
         rlist = r.lrange(tid, 0, -1)
-        if rlist:
-            at = AnsibleTasks.objects.filter(AnsibleID=tid)[0]
-            at.AnsibleResult = json.dumps([ json.loads(i.decode()) for i in rlist ])
-            ct = a.get('celery-task-meta-%s' % at.CeleryID).decode()
-            at.CeleryResult = ct
-            at.save()
-            print("同步结果至db: syncAnsibleResult !!!!!: parent_id: %s" % self.request.get('parent_id'), a, kw)
+        at = AnsibleTasks.objects.filter(AnsibleID=tid)[0]
+        at.AnsibleResult = json.dumps([ json.loads(i.decode()) for i in rlist ])
+        ct = a.get('celery-task-meta-%s' % at.CeleryID).decode()
+        at.CeleryResult = ct
+        at.save()
+        print("同步结果至db: syncAnsibleResult !!!!!: parent_id: %s" % self.request.get('parent_id'), a, kw)
     else: pass
 
 ############  TEST  ###########

@@ -8,7 +8,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '@^^2s2_gw@$x(x8ooctybo5-m%tnmx^&1$46!gz+o-yz067k!b'
 
-DEBUG = True
+from tools.config import MYSQL_HOST, MYSQL_PASS, MYSQL_PORT, MYSQL_USER, web_debug
+DEBUG = web_debug
 ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -56,7 +57,6 @@ WSGI_APPLICATION = 'AnsibleUI.wsgi.application'
 #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #    }
 # }
-from tools.config import MYSQL_HOST, MYSQL_PASS, MYSQL_PORT, MYSQL_USER
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
