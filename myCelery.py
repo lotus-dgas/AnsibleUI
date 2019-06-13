@@ -67,10 +67,7 @@ import sys
 import django
 path=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0,path)
-if sys.version.startswith('3.7'):
-    os.environ['DJANGO_SETTINGS_MODULE']='AnsibleUI.settings'
-else:
-    os.environ['DJANGO_SETTINGS_MODULE']='ansibleUI.settings'
+os.environ['DJANGO_SETTINGS_MODULE']='ansible_ui.settings'
 django.setup()
 from public.models import *
 

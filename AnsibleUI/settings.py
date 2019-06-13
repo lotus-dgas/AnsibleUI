@@ -51,23 +51,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'AnsibleUI.wsgi.application'
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME':'AnsibleUI',
-        'USER':MYSQL_USER,
-        'PASSWORD':MYSQL_PASS,
-        'HOST':MYSQL_HOST,
-        'PORT':MYSQL_PORT,
-        #'OPTIONS': {'charset': 'utf8mb4'},
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+   }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME':'AnsibleUI',
+#         'USER':MYSQL_USER,
+#         'PASSWORD':MYSQL_PASS,
+#         'HOST':MYSQL_HOST,
+#         'PORT':MYSQL_PORT,
+#         #'OPTIONS': {'charset': 'utf8mb4'},
+#     }
+# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {

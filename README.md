@@ -21,6 +21,8 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
     *   在代码目录下启动Celery，`celery -A myCelery worker -l info`，可参看myCelery.py文件尾注释部分
     *   启动主服务，`python3 manage.py runserver 0.0.0.0:10089`。
 *   服务启动
+    * 启动Celery，设置`ln -s AnsibleUI ansibleUI`。
+    * 启动celery，请设置 `export PYTHONOPTIMIZE=1`, 否则celery将无法调用ansible
     * Celery启动，`celery multi start 1 -A myCelery -l info -c4 --pidfile=tmp/celery_%n.pid -f logs/celery.log`
     * 主程序启动，`uwsgi --socket 127.0.0.1:9801 --module AnsibleUI.wsgi --py-autoreload=1 --daemonize=logs/uwsgi.log`
     * 静态资源及代理，nginx最简配置
@@ -69,24 +71,3 @@ tools/config.py
 
 ![](tmp/images/task_result.png)
 
-
-
-
-
-```mermaid
-graph LR
-  
-	AnsibleUI(AnsibleUI) 
-    Celery[Celery]
-    AnsibleApi[AnsibleApi]
-    Redis[redis]
-    MySQL[MySQL]
-	AnsibleUI -- 后端 --> MySQL
-	Celery -- 执行完成 --> MySQL
-    AnsibleUI -- 异步调用 --> Celery
-    Celery -- Broker/Backend --> Redis
-    Celery -- 调用 --> AnsibleApi
-    AnsibleApi -- 执行结果临时保存--> Redis
-    
-  
-```

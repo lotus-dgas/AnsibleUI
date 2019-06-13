@@ -24,9 +24,9 @@ def celery_status(value):   # 格式化celery
     else:
         s = 'RUNNING'
     r = {
-            'FAILURE': '<p style="color:red">FAILURE</p>',
-            'SUCCESS': '<p style="color:blue">SUCCESS</p>',
-            'RUNNING': '<p style="color:#d600ff">RUNNING</p>'
+            'FAILURE': '<p style="color:red">失败</p>',
+            'SUCCESS': '<p style="color:blue">完成</p>',
+            'RUNNING': '<p style="color:#d600ff">执行中</p>'
         }
     return mark_safe(r.get(s))
 
