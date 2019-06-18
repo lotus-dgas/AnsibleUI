@@ -8,7 +8,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '@^^2s2_gw@$x(x8ooctybo5-m%tnmx^&1$46!gz+o-yz067k!b'
 
-from tools.config import MYSQL_HOST, MYSQL_PASS, MYSQL_PORT, MYSQL_USER, web_debug
+from tools.config import MYSQL_HOST, MYSQL_PASS, MYSQL_PORT, MYSQL_USER, web_debug, USE_MYSQL
 DEBUG = web_debug
 ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
@@ -51,23 +51,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'AnsibleUI.wsgi.application'
 
-DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.sqlite3',
-       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-   }
-}
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME':'AnsibleUI',
-#         'USER':MYSQL_USER,
-#         'PASSWORD':MYSQL_PASS,
-#         'HOST':MYSQL_HOST,
-#         'PORT':MYSQL_PORT,
-#         #'OPTIONS': {'charset': 'utf8mb4'},
-#     }
-# }
+if USE_MYSQL:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME':'AnsibleUI',
+            'USER':MYSQL_USER,
+            'PASSWORD':MYSQL_PASS,
+            'HOST':MYSQL_HOST,
+            'PORT':MYSQL_PORT,
+            #'OPTIONS': {'charset': 'utf8mb4'},
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {

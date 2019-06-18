@@ -7,16 +7,17 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
 #### 软件架构
 
 软件架构说明
-
+*   Ansible使用公私钥登录进行主机操作
+*   
 #### 安装教程
-
+*   Ansible使用私钥进行登录操作，私钥文件位置：files/id_rsa，或者在ansible.cfg中修改
 *   可直接使用docker部署启动，
     *   在代码目录下 docker build -t ansible_ui .
     *   docker run -it -p 10089:10089 -v `pwd`:/data ansible_ui
 *   手动部署
     *   安装 Python 环境，开发环境版本为 Python 3.6.4
     *   安装相关pagkage `pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt`
-    *   配置相关参数 config/tools.py，包括redis、mysql
+    *   配置相关参数 config/tools.py，包括redis、mysql，Ansible/settings.py 文件可修改 DATABASES 使用sqlite3
     *   为数据库建表，`python3 manage.py makemigrations && python3 manage.py migrate`
     *   在代码目录下启动Celery，`celery -A myCelery worker -l info`，可参看myCelery.py文件尾注释部分
     *   启动主服务，`python3 manage.py runserver 0.0.0.0:10089`。

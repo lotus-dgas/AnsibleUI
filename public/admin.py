@@ -32,3 +32,8 @@ def AnsibleResult(obj):
 class AnsibleTasksAdmin(admin.ModelAdmin):
     list_display = ['AnsibleID', 'CeleryID', 'TaskUser',
         'GroupName', 'playbook', 'ExtraVars', AnsibleResult, 'CeleryResult', 'Label', 'CreateTime']
+
+
+@admin.register(ExtraVars)
+class ExtraVarsAdmin(admin.ModelAdmin):
+    list_display = ['Name', 'Content', 'Remark']

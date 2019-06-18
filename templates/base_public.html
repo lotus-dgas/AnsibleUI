@@ -103,6 +103,24 @@
                                 align: 'left',
                             }
                         },
+                        tooltip: {//
+                            formatter: "日期{b}：次数{c}",
+                            showContent: true,
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'cross',
+                                label: {
+                                    backgroundColor: '#6a7985'
+                                }
+                            }
+                        },
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                restore: {},
+                                saveAsImage: {}
+                            }
+                        },
                         textStyle: {
                                 color: 'red',   //图形文子的颜色
                         },

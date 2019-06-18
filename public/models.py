@@ -43,3 +43,11 @@ class AnsibleTasks(models.Model):
         ordering = ['id']
     def __str__(self):
         return self.AnsibleID
+
+
+class ExtraVars(models.Model):
+    Name        = models.CharField(max_length=80,unique=True, null=True,blank=True)
+    Content     = models.TextField(blank=True)
+    Remark      = models.TextField(blank=True)
+    def __str__(self):
+        return self.Name

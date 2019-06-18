@@ -16,6 +16,7 @@ jedi==0.13.3
 Jinja2==2.10.1
 kombu==4.5.0
 MarkupSafe==1.1.1
+Markdown==2.6.10
 mysqlclient==1.4.2.post1
 paramiko==2.4.2
 parso==0.4.0

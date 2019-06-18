@@ -2,6 +2,10 @@
 
 import os
 
+
+title = "纳兰秋水"
+
+
 #### Ansible
 ansible_remote_user = "root"
 ansible_result_redis_db = 10
@@ -18,7 +22,8 @@ REDIS_PD = '310c8cabcdefghf2d8abcdefd44496ac80'
 BROKER = "redis://:%s@10.20.88.215:6479/3" % REDIS_PD
 BACKEND = "redis://:%s@10.20.88.215:6479/4" % REDIS_PD
 
-##### MYSQL     
+##### MYSQL    
+USE_MYSQL = False 
 MYSQL_HOST = '10.20.88.215'
 MYSQL_PORT = 23309
 MYSQL_USER = 'root'

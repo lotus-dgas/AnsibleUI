@@ -32,7 +32,7 @@ def celery_status(value):   # 格式化celery
 
 @register.filter(is_safe=True)
 @stringfilter
-def ansible_result(s):
+def ansible_result(s):      #ansible_result
     if not s:
         return "未搜索🔍到结果"
     data = json.loads(s)

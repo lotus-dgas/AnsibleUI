@@ -1,5 +1,5 @@
 #coding: utf8
-
+# Ansible api接口，celery调用
 import json
 import shutil
 from collections import namedtuple

@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
-import json, datetime, redis, os
+import json, datetime, redis, os, random, string
 from myCelery import ansiblePlayBook_v2, ansibleExec, syncAnsibleResult
 from tools.config import REDIS_ADDR, REDIS_PORT, REDIS_PD, ansible_result_redis_db
 from public.templatetags.custom_markdown import ansible_result
@@ -18,7 +18,8 @@ logger = logging.getLogger('ansible.ui')
 class AnsibleOpt:       #ansible 执行 jiekou , 传如香港参赛
     @staticmethod
     def ansible_playbook(groupName, playbook, user=None, extra_vars={}, **kw):
-        tid = "AnsibleApiPlaybook-%s" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+        tid = "AnsibleApiPlaybook-%s-%s" % (''.join(random.sample(string.ascii_letters + string.digits, 8)),
+                datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
         logger.info("添加Ansilb-Playbook执行；(%s - %s - %s - %s)" % (playbook, groupName, extra_vars, kw))
         extra_vars['groupName'] = groupName
         celeryTask = ansiblePlayBook_v2.apply_async((tid, playbook, extra_vars), link=syncAnsibleResult.s(tid=tid)) # ansible结果保持
@@ -152,8 +153,6 @@ class AnsibleTask(LoginRequiredMixin, View):    #ansibe Http 任务推送接口
             return JsonResponse({"msg": "参数错误"})
         if not playbook and not myfunc:
             return JsonResponse({"msg": "参数错误"})
-        print("playbook: %s, groupName: %s" % (playbook, groupName))
-        print(json.dumps(dict(request.GET), indent=4))
         s = AnsibleOpt.ansible_playbook(
                 groupName=groupName, 
                 playbook=playbook, 
@@ -171,7 +170,7 @@ class AnsibleTask(LoginRequiredMixin, View):    #ansibe Http 任务推送接口
 def tasks(request, *gs, **kw):
     return render(request, "ansible/index.html", {})
 
-class AnsibleRequestApi(LoginRequiredMixin, View):
+class AnsibleRequestApi(LoginRequiredMixin, View):  
     login_url = '/account/login'
     redirect_field_name = 'redirect_to'
     def get(self, request, *args, **kw):
