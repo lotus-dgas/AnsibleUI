@@ -10,6 +10,7 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
 *   Ansible使用公私钥登录进行主机操作
 *   
 #### 安装教程
+*   为方便安装，请下载python包到files目录下，https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz
 *   Ansible使用私钥进行登录操作，私钥文件位置：files/id_rsa，或者在ansible.cfg中修改
 *   可直接使用docker部署启动，
     *   在代码目录下 docker build -t ansible_ui .
