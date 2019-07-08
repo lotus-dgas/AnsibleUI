@@ -12,14 +12,14 @@ import json
 import time
 from celery import Celery
 from ansibleApi import *
-from tools.config import BACKEND, BROKER, REDIS_ADDR, REDIS_PORT, REDIS_PD, ansible_result_redis_db
+from tools.config import BACKEND, BROKER, REDIS_ADDR, REDIS_PORT, REDIS_PD, ansible_result_redis_db, inventory
 from celery.app.task import Task
 from celery.utils.log import get_task_logger
 from celery.result import AsyncResult
 celery_logger = get_task_logger(__name__)
 
 appCelery = Celery("tasks",broker=BROKER,backend=BACKEND,)
-sources = "scripts/inventory"
+sources = inventory
 
 class MyTask(Task): #毁掉
     def on_success(self, retval, task_id, args, kwargs):

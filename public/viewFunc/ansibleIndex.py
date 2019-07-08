@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
-import json, datetime, redis, os, random, string
+import json, datetime, redis, os, random, string, ast
 from myCelery import ansiblePlayBook_v2, ansibleExec, syncAnsibleResult
 from tools.config import REDIS_ADDR, REDIS_PORT, REDIS_PD, ansible_result_redis_db
 from public.templatetags.custom_markdown import ansible_result
@@ -20,8 +20,9 @@ class AnsibleOpt:       #ansible 执行 jiekou , 传如香港参赛
     def ansible_playbook(groupName, playbook, user=None, extra_vars={}, **kw):
         tid = "AnsibleApiPlaybook-%s-%s" % (''.join(random.sample(string.ascii_letters + string.digits, 8)),
                 datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
+        if not extra_vars.get('groupName'):
+            extra_vars['groupName'] = groupName
         logger.info("添加Ansilb-Playbook执行；(%s - %s - %s - %s)" % (playbook, groupName, extra_vars, kw))
-        extra_vars['groupName'] = groupName
         celeryTask = ansiblePlayBook_v2.apply_async((tid, playbook, extra_vars), link=syncAnsibleResult.s(tid=tid)) # ansible结果保持
         label = kw.get('label', '')
         AnsibleTasks(AnsibleID=tid, CeleryID=celeryTask.task_id,TaskUser=user,
@@ -143,8 +144,7 @@ class AnsibleTask(LoginRequiredMixin, View):    #ansibe Http 任务推送接口
         myfunc = request.GET.get("function", None)
         playbook = request.GET.get("playbook", None)
         var = request.GET.get('vars')
-        var = var.replace(' ', '').replace('\'', '"').replace(',}', '}').replace(',]', ']')
-        extra_vars = json.loads(var) if var else {}
+        extra_vars = ast.literal_eval(var) if var else {}
         if myfunc and not playbook:
             f = Functions.objects.filter(funcName=myfunc)[0]
             playbook =  f.playbook

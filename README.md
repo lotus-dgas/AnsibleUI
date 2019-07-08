@@ -8,6 +8,8 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
 
 软件架构说明
 *   Ansible使用公私钥登录进行主机操作
+
+![](tmp/images/a.png)
 *   
 #### 安装教程
 *   为方便安装，请下载python包到files目录下，https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz
