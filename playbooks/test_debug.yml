@@ -1,7 +1,19 @@
 
-- hosts: "{{ groupName }}"
+
+- hosts: localhost, 1.1.1.1
+  vars:
+    - content: 'data from yaml'
   tasks:
-    - ping:
-    - debug: msg="Hello, AnsibleUI"
+    - command: /bin/false
+      register: result
+      failed_when: no
+    - debug:
+        msg: 'Hello, AnsibleUI'
+      when: result|failed
+    - name: 测试跳过
+      file:
+        path: '/tmp/abcd'
+        state: file
+      ignore_errors: True
 
 
