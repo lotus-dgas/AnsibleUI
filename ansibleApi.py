@@ -71,9 +71,9 @@ class ResultCallback(CallbackBase):
         self._write_to_save(json.dumps({"host": host.name, "result": result._result, "task": result.task_name, "status": status}))
     def v2_runner_on_skipped(self, result, *args, **kwargs):    # 任务跳过
         print("v2_runner_on_skipped", args, kwargs)
-        self._write_to_save(json.dumps({"host": result._host.get_name(), "result": result._result, "task": result.task_name, "status": "skipped"}))
+        self._write_to_save(json.dumps({"host": host.name, "result": result._result, "task": result.task_name, "status": "skipped"}))
     def v2_runner_on_unreachable(self, result, **kwargs):   ##  主机不可达
-        self._write_to_save(json.dumps({"host": result._host.get_name(), "status": "unreachable", "task": result.task_name, "result": {"msg": "UNREACHABLE"}}))
+        self._write_to_save(json.dumps({"host": host.name, "status": "unreachable", "task": result.task_name, "result": {"msg": "UNREACHABLE"}}))
     def v2_playbook_on_play_start(self, play):
         name = play.get_name().strip()
         if not name:
