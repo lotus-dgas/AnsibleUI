@@ -23,7 +23,8 @@
         </tr>
         <tr>
                 <td>ExtraVar</td>
-                <td>{{ t.ExtraVars }}</td>
+                <!-- <td>{{ t.ExtraVars }}</td>  -->
+                <td><pre id='extra_vars' style="height:auto"></pre></td>
         </tr>
         <tr>
                 <td>
@@ -58,7 +59,7 @@ $('#nr').click(function(){
 })
 </script>
 <script type="text/javascript">
-        $('#ext')[0].innerHTML = syntaxHighlight({{ t.AnsibleResult|safe }})     // 格式化结果
+        $('#extra_vars')[0].innerHTML = syntaxJson({{ t.ExtraVars|safe }})
         $('#cr')[0].innerHTML = syntaxHighlight({{ t.CeleryResult|safe }})     // 格式化结果
 </script>
 {% endblock %}
