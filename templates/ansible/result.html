@@ -59,7 +59,7 @@ $('#nr').click(function(){
 })
 </script>
 <script type="text/javascript">
-        $('#extra_vars')[0].innerHTML = syntaxJson({{ t.ExtraVars|safe }})
+        $('#extra_vars')[0].innerHTML = syntaxHighlight({{ t.ExtraVars|safe }})
         $('#cr')[0].innerHTML = syntaxHighlight({{ t.CeleryResult|safe }})     // 格式化结果
 </script>
 {% endblock %}
