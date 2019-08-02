@@ -22,10 +22,10 @@ BACKEND = "redis://:%s@127.0.0.1:6379/4" % REDIS_PD
 
 ##### MYSQL   
 USE_MYSQL = False  # False; 忽略
-#MYSQL_HOST = '127.0.0.1'
-#MYSQL_PORT = 3306
-#MYSQL_USER = 'root'
-#MYSQL_PASS = 'newpass'
+MYSQL_HOST = '127.0.0.1'
+MYSQL_PORT = 3306
+MYSQL_USER = 'root'
+MYSQL_PASS = 'newpass'
 
 web_debug = True
 

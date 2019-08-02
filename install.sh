@@ -65,6 +65,7 @@ ${PYPATH}bin/pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r require
 echo '创建数据库表结构'
 ${PYPATH}bin/python3 manage.py makemigrations
 ${PYPATH}bin/python3 manage.py migrate
+mkdir logs tmp
 #
 
 echo 'export PYTHONOPTIMIZE=1' >> /etc/profile
