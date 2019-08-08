@@ -57,3 +57,15 @@ def ansible_result(s):      #ansible_result
         elif d['status'] == 'ignoring':
             msg += '<span style="color:#337899">......%s     [%s]</span><br>' % ('忽略任务错误', d['host'])
     return mark_safe(msg)
+
+
+@register.filter(is_safe=True)  
+def json_format(s):
+    print('json_format: %s - %s' % (type(s), s) )
+    if isinstance(s, dict):
+        return json.dumps(s, indent=4)
+    elif isinstance(s,str):
+        print(json.dumps(json.loads(s),  indent=4))
+        return json.dumps(json.loads(s),  indent=4) 
+    else:
+        return 'format fail'

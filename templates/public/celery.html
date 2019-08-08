@@ -1,0 +1,36 @@
+{% extends "../base_public.html" %}
+{% load custom_markdown %}
+{% block content %}
+
+<div class="container-fluid" style="width:90%;padding-left: 180px;">
+      <table class="table table-bordered">
+          <tr style="font-weight: bold;">
+            <td>Worker</td>
+            <!--<td>Broker</td>  -->
+            <td>Pool</td>
+            <td>rusage</td>
+            <td>clock</td>
+            <td>pid</td>
+            <td>total</td>
+          </tr>
+
+        {% for k,v in data.items %}
+        <tr>
+            <td>{{ k }}</td>
+            <!--<td><pre>{{ v.broker|json_format }}</pre></td> -->
+            <td><pre>{{ v.pool|json_format }}</pre></td>
+            <td><pre>{{ v.rusage|json_format }}</pre></td>
+            <td>{{ v.clock }}</td><td>{{ v.pid }}</td>
+            <td>{{ v.total }}</td>
+        </tr>    
+        {% endfor %}
+
+      </table>
+        {% if data|length == 0 %}
+            <p>未检测到 Celery 节点 </p>
+        {% endif %}
+
+
+</div>
+
+{% endblock %}

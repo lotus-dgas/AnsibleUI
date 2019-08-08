@@ -17,8 +17,10 @@ REDIS_PORT = 6379
 REDIS_PD = ''
 
 #### Celery
-BROKER = "redis://:%s@127.0.0.1:6379/3" % REDIS_PD
-BACKEND = "redis://:%s@127.0.0.1:6379/4" % REDIS_PD
+task_db = 10
+result_db = 11
+BROKER = "redis://:%s@127.0.0.1:6379/%s" % (REDIS_PD, task_db)
+BACKEND = "redis://:%s@127.0.0.1:6379/%s" % (REDIS_PD, task_db)
 
 ##### MYSQL   
 USE_MYSQL = False  # False; 忽略
@@ -30,4 +32,4 @@ MYSQL_PASS = 'newpass'
 web_debug = True
 
 note_base_dirt = 'notes'
-inventory = 'inventory'
+inventory = 'scripts/inventory'
