@@ -6,22 +6,34 @@
       <table class="table table-bordered">
           <tr style="font-weight: bold;">
             <td>Worker</td>
-            <!--<td>Broker</td>  -->
+            <!--<td>Broker</td>
             <td>Pool</td>
-            <td>rusage</td>
+            <td>rusage</td> -->
             <td>clock</td>
             <td>pid</td>
             <td>total</td>
+            <td>查看详情</td>
+            <td>调整进程池数目</td>
           </tr>
 
         {% for k,v in data.items %}
         <tr>
-            <td>{{ k }}</td>
-            <!--<td><pre>{{ v.broker|json_format }}</pre></td> -->
+            <td><a href="/ansible/celery/{{ k }}">{{ k }}</a></td>
+            <!--<td><pre>{{ v.broker|json_format }}</pre></td> 
             <td><pre>{{ v.pool|json_format }}</pre></td>
-            <td><pre>{{ v.rusage|json_format }}</pre></td>
+            <td><pre>{{ v.rusage|json_format }}</pre></td> -->
             <td>{{ v.clock }}</td><td>{{ v.pid }}</td>
             <td>{{ v.total }}</td>
+            <td><a href="/ansible/celery/{{ k }}">点击详情</a></td>
+            <td>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <input class="form-control">
+                        <button type="submit" class="btn btn-default">增加</button>
+                        <button type="submit" class="btn btn-default">减少</button>
+                    </div>
+                </div>
+            </td>
         </tr>    
         {% endfor %}
 

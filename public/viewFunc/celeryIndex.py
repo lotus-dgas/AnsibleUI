@@ -21,11 +21,15 @@ logger = logging.getLogger('ansible.ui')
 from myCelery import appCelery
 
 class CeleyWorker(View):
-    def get(self, request):
+    def get(self, request, *a, **kw):
+        if kw.get('name'):
+            name = kw.get('name')
+            print(kw)
+            i = appCelery.control.inspect()
+            data = i.stats()
+            return render(request, 'public/celery_detail.html', {'data': data.get(name)})
         i = appCelery.control.inspect()
-        #return JsonResponse({'msg': i.stats()})
         data = i.stats()
-        #return render(request, 'public/celery.html', {'data': json.dumps(data)})
         return render(request, 'public/celery.html', {'data': data})
 
 
