@@ -16,6 +16,7 @@ from public.viewFunc.celeryIndex import CeleyWorker
 urlpatterns = [
     path('tasks/', tasks),
     path('celery', CeleyWorker.as_view()),
+    path('celery/<str:name>', CeleyWorker.as_view()),
     re_path('opt_task/', ProxyAuth(AnsibleTask.as_view())),
 
     re_path('opt_task_api/', csrf_exempt(AnsibleTaskApi.as_view())),    # csrf 豁免

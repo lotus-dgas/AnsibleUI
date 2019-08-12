@@ -12,6 +12,7 @@
             <td>clock</td>
             <td>pid</td>
             <td>total</td>
+            <td>进程数</td>
             <td>查看详情</td>
             <td>调整进程池数目</td>
           </tr>
@@ -24,13 +25,14 @@
             <td><pre>{{ v.rusage|json_format }}</pre></td> -->
             <td>{{ v.clock }}</td><td>{{ v.pid }}</td>
             <td>{{ v.total }}</td>
+            <td>{{ v.pool.processes|length }}</td>
             <td><a href="/ansible/celery/{{ k }}">点击详情</a></td>
             <td>
                 <div class="form-inline">
                     <div class="form-group">
-                        <input class="form-control">
-                        <button type="submit" class="btn btn-default">增加</button>
-                        <button type="submit" class="btn btn-default">减少</button>
+                        <input class="form-control" name="{{ k }}">
+                        <button type="submit" class="btn btn-default grow">增加</button>
+                        <button type="submit" class="btn btn-default shrink">减少</button>
                     </div>
                 </div>
             </td>
@@ -45,4 +47,35 @@
 
 </div>
 
+<script type="text/javascript">
+    $('.grow').click(function(){
+        node = $('input', $(this).parent()[0])[0]
+        node_name = node.name
+        num = node.value
+        $.ajax({
+            url: "",
+            data: {node_name: node_name, num: num, opt:'grow'},
+            type: "POST",
+            success: function(data){
+                alert(data.msg)
+            }
+        })
+    })
+    $('.shrink').click(function(){
+        node = $('input', $(this).parent()[0])[0]
+        node_name = node.name
+        num = node.value
+        $.ajax({
+            url: "",
+            data: {node_name: node_name, num: num, opt:'shrink'},
+            type: "POST",
+            success: function(data){
+                console.log(data)
+                alert(data.msg)
+            }
+        })
+    })
+
+
+</script>
 {% endblock %}
