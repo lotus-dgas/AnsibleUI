@@ -17,10 +17,10 @@ REDIS_PORT = 6379
 REDIS_PD = ''
 
 #### Celery
-task_db = 10
-result_db = 11
-BROKER = "redis://:%s@127.0.0.1:6379/%s" % (REDIS_PD, task_db)
-BACKEND = "redis://:%s@127.0.0.1:6379/%s" % (REDIS_PD, task_db)
+task_db = broker_db = 11
+result_db = 12
+BROKER = "redis://:%s@127.0.0.1:6379/%s" % (REDIS_PD, broker_db)
+BACKEND = "redis://:%s@127.0.0.1:6379/%s" % (REDIS_PD, result_db)
 
 ##### MYSQL   
 USE_MYSQL = False  # False; 忽略

@@ -12,7 +12,7 @@ import json
 import time
 from celery import Celery
 from ansibleApi import *
-from tools.config import BACKEND, BROKER, REDIS_ADDR, REDIS_PORT, REDIS_PD, ansible_result_redis_db, inventory
+from tools.config import BACKEND, BROKER, REDIS_ADDR, REDIS_PORT, REDIS_PD, ansible_result_redis_db, inventory, result_db
 from celery.app.task import Task
 from celery.utils.log import get_task_logger
 from celery.result import AsyncResult
@@ -31,7 +31,7 @@ class MyTask(Task): #毁掉
         # print('Celery Task Exec Fail, %s - %s - %s - %s' % (task_id, args, kwargs, einfo))
         # task_id 是celery ID， args[0] 为ansibleID
         r = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=ansible_result_redis_db)
-        a = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=4)
+        a = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=result_db)
         tid = args[0]
         rlist = r.lrange(tid, 0, -1)
         try:
@@ -79,7 +79,7 @@ def syncAnsibleResult(self, ret, *a, **kw):     # 执行结束，结果保持至
     tid = kw.get('tid', None)
     if tid:
         r = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=ansible_result_redis_db)
-        a = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=4)
+        a = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=result_db)
         rlist = r.lrange(tid, 0, -1)
         at = AnsibleTasks.objects.filter(AnsibleID=tid)[0]
         at.AnsibleResult = json.dumps([ json.loads(i.decode()) for i in rlist ])
@@ -90,20 +90,12 @@ def syncAnsibleResult(self, ret, *a, **kw):     # 执行结束，结果保持至
     else: pass
 
 ############  TEST  ###########
-# @appCelery.task(bind=True,base=MyTask)
-# def myTest(self, g, *a, **kw):     #bind 将获取自身信息
-#     celery_logger.info(self.request.__dict__)
-#     print("myTest: %s, %s, %s" % (g, a, kw))
-#     return g
+@appCelery.task(bind=True,base=MyTask)
+def myTest(self, g, *a, **kw):     #bind 将获取自身信息
+    celery_logger.info(self.request.__dict__)
+    print("myTest: %s, %s, %s" % (g, a, kw))
+    return g
 
-# @appCelery.task()
-# def myLink(key, *a, **kw):
-#     print("%s, %s, %s" % (key, a, kw))
-#     return "%s: %s" % (key, "Link")
-
-# def on_result_ready(result):
-#     # myTask.delay("a").then(on_result_ready)
-#     print('~~~~~~~~~~Received result for id %r: %r' % (result.id, result.result,))
 
 if __name__ == "__main__":
     appCelery.worker_main()
