@@ -75,3 +75,5 @@ tools/config.py
 
 ![](tmp/images/task_result.png)
 
+
+![](tmp/images/celery_node.png)
