@@ -15,7 +15,7 @@ PORT=10089
 if [[ -f  /usr/bin/yum ]]; then
     echo -e '\033[31myum 安装必要插件\033[0m'
     yum -y install epel-release
-    yum -y install gcc-c++ openssl-devel python-pip python-devel make libffi-devel mysql-devel sqlite-devel
+    yum -y install gcc-c++ wget openssl-devel python-pip python-devel make libffi-devel mysql-devel sqlite-devel
 fi
 
 if [[ ! -f files/id_rsa ]]; then
@@ -35,12 +35,11 @@ else
     tar zxf redis-5.0.5.tar.gz
     cd redis-5.0.5
     make
-    mkdir /usr/local/redis
-    cp src/redis-server src/redis-cli src/redis-sentinel /usr/local/redis
+    cp src/redis-server src/redis-cli src/redis-sentinel /usr/bin/
     cd ../../
     echo '启动 Redis '
-    cp files/redis.conf /usr/local/redis/r.conf
-    /usr/local/redis/redis-server /usr/local/redis/r.conf
+    cp files/redis.conf /tmp/redis.conf
+    /usr/bin/redis-server /tmp/redis.conf
 fi
 
 if [[ ! -d $PYPATH  ]]; then
@@ -65,8 +64,8 @@ ${PYPATH}bin/pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r require
 echo '创建数据库表结构'
 ${PYPATH}bin/python3 manage.py makemigrations
 ${PYPATH}bin/python3 manage.py migrate
-mkdir logs tmp
-#
+${PYPATH}bin/python3 insert_data.py
+
 
 echo 'export PYTHONOPTIMIZE=1' >> /etc/profile
 

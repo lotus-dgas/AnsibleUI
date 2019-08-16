@@ -5,7 +5,7 @@ import sys
 import django
 path=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0,path)
-#os.environ['DJANGO_SETTINGS_MODULE']='AnsibleUI.settings'
+#os.environ['DJANGO_SETTINGS_MODULE']='ansible_ui.settings'
 os.environ['DJANGO_SETTINGS_MODULE']='ansible_ui.settings'
 django.setup()
 
@@ -20,6 +20,7 @@ if b:
     u.is_superuser = True
     u.set_password('1234567')
     u.save()
+    print("\33[34m创建管理员，root: 12334567")
 else:
     print('超级管理员已存在')
 
