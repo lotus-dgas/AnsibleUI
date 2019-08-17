@@ -11,6 +11,7 @@ django.setup()
 
 from public.models import *
 from django.contrib.auth.models import User
+from tools.config import inventory
 
 
 u,b = User.objects.get_or_create(username='root') 
@@ -35,3 +36,20 @@ else:
     print('测试 playbook 已存在')
 
 
+h,b = HostsLists.objects.get_or_create(hostName='localhost', hostAddr='127.0.0.1')
+if b:
+    print('添加本机')
+
+
+g,b = ProjectGroups.objects.get_or_create(groupName='test',nickName='测试')
+if b:
+    print('添加测试组')
+
+
+data = "# 请勿手动修改该文件\n"
+gs = ProjectGroups.objects.all()
+for g in gs: 
+    data += '\n# %s\n[%s]\n' % (g.nickName, g.groupName)
+    data += '\n'.join([ i[0] for i in g.hostList.values_list('hostAddr') ])
+with open(inventory, 'w') as f:
+    f.write(data+ '\n')
