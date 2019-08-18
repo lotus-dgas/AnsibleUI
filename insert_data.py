@@ -44,6 +44,8 @@ if b:
 g,b = ProjectGroups.objects.get_or_create(groupName='test',nickName='测试')
 if b:
     print('添加测试组')
+g.hostList.add(h)
+g.save()
 
 
 data = "# 请勿手动修改该文件\n"
