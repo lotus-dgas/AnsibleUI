@@ -37,4 +37,3 @@ nosetests.xml
 logs/*
 files/*
 db.sqlite3
-playbooks/*
