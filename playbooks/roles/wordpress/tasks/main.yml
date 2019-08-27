@@ -1,0 +1,60 @@
+# 该任务组包含了配置数据库，拉取代码，配置 nginx，配置项目参数等操作
+- name: 新建 wordpress 的数据库
+  mysql_db:
+    login_user: 'root'
+    login_host: '127.0.0.1'
+    login_port: 3306
+    name: 'wordpress'
+    encoding: 'utf8'
+    state: present
+
+- name: 创建 data 目录
+  file:
+    path: /data
+    state: directory
+
+- name: 查看代码目录
+  shell: ls /data/WordPress
+  ignore_errors: True
+  register: code_dirt
+
+# 代码目录不存在，则拉取代码
+- name: 拉取 WeodPress 代码
+  shell: git clone --depth=1 https://github.com/WordPress/WordPress /data/WordPress
+  when: code_dirt is failed
+
+  # git 1.9.1 才支持 depth
+  #git:
+  #  repo: https://github.com/WordPress/WordPress
+  #  dest: /data
+  #  depth: 1
+
+- name: 修改代码属主，ubuntu 系统默认 php 进程属主 www-data
+  file:
+    path: /data/WordPress
+    owner: www-data
+    group: www-data
+    recurse: yes
+  when: ansible_facts['os_family']|lower == 'debian'
+
+- name: 修改代码属主, redhat 系统默认 php 进程属主 apache
+  file:
+    path: /data/WordPress
+    owner: apache
+    group: apache
+    recurse: yes
+  when: ansible_facts['os_family']|lower == 'redhat'
+
+# 推送该配置文件，在执行安装时无需输入数据库修改配置
+- name: 推送 wordpress 配置文件
+  copy:
+    src: wp-config.php
+    dest: /data/WordPress/
+
+- name: 推送 wordpress 的 nginx 配置文件
+  copy:
+    src: 'wp.conf'
+    dest: '/etc/nginx/conf.d/'
+  # nginx 配置推送完，执行重启操作
+  notify:
+    - restart_nginx

@@ -1,0 +1,32 @@
+
+- name:
+  debug:
+    msg: '{{ init_mysql }}'
+
+- name: 安装 MySQL
+  include_tasks: redhat.yml
+  when:
+    - ansible_facts['os_family']|lower == 'redhat'
+    - "init_mysql  == True"
+
+- name: Ubuntu 安装 MySQL
+  include_tasks: debian.yml
+  when:
+    - ansible_facts['os_family']|lower == 'debian'
+    - "init_mysql  == True"
+
+- name: CentOS 安装 MySQL
+  include_tasks: redhat.yml
+  when:
+    - ansible_facts['os_family']|lower == 'redhat'
+    - "init_mysql  == True"
+
+- name: Ubuntu 启动 MySQL
+  shell: service mysql start
+  when:
+    - ansible_facts['os_family']|lower == 'debian'
+
+- name: CentOS 启动 MySQL
+  shell: systemctl start mariadb.service
+  when:
+    - ansible_facts['os_family']|lower == 'redhat'

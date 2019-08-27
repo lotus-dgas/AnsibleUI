@@ -1,0 +1,30 @@
+
+- name:
+  debug:
+    msg: '{{ init_mysql }}'
+
+- name: 安装 PHP
+  shell: yum -y install php php-mysql php-fpm
+  when:
+    - ansible_facts['os_family']|lower == 'redhat'
+    - "init_php  == True"
+
+- name: 安装 PHP
+  shell: apt -y install php
+  when:
+    - ansible_facts['os_family']|lower == 'debian'
+    - "init_php  == True"
+
+# - name: 检查 php-fpm 状态
+#   shell: service php7.0-fpm status
+
+
+- name: 启动 php
+  shell: service php7.0-fpm start
+  when: ansible_facts['os_family']|lower == 'debian'
+  register: php_process
+
+- name: 启动 php
+  shell: sudo systemctl start php-fpm.service
+  when: ansible_facts['os_family']|lower == 'redhat'
+  register: php_process

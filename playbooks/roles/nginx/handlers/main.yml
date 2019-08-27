@@ -1,0 +1,4 @@
+
+
+  - name: restart_nginx
+    shell: service nginx reload

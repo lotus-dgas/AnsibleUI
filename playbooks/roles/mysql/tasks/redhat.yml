@@ -1,0 +1,12 @@
+
+
+- name:
+  shell: yum -y install epel-release
+
+- name:
+  shell: yum -y install mariadb-server 
+  register: result
+
+- name:
+  debug:
+    msg: '{{ result.stdout }}'

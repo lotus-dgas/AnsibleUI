@@ -1,0 +1,30 @@
+# 当 init_nginx 参数为 True 时，导入安装任务
+- name: 安装 nginx
+  include_tasks: install.yml
+  when: "init_nginx  == True"
+
+- name: 查看 nginx 状态
+  shell: service nginx status
+  register: nginx_status
+  ignore_errors: true
+
+- debug:
+    msg: "{{ nginx_status.stdout }}"
+
+- name: 启动 nginx
+  shell: service nginx start
+  # 如果 nginx 未启动，执行启动操作
+  when: nginx_status.rc != 0 and ansible_facts['os_family']|lower == 'debian'
+  register: nginx_start
+
+- name: 启动 nginx
+  shell: systemctl start nginx.service
+  # 如果 nginx 未启动，执行启动操作
+  when: nginx_status.rc != 0 and ansible_facts['os_family']|lower == 'redhat'
+  register: nginx_start
+
+- name:
+  debug:
+    msg: "{{ nginx_start.stdout|default('') }}"
+  # 启动 nginx 未执行，nginx_start 变量未定义
+  when: nginx_start is defined

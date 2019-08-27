@@ -1,0 +1,2 @@
+- name: apt 安装 MySQL
+  shell: apt -y install mysql-server

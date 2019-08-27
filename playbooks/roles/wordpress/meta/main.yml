@@ -1,0 +1,13 @@
+
+# 这里配置角色依赖
+---
+dependencies:
+  - role: nginx
+    vars:
+      init_nginx: True
+  - role: mysql
+    vars:
+      init_mysql: False
+  - role: php
+    vars:
+      init_php: True

@@ -1,0 +1,8 @@
+# 针对不同系统调用不同命令执行安装操作
+- name: yum 安装 Nginx
+  shell: yum -y install nginx
+  when: ansible_facts['os_family']|lower == 'redhat'
+
+- name: apt 安装 nginx
+  shell: apt -y install nginx
+  when: ansible_facts['os_family']|lower == 'debian'
