@@ -23,7 +23,8 @@ class AnsibleOpt:       #ansible 执行 jiekou , 传如香港参赛
         if not extra_vars.get('groupName'):
             extra_vars['groupName'] = groupName
         logger.info("添加Ansilb-Playbook执行；(%s - %s - %s - %s)" % (playbook, groupName, extra_vars, kw))
-        celeryTask = ansiblePlayBook_v2.apply_async((tid, playbook, extra_vars), link=syncAnsibleResult.s(tid=tid)) # ansible结果保持
+        # celeryTask = ansiblePlayBook_v2.apply_async((tid, playbook, extra_vars), link=syncAnsibleResult.s(tid=tid)) # ansible结果保持
+        celeryTask = ansiblePlayBook_v2.apply_async((tid, playbook, extra_vars)) # ansible结果保持
         label = kw.get('label', '')
         AnsibleTasks(AnsibleID=tid, CeleryID=celeryTask.task_id,TaskUser=user,
                 GroupName=groupName, ExtraVars=extra_vars,
@@ -35,8 +36,8 @@ class AnsibleOpt:       #ansible 执行 jiekou , 传如香港参赛
         tasks = []
         celeryTask = ansibleExec.delay(tid, groupName, tasks)
         return {'tid': tid, 'celeryTask': celeryTask.task_id, "groupName": groupName}
-    
-    @staticmethod  
+
+    @staticmethod
     def push_task():
         return {}
 
@@ -111,7 +112,7 @@ class AnsibleData:  #Ansible 数据接口
         else:
             ret = []
         # data = [ json.loads(i.decode()) for i in ret ]
-        
+
         data = json.dumps([ json.loads(i.decode()) for i in ret ])
         s = ansible_result(data)
         return HttpResponse(s)
@@ -154,10 +155,10 @@ class AnsibleTask(LoginRequiredMixin, View):    #ansibe Http 任务推送接口
         if not playbook and not myfunc:
             return JsonResponse({"msg": "参数错误"})
         s = AnsibleOpt.ansible_playbook(
-                groupName=groupName, 
-                playbook=playbook, 
-                user=user, 
-                extra_vars=extra_vars, 
+                groupName=groupName,
+                playbook=playbook,
+                user=user,
+                extra_vars=extra_vars,
                 **{'label': request.META.get('REMOTE_ADDR')}
             )
         # s = extra_vars
@@ -170,7 +171,7 @@ class AnsibleTask(LoginRequiredMixin, View):    #ansibe Http 任务推送接口
 def tasks(request, *gs, **kw):
     return render(request, "ansible/index.html", {})
 
-class AnsibleRequestApi(LoginRequiredMixin, View):  
+class AnsibleRequestApi(LoginRequiredMixin, View):
     login_url = '/account/login'
     redirect_field_name = 'redirect_to'
     def get(self, request, *args, **kw):
@@ -223,6 +224,3 @@ class AnsibleRequestApi(LoginRequiredMixin, View):
 #         extra_vars = {}
 #         s = AnsibleOpt.ansible_playbook(groupName=groupName, playbook=playbook, user=request.META.get("HTTP_WEICHAT_USER"), extra_vars=extra_vars)
 #         return JsonResponse(s)
-
-
-

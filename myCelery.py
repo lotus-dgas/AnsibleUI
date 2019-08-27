@@ -16,20 +16,27 @@ from tools.config import BACKEND, BROKER, REDIS_ADDR, REDIS_PORT, REDIS_PD, ansi
 from celery.app.task import Task
 from celery.utils.log import get_task_logger
 from celery.result import AsyncResult
+
+import django
+path=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0,path)
+os.environ['DJANGO_SETTINGS_MODULE']='ansible_ui.settings'
+django.setup()
+from public.models import *
+
+
 celery_logger = get_task_logger(__name__)
 
 appCelery = Celery("tasks",broker=BROKER,backend=BACKEND,)
+appCelery.conf.task_send_sent_event = True
+appCelery.conf.worker_send_task_events = True
 sources = inventory
 
 class MyTask(Task): #毁掉
-    def on_success(self, retval, task_id, args, kwargs):
-        print("执行成功 notice from on_success")
-        return super(MyTask, self).on_success(retval, task_id, args, kwargs)
+    abstract = True
 
-    def on_failure(self, exc, task_id, args, kwargs, einfo):
-        # print('Celery Task Exec Fail, reason: {0}'.format(exc))
-        # print('Celery Task Exec Fail, %s - %s - %s - %s' % (task_id, args, kwargs, einfo))
-        # task_id 是celery ID， args[0] 为ansibleID
+    # 任务返回结果后执行
+    def after_return(self, status, respose, celery_id, args, *k, **kw):
         r = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=ansible_result_redis_db)
         a = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=result_db)
         tid = args[0]
@@ -42,6 +49,14 @@ class MyTask(Task): #毁掉
             at.save()
             print("同步结果至db: syncAnsibleResult !!!!!: parent_id: %s" % self.request.get('parent_id'), a, kw)
         except: pass
+        print("%s - %s - %s - %s - %s - %s" % (status, respose, celery_id, args, k, kw))
+
+    def on_success(self, retval, task_id, args, kwargs):
+        print("执行成功 notice from on_success")
+        return super(MyTask, self).on_success(retval, task_id, args, kwargs)
+
+    def on_failure(self, exc, task_id, args, kwargs, einfo):
+        print("执行失败 notice from on_failure")
         return super(MyTask, self).on_failure(exc, task_id, args, kwargs, einfo)
 
 @appCelery.task
@@ -55,21 +70,14 @@ def ansiblePlayBook(tid, pb=["playbooks/t.yml"]):
     AnsiblePlaybookApi(tid, pb, sources)
     return None
 
-@appCelery.task(bind=True,base=MyTask)  # 
+@appCelery.task(bind=True,base=MyTask)  #
 def ansiblePlayBook_v2(self,tid, pb, extra_vars, **kw):
     psources = kw.get('sources') or extra_vars.get('sources') or sources
     print("myCelery.py PlayBook File: %s，groupName: %s, psources: %s, Vars: %s" % (pb, extra_vars.get("groupName", "None"), psources, extra_vars))
     AnsiblePlaybookApi_v2(tid, ["playbooks/%s"%pb], psources, extra_vars)
     return 'success!!'
 
-import os
-import sys
-import django
-path=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0,path)
-os.environ['DJANGO_SETTINGS_MODULE']='ansible_ui.settings'
-django.setup()
-from public.models import *
+
 
 @appCelery.task(bind=True)
 def syncAnsibleResult(self, ret, *a, **kw):     # 执行结束，结果保持至db
@@ -95,6 +103,7 @@ def myTest(self, g, *a, **kw):     #bind 将获取自身信息
     celery_logger.info(self.request.__dict__)
     print("myTest: %s, %s, %s" % (g, a, kw))
     return g
+    # raise RuntimeError('测试 celery 失败')
 
 
 if __name__ == "__main__":
