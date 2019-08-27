@@ -38,13 +38,18 @@ class ResultCallback(CallbackBase):
         # self._write_to_save(json.dumps({"msg": "执行完成"}, ensure_ascii=False))
         # super(ResultCallback, self).__del__()
         self.r.expire(self.id, 3600)
-    def _write_to_save(self, v):
-        # self.log.info("\33[31mSave To API Redis: %s:%s/%s,  %s\33[0m" % (REDIS_ADDR,REDIS_PORT,10, self.id))
-        # self.log.debug("Save Data: %s" % v)
-        self.r.rpush(self.id, v)
+
+    def _write_to_save(self, data):
+        msg = json.dumps(data, ensure_ascii=False)
+        self.r.rpush(self.id, msg)
+        # 为了方便查看，我们 print 写入 redis 的字符串的前 50 个字符
+        # print("\33[34m写入Redis：%.50s......\33[0m" % msg)
+        print("\33[34m写入Redis：%s......\33[0m" % msg)
+
     def playbook_on_start(self):
         self.log.info('开始执行PlayBook')
         print("开始执行PlayBook")
+
     def v2_playbook_on_play_start(self, play):
         name = play.get_name().strip()
         if not name:
@@ -52,28 +57,51 @@ class ResultCallback(CallbackBase):
         else:
             msg = u"PLAY [%s]" % name
         print(msg)
+
     def v2_on_any(self,result, *args, **kwargs):
         print("v2_on_any", json.dumps(result, indent=4))
+
     def v2_runner_on_ok(self, result, **kwargs):    #执行成功，
+        "处理成功任务，跳过 setup 模块的结果"
         host = result._host
-        if "ansible_facts" in result._result.keys():
-            print("SetUp 操作，不Save结果")
+        if "ansible_facts" in result._result.keys():    # 我们忽略 setup 操作的结果
+            print("\33[32mSetUp 操作，不Save结果\33[0m")
         else:
-            self.log.info("%s: %s, %s" % ("v2_runner_on_ok", host.name, result._result))
-            self._write_to_save(json.dumps({"host": host.name, "result": result._result, "task": result.task_name, "status": "success"}))
-    def v2_runner_on_failed(self, result, ignore_errors=False, **kwargs):    # 执行失败
+            self._write_to_save({
+                "host": host.name,
+                "result": result._result,
+                "task": result.task_name,
+                "status": "success"
+            })
+
+    def v2_runner_on_failed(self, result, ignore_errors=False, *k, **kwargs):    # 执行失败
+        "处理执行失败的任务，有些任务失败会被忽略，所有有两种状态"
+        self.log.error("%s - %s - %s " % (result, k, kwargs))
         host = result._host
-        self.log.error("%s: %s, %s" % ("v2_runner_on_failed", host.name, result._result))
         if ignore_errors:
             status = "ignoring"
         else:
             status = 'failed'
-        self._write_to_save(json.dumps({"host": host.name, "result": result._result, "task": result.task_name, "status": status}))
+        self._write_to_save({
+                "host": host.name,"result": result._result,
+                "task": result.task_name,"status": status
+            })
+
     def v2_runner_on_skipped(self, result, *args, **kwargs):    # 任务跳过
-        print("v2_runner_on_skipped", args, kwargs)
-        self._write_to_save(json.dumps({"host": host.name, "result": result._result, "task": result.task_name, "status": "skipped"}))
+        "处理跳过的任务"
+        self.log.info("%s - %s" % ('v2_runner_on_skipped', result))
+        self._write_to_save({
+                "host": result._host.get_name(), "result": result._result,
+                "task": result.task_name, "status": "skipped"}
+            )
+
     def v2_runner_on_unreachable(self, result, **kwargs):   ##  主机不可达
-        self._write_to_save(json.dumps({"host": host.name, "status": "unreachable", "task": result.task_name, "result": {"msg": "UNREACHABLE"}}))
+        "处理主机不可达的任务"
+        self._write_to_save({
+                "host": result._host.get_name(), "status": "unreachable",
+                "task": result.task_name, "result": {"msg": "UNREACHABLE"}}
+            )
+
     def v2_playbook_on_play_start(self, play):
         name = play.get_name().strip()
         if not name:
@@ -81,8 +109,24 @@ class ResultCallback(CallbackBase):
         else:
             msg = u"PLAY [%s]" % name
         print("v2_playbook_on_play_start，开始执行主机: %s， %s" % (play, msg))
+
     def v2_playbook_on_task_start(self, task, is_conditional):
         print(u"v2_playbook_on_task_start, 任务： %s----%s" % (task._uuid, task.get_name().strip()))
+
+    def v2_playbook_on_stats(self, *k, **kw):
+        pass
+
+    def v2_playbook_on_notify(self, handler, host):
+        pass
+
+    def v2_playbook_on_no_hosts_matched(self, *k, **kw):
+        pass
+
+    def v2_playbook_on_no_hosts_remaining(self, *k, **kw):
+        pass
+
+    def v2_playbook_on_start(self, playbook, *k, **kw):
+        pass
 
 # Begin Ansible API ###########
 class MyTaskQueueManager(TaskQueueManager):
