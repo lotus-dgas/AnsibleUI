@@ -1,6 +1,6 @@
 
 # 安装 WordPress
-- hosts: 10.20.88.216
+- hosts: localhost
 
   roles:
      - wordpress
