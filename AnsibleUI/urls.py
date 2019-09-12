@@ -1,11 +1,11 @@
-"""AnsibleUI URL Configuration
+"""ansible_ui URL Configuration
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic.base import RedirectView
 
 
-from django.contrib import auth 
+from django.contrib import auth
 from django.shortcuts import render
 from django.shortcuts import redirect
 def myLogin(request):
@@ -28,7 +28,7 @@ def myLogin(request):
                 data = '登陆失败，请核对信息'
         print(errors)
     return render(request, 'login.html', {'errors': errors, 'data': data},)
-        
+
 def myLogout(request):
     next = request.GET.get('next','/')
     auth.logout(request)
@@ -63,7 +63,7 @@ def notes(request, *k, **kw):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ansible/', include('public.urls'),),
-
+    path('api/', include('restful.urls'),),
     path('notes/', notes),
     # re_path(r'notes/(?P<dataKey>\w+)', notes),
 
