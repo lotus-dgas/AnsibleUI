@@ -5,6 +5,8 @@
 AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任务异步处理
 
 ##### 本人最近开始看工作，欢迎推荐和骚扰
+* 微信： lwr_dgas *
+* 邮箱： lwr_dgas@163.com *
 
 #### 软件架构
 
