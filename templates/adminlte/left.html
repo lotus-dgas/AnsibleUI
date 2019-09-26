@@ -1,0 +1,128 @@
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar">
+    <!-- Sidebar user panel -->
+    <div class="user-panel">
+      <div class="pull-left image">
+        <img src="/static/adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+      </div>
+      <div class="pull-left info">
+        <p>{{ user.first_name }}({{ user }})</p>
+        <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
+      </div>
+    </div>
+    <!-- search form -->
+    <form action="#" method="get" class="sidebar-form">
+      <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="搜索">
+            <span class="input-group-btn">
+              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+              </button>
+            </span>
+      </div>
+    </form>
+    <!-- /.search form -->
+    <!-- sidebar menu: : style can be found in sidebar.less -->
+    <ul class="sidebar-menu">
+      <li class="header">主导航</li>
+      <li class="active treeview">
+        <a href="#">
+          <i class="fa fa-dashboard"></i> <span>信息汇总</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> 资产汇总</a></li>
+          <li><a href="index2.html"><i class="fa fa-circle-o"></i> 任务汇总</a></li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a href="#">
+          <i class="fa fa-files-o"></i>
+          <span>CMDB</span>
+          <span class="pull-right-container">
+            <span class="label label-primary pull-right">4</span>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="pages/layout/top-nav.html"><i class="fa fa-circle-o"></i>服务器列表</a></li>
+          <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> 项目组列表</a></li>
+          <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> 任务模块</a></li>
+          <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> 任务列表</a></li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a href="#">
+          <i class="fa fa-pie-chart"></i>
+          <span>Ansible 任务</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i> 任务列表</a></li>
+          <li><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> 执行任务</a></li>
+          <li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> 执行 Playbook</a></li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a href="#">
+          <i class="fa fa-laptop"></i>
+          <span>Celery 节点</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="pages/UI/general.html"><i class="fa fa-circle-o"></i> Celery Worker</a></li>
+          <li><a href="pages/UI/icons.html"><i class="fa fa-circle-o"></i> Celery Nodes</a></li>
+          <li><a href="pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Celery Details</a></li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a href="#">
+          <i class="fa fa-edit"></i> <span>第三方组件</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Zabbix</a></li>
+          <li><a href="pages/forms/advanced.html"><i class="fa fa-circle-o"></i> Jenkins</a></li>
+        </ul>
+      </li>
+      <!-- <li class="treeview">
+        <a href="#">
+          <i class="fa fa-table"></i> <span>表格</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="pages/tables/simple.html"><i class="fa fa-circle-o"></i> 简单表格</a></li>
+          <li><a href="pages/tables/data.html"><i class="fa fa-circle-o"></i> 数据表格</a></li>
+        </ul>
+      </li> -->
+
+      <li>
+        <a href="pages/mailbox/mailbox.html">
+          <i class="fa fa-envelope"></i> <span>消息</span>
+          <span class="pull-right-container">
+            <small class="label pull-right bg-yellow">12</small>
+            <small class="label pull-right bg-green">16</small>
+            <small class="label pull-right bg-red">5</small>
+          </span>
+        </a>
+      </li>
+
+      <li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>文档</span></a></li>
+      <li class="header">标签</li>
+      <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>重要</span></a></li>
+      <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>警告</span></a></li>
+      <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>消息</span></a></li>
+    </ul>
+  </section>
+  <!-- /.sidebar -->
+</aside>
