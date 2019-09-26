@@ -5,8 +5,8 @@
 AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任务异步处理
 
 ##### 本人最近开始看工作，欢迎推荐和骚扰
-* 微信： lwr_dgas *
-* 邮箱： lwr_dgas@163.com *
+* 微信： lwr_dgas
+* 邮箱： lwr_dgas@163.com
 
 #### 软件架构
 
@@ -14,9 +14,12 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
 *   Ansible使用公私钥登录进行主机操作
 
 ![](tmp/images/a.png)
-* 该项目在实验楼上有开发教程，地址为 [](https://www.shiyanlou.com/courses/1380) *
 
-** 近期内，项目准备重新开发前端页面，使用 AdminLTE 框架 ** 
+**该项目在实验楼上有开发教程，地址为 [https://www.shiyanlou.com/courses/1380](https://www.shiyanlou.com/courses/1380) **
+
+**近期内，项目准备重新开发前端页面，使用 AdminLTE 框架**
+
+
 
 #### 安装教程
 *   为方便安装，请下载python包到files目录下，https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz
@@ -60,14 +63,11 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
 tools/config.py
     ansible 远程连接用户
     Redis 存放Celery
-    MySLQ
+    MySQL
 
 #### 使用说明
 
 0. 需外部提供MySQl和Redis，参数在tools/config.py内修改
-1. xxxx
-2. xxxx
-3. xxxx
 
 #### UI
 
