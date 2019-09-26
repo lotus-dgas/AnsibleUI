@@ -1,0 +1,39 @@
+{% extends "../base_adminlte.html" %}
+
+{% block content %}
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      仪表盘
+      <small>控制面板</small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
+      <li class="active">仪表盘</li>
+    </ol>
+  </section>
+
+  <section class="content">
+
+      <table class="table table-bordered">
+      <tr style="font-weight: bold;"><td>主机名</td><td>IP</td><td>所在组</td></tr>
+      {% for h in object_list %}
+          <tr>
+              <td>{{ h.hostName }}</td>
+              <td>{{ h.hostAddr }}</td>
+              <td>
+                      {% for g in h.projectgroups_set.all %}
+                      <a href="/ansible/get_groups/?dataKey={{g.groupName}}">{{  g.nickName|default:g.groupName }}</a> 、
+                      {% endfor %}
+              </td>
+          </tr>
+      {% endfor %}
+      </table>
+
+
+
+
+  </section>
+</div>
+
+{% endblock %}
