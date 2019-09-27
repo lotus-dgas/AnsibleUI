@@ -36,6 +36,7 @@
         <ul class="treeview-menu">
           <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> 资产汇总</a></li>
           <li><a href="index2.html"><i class="fa fa-circle-o"></i> 任务汇总</a></li>
+          <li><a href="/admin/"><i class="fa fa-circle-o"></i> 管理后台</a></li>
         </ul>
       </li>
       <li class="treeview">
@@ -62,7 +63,7 @@
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i> 任务列表</a></li>
+          <li><a href="{% url 'AnsibleTaskList' %}"><i class="fa fa-circle-o"></i> 任务列表</a></li>
           <li><a href="/ansible/edit_task"><i class="fa fa-circle-o"></i> 执行任务</a></li>
           <li><a href="{% url 'EditPBTask' %}"><i class="fa fa-circle-o"></i> 执行 Playbook</a></li>
         </ul>
@@ -89,8 +90,8 @@
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Zabbix</a></li>
-          <li><a href="pages/forms/advanced.html"><i class="fa fa-circle-o"></i> Jenkins</a></li>
+          <li><a href="{% url 'zabbix' %}"><i class="fa fa-circle-o"></i> Zabbix</a></li>
+          <li><a href="{% url 'jenkins' %}"><i class="fa fa-circle-o"></i> Jenkins</a></li>
         </ul>
       </li>
       <!-- <li class="treeview">

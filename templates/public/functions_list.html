@@ -16,9 +16,12 @@
   <section class="content">
 
       <table class="table table-bordered">
-      <tr style="font-weight: bold;"><td>名称</td><td>信息</td><td>执行操作</td></tr>
+      <tr style="font-weight: bold;background-color: #3c8dbc80;"><td>名称</td><td>信息</td><td>执行操作</td></tr>
       {% for h in object_list %}
-          <tr><td><a href="/ansible/get_funcs/{{ h.id }}">{{ h.playbook }}</a></td><td>{{ h.nickName }}</td><td>{{ h.funcName }}</td></tr>
+          <tr style="background-color: #e4e6e8">
+            <td><a href="/ansible/playbook/{{ h.id }}/">{{ h.playbook }}</a></td>
+            <td>{{ h.nickName }}</td><td>{{ h.funcName }}</td>
+          </tr>
       {% endfor %}
       </table>
 

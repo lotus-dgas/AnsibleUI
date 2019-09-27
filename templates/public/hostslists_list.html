@@ -4,21 +4,21 @@
 <div class="content-wrapper">
   <section class="content-header">
     <h1>
-      仪表盘
-      <small>控制面板</small>
+      CMDB
+      <small>服务器列表</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
-      <li class="active">仪表盘</li>
+      <li class="active">CMDB</li>
     </ol>
   </section>
 
   <section class="content">
 
       <table class="table table-bordered">
-      <tr style="font-weight: bold;"><td>主机名</td><td>IP</td><td>所在组</td></tr>
+      <tr style="font-weight: bold;background-color: #3c8dbc80;"><td>主机名</td><td>IP</td><td>所在组</td></tr>
       {% for h in object_list %}
-          <tr>
+          <tr style="background-color: #e4e6e8">
               <td>{{ h.hostName }}</td>
               <td>{{ h.hostAddr }}</td>
               <td>

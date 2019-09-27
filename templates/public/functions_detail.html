@@ -1,0 +1,37 @@
+{% extends "../base_adminlte.html" %}
+{% load custom_markdown %}
+{% block content %}
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      仪表盘
+      <small>控制面板</small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
+      <li class="active">仪表盘</li>
+    </ol>
+  </section>
+
+  <section class="content">
+
+      <table class="table table-bordered">
+      <tr>
+        <td  style="font-weight: bold;background-color: #3c8dbc80;">PlayBook</td>
+        <td>{{ object.playbook }}</td>
+      </tr>
+      <tr>
+        <td style="font-weight: bold;background-color: #3c8dbc80;">模块名称</td><td>{{ object.funcName }}</td>
+      </tr>
+      <tr>
+        <td  style="font-weight: bold;background-color: #3c8dbc80;">任务名称</td><td>{{ object.nickName }}</td>
+      </tr>
+      <tr>
+        <td  style="font-weight: bold;background-color: #3c8dbc80;">内容</td><td>{{ yml_content | custom_markdown }}</td>
+      </tr>
+      </table>
+
+  </section>
+</div>
+
+{% endblock %}

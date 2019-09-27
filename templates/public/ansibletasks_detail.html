@@ -1,0 +1,70 @@
+{% extends "../base_adminlte.html" %}
+{% load custom_markdown %}
+{% block content %}
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      Ansible
+      <small>任务详情</small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
+      <li class="active">Ansible</li>
+    </ol>
+  </section>
+
+  <section class="content">
+
+      <table class="table table-bordered">
+        <tr style="background-color: #3c8dbc80;"><td>Name</td><td>Content</td></tr>
+        <tr>
+            <td style="background-color: gainsboro;">AnsibleID</td>
+            <td style="background-color: #d0eae9;" id="ansible_id">{{ t.AnsibleID }}</td>
+        </tr>
+        <tr>
+                <td style="background-color: gainsboro;">CeleryID</td>
+                <td style="background-color: #d0eae9;">{{ t.CeleryID }}</td>
+        </tr>
+        <tr>
+                <td style="background-color: gainsboro;">GroupName</td>
+                <td style="background-color: #d0eae9;">{{ t.GroupName }}</td>
+        </tr>
+        <tr>
+                <td style="background-color: gainsboro;">playbook</td>
+                <td style="background-color: #d0eae9;">{{ t.playbook }}</td>
+        </tr>
+        <tr>
+                <td style="background-color: gainsboro;">ExtraVar</td>
+                <!-- <td>{{ t.ExtraVars }}</td>  -->
+                <td style="background-color: #d0eae9;"><pre id='extra_vars' style="height:auto"></pre></td>
+        </tr>
+        <tr>
+                <td style="background-color: gainsboro;">AnsibleResult<br>
+                        <button id="nr"class="btn btn-default" style="margin-top:50px" {% if t.AnsibleResult %}disabled{%endif%}>结果轮寻</button>
+                </td>
+                <td style="background-color: #d0eae9;" ><pre id='ar' style="background: #a5a3a3">{{ t.AnsibleResult|ansible_result }}</pre></td>
+        </tr>
+        <tr>
+                <td style="background-color: gainsboro;">CeleryResult</td>
+                <td  style="background-color: #d0eae9;"><pre id='cr' style="height:auto"></pre>  </td>
+        </tr>
+        <tr>
+                <td style="background-color: gainsboro;">CreateTime</td>
+                <td  style="background-color: #d0eae9;">{{ t.CreateTime }}</td>
+        </tr>
+      </table>
+      <div hidden><pre id="ext"></pre></div>
+      <!-- </div> -->
+      </div>
+
+
+  </section>
+</div>
+
+
+<script type="text/javascript">
+  $('#extra_vars')[0].innerHTML = syntaxHighlight({{ t.ExtraVars|safe }})
+  $('#cr')[0].innerHTML = syntaxHighlight({{ t.CeleryResult|safe }})     // 格式化结果
+  console.log(cont)
+</script>
+{% endblock %}
