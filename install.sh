@@ -1,15 +1,22 @@
-if [[ `whoami` != "root" ]]; then
-    echo '执行请使用 root' 
-    exit
-else
-    echo 'root 正在进行安装操作'
-fi
+#!/bin/env bash
+
+# set -e
+
+find ./ -name '*py' -exec sed -i 's/AnsibleUI/ansible_ui/g' {} \;
+
+# 检查执行用户
+# if [[ `whoami` != "root" ]]; then
+#     echo '执行请使用 root'
+#     exit
+# else
+#     echo 'root 正在进行安装操作'
+# fi
 
 PWD=`pwd`
 
-echo ''
 
-PYPATH='/usr/local/PyAnsibleUI/'
+#PYPATH='/usr/local/PyAnsibleUI/'
+PYPATH=`pwd`'/.venv/'
 PORT=10089
 
 if [[ -f  /usr/bin/yum ]]; then
@@ -24,7 +31,7 @@ if [[ ! -f files/id_rsa ]]; then
 fi
 
 if [[ `whereis redis-server | wc -l` != 0 ]]; then
-    echo -e '\033[32m检测到存在 redis 命令，请开启实例，修改 tools/config.py 中相关配置\033[0m' 
+    echo -e '\033[32m检测到存在 redis 命令，请开启实例，修改 tools/config.py 中相关配置\033[0m'
 else
     echo -e '\033[32m未检测到 redis 命令，正在下载安装\033[0m'
     if [[ ! -f files/redis-5.0.5.tar.gz ]]; then
@@ -49,8 +56,8 @@ if [[ ! -d $PYPATH  ]]; then
         echo "\033[33m============>Python包不存在，正在下载<============\033[0m"
         wget -O files/Python-3.7.3.tgz https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz
     fi
-    cd files 
-    tar zxf Python-3.7.3.tgz 
+    cd files
+    tar zxf Python-3.7.3.tgz
     cd Python-3.7.3
     ./configure --prefix=${PYPATH} && make && make install
     cd ../../
@@ -70,9 +77,7 @@ ${PYPATH}bin/python3 insert_data.py
 echo 'export PYTHONOPTIMIZE=1' >> /etc/profile
 
 echo -e "\033[44m============>执行<============\033[0m\033[36m
-export PYTHONOPTIMIZE=1 
+export PYTHONOPTIMIZE=1
 ${PYPATH}bin/celery multi start 1 -A myCelery -l info -c4 --pidfile=tmp/celery_%n.pid -f logs/celery.log
 ${PYPATH}bin/python3 manage.py runserver 0.0.0.0:${PORT}
 \033[33m============>启动程序<============\033[0m"
-
-
