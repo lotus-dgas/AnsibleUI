@@ -17,6 +17,8 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
 
 **该项目在实验楼上有开发教程，地址为 [https://www.shiyanlou.com/courses/1380](https://www.shiyanlou.com/courses/1380)**
 
+**邀请码 4IL5Tadc 9折**
+
 **近期内，项目准备重新开发前端页面，使用 AdminLTE 框架**
 
 效果图

@@ -25,12 +25,12 @@ class AnsibleTaskList(ListView):
 
 class AnsibleTaskDetail(DetailView):
     model = AnsibleTasks
-
-    def get(self, request, *k, **kw):
-        if request.is_ajax():
-            return JsonResponse({"msg": "ok"})
-        else:
-            return super().get(request, *k, **kw)
+    context_object_name = 't'
+    # def get(self, request, *k, **kw):
+    #     if request.is_ajax():
+    #         return JsonResponse({"msg": "ok"})
+    #     else:
+    #         return super().get(request, *k, **kw)
 
 class GroupsDetail(DetailView):
     model = ProjectGroups
@@ -49,6 +49,15 @@ class PlaybookList(ListView):
 
 class PlaybookDetail(DetailView):
     model = Functions
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pb = context['object'].playbook
+        with open('playbooks/%s' % pb)as f:
+            s = f.read()
+        context['yml_content'] = '```yaml\n%s\n```' % s
+
+        return context
 
 class TemplateReturn(LoginRequiredMixin, View):
     login_url = '/account/login'
