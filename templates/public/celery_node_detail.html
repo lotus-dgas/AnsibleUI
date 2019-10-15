@@ -1,0 +1,62 @@
+{% extends "../base_adminlte.html" %}
+{% load custom_markdown %}
+{% block content %}
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+      <h1>
+        仪表盘
+        <small>控制面板</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
+        <li class="active">仪表盘</li>
+      </ol>
+    </section>
+  
+    <section class="content">
+
+
+
+
+
+              <div class="container-fluid" style="">
+              <div class="panel panel-success">
+              <div class="panel-heading">Celery 节点详情</div>
+              <div class="panel-body">
+                  <div class="col-sm-4">
+                    <table class="table table-bordered">
+                      <h4 style="text-align:center;">Broker</h4>
+                    {% for k,v in data.broker.items %}
+                      <tr><td style="font-weight: bold;">{{ k }}</td><td>{{ v }}</td></tr>
+                      {% endfor %}
+                    </table>
+                  </div>
+                  <div class="col-sm-4">
+                      <h4 style="text-align:center;">rusage</h4>
+                    <table class="table table-bordered">
+                    {% for k,v in data.rusage.items %}
+                      <tr><td style="font-weight: bold;">{{ k }}</td><td>{{ v }}</td></tr>
+                      {% endfor %}
+                    </table>
+                  </div>
+                  <div class="col-sm-4">
+                      <h4 style="text-align:center;">Pool</h4>
+                    <table class="table table-bordered">
+                    {% for k,v in data.pool.items %}
+                      <tr><td style="font-weight: bold;">{{ k }}</td><td>{{ v }}</td></tr>
+                      {% endfor %}
+                    </table>
+                  </div>
+              </div>
+              </div>
+              </div>
+
+      </section>
+  </div>
+
+{% endblock %}
+
+

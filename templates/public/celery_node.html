@@ -1,0 +1,97 @@
+{% extends "../base_adminlte.html" %}
+{% load custom_markdown %}
+{% block content %}
+
+      
+<div class="content-wrapper">
+        <section class="content-header">
+          <h1>
+            仪表盘
+            <small>控制面板</small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">仪表盘</li>
+          </ol>
+        </section>
+      
+        <section class="content">
+                <table class="table table-bordered">
+                        <tr style="font-weight: bold;background-color: #3c8dbc80;">
+                          <td>Worker</td>
+                          <!--<td>Broker</td>
+                          <td>Pool</td>
+                          <td>rusage</td> -->
+                          <td>clock</td>
+                          <td>pid</td>
+                          <td>total</td>
+                          <td>进程数</td>
+                          <td>查看详情</td>
+                          <td>调整进程池数目</td>
+                        </tr>
+              
+                      {% for k,v in data.items %}
+                      <tr>
+                          <td><a href="/celery/node/{{ k }}/">{{ k }}</a></td>
+                          <!--<td><pre>{{ v.broker|json_format }}</pre></td> 
+                          <td><pre>{{ v.pool|json_format }}</pre></td>
+                          <td><pre>{{ v.rusage|json_format }}</pre></td> -->
+                          <td>{{ v.clock }}</td><td>{{ v.pid }}</td>
+                          <td>{{ v.total }}</td>
+                          <td>{{ v.pool.processes|length }}</td>
+                          <td><a href="/celery/node/{{ k }}/">点击详情</a></td>
+                          <td>
+                              <div class="form-inline">
+                                  <div class="form-group">
+                                      <input class="form-control" name="{{ k }}">
+                                      <button type="submit" class="btn btn-default grow">增加</button>
+                                      <button type="submit" class="btn btn-default shrink">减少</button>
+                                  </div>
+                              </div>
+                          </td>
+                      </tr>    
+                      {% endfor %}
+              
+                    </table>
+                      {% if data|length == 0 %}
+                          <p>未检测到 Celery 节点 </p>
+                      {% endif %}
+              
+      
+      
+        </section>
+      </div>
+
+
+<script type="text/javascript">
+    $('.grow').click(function(){
+        node = $('input', $(this).parent()[0])[0]
+        node_name = node.name
+        num = node.value
+        $.ajax({
+            url: "",
+            data: {node_name: node_name, num: num, opt:'grow'},
+            type: "POST",
+            success: function(data){
+                alert(data.msg)
+            }
+        })
+    })
+    $('.shrink').click(function(){
+        node = $('input', $(this).parent()[0])[0]
+        node_name = node.name
+        num = node.value
+        $.ajax({
+            url: "",
+            data: {node_name: node_name, num: num, opt:'shrink'},
+            type: "POST",
+            success: function(data){
+                console.log(data)
+                alert(data.msg)
+            }
+        })
+    })
+
+
+</script>
+{% endblock %}
