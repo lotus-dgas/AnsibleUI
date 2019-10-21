@@ -5,7 +5,7 @@ import sys
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AnsibleUI.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ansible_ui.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -18,4 +18,11 @@ def main():
 
 
 if __name__ == '__main__':
+    print('''
+    _              _ _     _        _   _ ___
+   / \   _ __  ___(_) |__ | | ___  | | | |_ _|
+  / _ \ | '_ \/ __| | '_ \| |/ _ \ | | | || |
+ / ___ \| | | \__ \ | |_) | |  __/ | |_| || |
+/_/   \_\_| |_|___/_|_.__/|_|\___|  \___/|___|
+    ''')
     main()
