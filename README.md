@@ -29,9 +29,9 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
 #### 安装教程
 *   为方便安装，请下载python包到files目录下，https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz
 *   Ansible使用私钥进行登录操作，私钥文件位置：files/id_rsa，或者在ansible.cfg中修改
-*   可直接使用docker部署启动，
-    *   在代码目录下 docker build -t ansible_ui .
-    *   docker run -it -p 10089:10089 -v `pwd`:/data ansible_ui
+*   Docker集群部署，启动端口 10089
+    *   docker-compose build
+    *   docker-compose up 
 *   手动部署
     *   安装 Python 环境，开发环境版本为 Python 3.6.4
     *   安装相关pagkage `pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt`
@@ -40,7 +40,6 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
     *   在代码目录下启动Celery，`celery -A myCelery worker -l info`，可参看myCelery.py文件尾注释部分
     *   启动主服务，`python3 manage.py runserver 0.0.0.0:10089`。
 *   服务启动
-    * 启动Celery，设置`ln -s AnsibleUI ansibleUI`。
     * 启动celery，请设置 `export PYTHONOPTIMIZE=1`, 否则celery将无法调用ansible
     * Celery启动，`celery multi start 1 -A myCelery -l info -c4 --pidfile=tmp/celery_%n.pid -f logs/celery.log`
     * 主程序启动，`uwsgi --socket 127.0.0.1:9801 --module AnsibleUI.wsgi --py-autoreload=1 --daemonize=logs/uwsgi.log`
