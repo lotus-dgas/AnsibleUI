@@ -2,10 +2,10 @@
 
 
 export PYTHONOPTIMIZE=1
-mkdir /root/.ssh
-cp /data/files/id_rsa /root/.ssh/
 
-# 开一个celery 
-/usr/local/PyAnsibleUI/bin/celery multi start 1 -A myCelery -l info -c4 --pidfile=/tmp/celery_%n.pid -f logs/celery.log
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 insert_data.py
 
-/usr/local/PyAnsibleUI/bin/python3 manage.py runserver 0.0.0.0:10089
+celery multi start aui -A myCelery -l info -c4 --pidfile=/tmp/celery_%n.pid -f logs/celery.log
+python3 manage.py runserver 0.0.0.0:10089

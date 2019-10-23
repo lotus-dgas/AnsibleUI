@@ -1,0 +1,33 @@
+version: '3'
+services:
+  redis:
+    image: "redis:latest"
+  mysql:
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES utf8mb4;' --innodb-flush-log-at-trx-commit=0
+    image: "mysql:5.7"
+    environment:
+      MYSQL_DATABASE: "AnsibleUI"
+      MYSQL_ROOT_PASSWORD: "123"
+      LANG: "C.UTF-8"
+      character-set-server: "utf8mb4"
+    # ports:
+    #   - "13306:3306"
+
+  web:
+    build: .
+    # image: 'ansible_ui'
+    volumes:
+      - .:/data/AnsibleUI
+    depends_on:
+      - redis
+      - mysql
+    # deploy:
+    #   replicas: 2
+    #   resources:
+    #     limits:
+    #       cpus: "0.1"
+    #       memory: 50M
+    ports:
+     - "10089:10089"
+networks:
+  ansible_ui:
