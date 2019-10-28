@@ -1,0 +1,99 @@
+- hosts: k8s-master, k8s-node
+  vars:
+    #- master: 192.168.56.113
+  tasks:
+    - shell: setenforce 0
+    - shell: systemctl stop firewalld.service
+    - shell: systemctl disable firewalld.service
+
+    - name: 添加 Repo 源
+      copy: 
+        src: ../files/virt7-docker-common-release.repo
+        dest: /etc/yum.repos.d/
+      register: repo
+
+    - name: yum repolist
+      shell: yum repolist
+      when: repo is changed
+
+    - name: yun 安装
+      shell: yum -y install –enablerepo=virt7-docker-common-release kubernetes etcd flannel
+      when: repo is changed
+    
+    - name: 修改 kubernetes/config
+      lineinfile: 
+        path: /etc/kubernetes/config
+        regexp: '^KUBE_MASTER='
+        line: 'KUBE_MASTER="--master=http://{{ master }}:8080"'
+
+    - name: 修改 /etc/sysconfig/flanneld
+      lineinfile:
+        path: /etc/sysconfig/flanneld
+        regexp: '{{ item.src }}'
+        line: '{{ item.dest }}'
+      with_items:
+        - {'src': '^FLANNEL_ETCD_ENDPOINTS', 'dest': 'FLANNEL_ETCD_ENDPOINTS="http://{{ master }}:2379"'}
+        - {'src': '^FLANNEL_ETCD_PREFIX', 'dest': 'FLANNEL_ETCD_PREFIX="/kube-centos/network"'}
+
+    - name: 添加 redhat-uep.pem
+      copy:
+        src: ../files/redhat-uep.pem
+        dest: /etc/rhsm/ca/redhat-uep.pem
+        mode: 644
+    - name: 添加 /etc/docker/daemon.json 
+      template:
+        src: ../files/daemon.json
+        dest: /etc/docker/daemon.json
+
+- hosts: k8s-master
+  vars:
+  tasks:
+    - name: 配置 Etcd config
+      lineinfile:
+        path: /etc/etcd/etcd.conf 
+        regexp: '{{ item.src }}'
+        line: '{{ item.dest }}'
+    
+      with_items:
+        - {'src': '^ETCD_LISTEN_CLIENT_URLS', 'dest': 'ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"'}
+        - {'src': '^ETCD_ADVERTISE_CLIENT_URLS', 'dest': 'ETCD_ADVERTISE_CLIENT_URLS="http://0.0.0.0:2379"'}
+
+
+    - name: 配置 kubernetes/apiserver
+      template:
+        src: ../files/apiserver
+        dest: /etc/kubernetes/apiserver
+
+- hosts: k8s-node
+  vars:
+  tasks: 
+    - name: 配置 /etc/kubernetes/kubelet
+      lineinfile:
+        path: /etc/kubernetes/kubelet
+        regexp: '{{ item.src }}'
+        line: '{{ item.dest }}'
+      with_items:
+        - {'src': '^KUBELET_ADDRESS', 'dest': 'KUBELET_ADDRESS="--address=0.0.0.0"'}
+        - {'src': '^KUBELET_API_SERVER', 'dest': 'KUBELET_API_SERVER="--api-servers=http://{{ master }}:8080"'}
+        - {'src': '^KUBELET_HOSTNAME', 'dest': 'KUBELET_HOSTNAME="--hostname-override={{ inventory_hostname }}"'}
+    
+    - name: 配置 /etc/sysconfig/flanneld
+      lineinfile:
+        path: /etc/sysconfig/flanneld
+        regexp: '{{ item.src }}'
+        line: '{{ item.dest }}'
+      with_items:
+        - {'src': '^FLANNEL_ETCD_ENDPOINTS', 'dest': 'FLANNEL_ETCD_ENDPOINTS="http://{{ master }}:2379"'}
+        - {'src': '^FLANNEL_ETCD_PREFIX', 'dest': 'FLANNEL_ETCD_PREFIX="/kube-centos/network"'}
+
+    - name: set-cluster
+      shell: kubectl config set-cluster default-cluster --server=http://{{ master }}:8080
+
+    - name: set-context
+      shell: kubectl config set-context default-context --cluster=default-cluster --user=default-admin
+    
+    - name: use-context
+      shell: kubectl config use-context default-context
+
+    - name:
+      shell: for SERVICES in kube-proxy kubelet flanneld docker; do     systemctl restart $SERVICES;     systemctl enable $SERVICES;     systemctl status $SERVICES; done
