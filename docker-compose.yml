@@ -16,6 +16,8 @@ services:
   web:
     build: .
     # image: 'ansible_ui'
+    environment:
+      ENV: "Docker"
     volumes:
       - .:/data/AnsibleUI
     depends_on:
