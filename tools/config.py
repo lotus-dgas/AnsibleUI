@@ -20,13 +20,13 @@ REDIS_PD = ''
 #### Celery
 task_db = broker_db = 11
 result_db = 12
-BROKER = "redis://:%s@127.0.0.1:6379/%s" % (REDIS_PD, broker_db)
-BACKEND = "redis://:%s@127.0.0.1:6379/%s" % (REDIS_PD, result_db)
+BROKER = "redis://:%s@%s:6379/%s" % (REDIS_PD, REDIS_ADDR, broker_db)
+BACKEND = "redis://:%s@%s:6379/%s" % (REDIS_PD, REDIS_ADDR, result_db)
 
 ##### MYSQL   
 
 USE_MYSQL = True if os.getenv('ENV') == "Docker" else False  # False; 忽略
-MYSQL_HOST = '127.0.0.1'
+MYSQL_HOST = 'mysql'
 MYSQL_PORT = 3306
 MYSQL_USER = 'root'
 MYSQL_PASS = 'newpass'

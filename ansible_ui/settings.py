@@ -55,7 +55,8 @@ if USE_MYSQL:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME':'ansible_ui',
+            'NAME':'AnsibleUI',
+            #'NAME':'ansible_ui',
             'USER':MYSQL_USER,
             'PASSWORD':MYSQL_PASS,
             'HOST':MYSQL_HOST,
