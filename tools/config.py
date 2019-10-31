@@ -12,7 +12,8 @@ ansible_result_redis_db = 10
 
 
 #### Redis  ~~~ ansible 结果临时存放+Celery
-REDIS_ADDR = "127.0.0.1"
+
+REDIS_ADDR = "redis" if os.getenv('ENV') == "Docker" else "127.0.0.1" 
 REDIS_PORT = 6379
 REDIS_PD = ''
 
@@ -23,13 +24,14 @@ BROKER = "redis://:%s@127.0.0.1:6379/%s" % (REDIS_PD, broker_db)
 BACKEND = "redis://:%s@127.0.0.1:6379/%s" % (REDIS_PD, result_db)
 
 ##### MYSQL   
-USE_MYSQL = False  # False; 忽略
+
+USE_MYSQL = True if os.getenv('ENV') == "Docker" else False  # False; 忽略
 MYSQL_HOST = '127.0.0.1'
 MYSQL_PORT = 3306
 MYSQL_USER = 'root'
 MYSQL_PASS = 'newpass'
 
-web_debug = True
+web_debug = True if os.getenv('ENV') == "Docker" else False
 
 note_base_dirt = 'notes'
 inventory = 'scripts/inventory'
