@@ -26,12 +26,12 @@ BACKEND = "redis://:%s@%s:6379/%s" % (REDIS_PD, REDIS_ADDR, result_db)
 ##### MYSQL   
 
 USE_MYSQL = True if os.getenv('ENV') == "Docker" else False  # False; 忽略
-MYSQL_HOST = 'mysql'
+MYSQL_HOST = 'mysql' if os.getenv('ENV') == "Docker" else "127.0.0.1"
 MYSQL_PORT = 3306
 MYSQL_USER = 'root'
 MYSQL_PASS = 'newpass'
 
-web_debug = True if os.getenv('ENV') == "Docker" else False
-
+#web_debug = True if os.getenv('ENV') == "Docker" else False
+web_debug = True
 note_base_dirt = 'notes'
 inventory = 'scripts/inventory'

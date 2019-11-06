@@ -22,7 +22,7 @@ services:
     environment:
       ENV: "Docker"
     volumes:
-      - .:/data/AnsibleUI
+      - /root/Ansible:/data/AnsibleUI
     depends_on:
       - redis
       - mysql
