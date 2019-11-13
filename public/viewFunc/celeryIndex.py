@@ -34,10 +34,10 @@ class CeleyWorker(View):
             name = kw.get('name')
             i = appCelery.control.inspect()
             data = i.stats()
-            return render(request, 'public/celery_detail.html', {'data': data.get(name)})
+            return render(request, kw.get('template_file', None) or 'public/celery_detail.html', {'data': data.get(name)})
         i = appCelery.control.inspect()
         data = i.stats()
-        return render(request, 'public/celery.html', {'data': data})
+        return render(request, kw.get('template_file', None) or 'public/celery.html', {'data': data})
 
     def post(self, request, *a,  **kw):
         data = request.POST.dict()
