@@ -34,9 +34,9 @@
           </span>
         </a>
         <ul class="treeview-menu">
-          <li class="active"><a href=""><i class="fa fa-circle-o"></i> 资产汇总</a></li>
-          <li><a href=""><i class="fa fa-circle-o"></i> 任务汇总</a></li>
-          <li><a href="/admin/"><i class="fa fa-circle-o"></i> 管理后台</a></li>
+          <li class="active"><a href="/"><i class="fa fa-circle-o"></i> 资产汇总</a></li>
+          <!-- <li><a href=""><i class="fa fa-circle-o"></i> 任务汇总</a></li> -->
+          {% if user.is_staff %}<li><a href="/admin/"><i class="fa fa-circle-o"></i> 管理后台</a></li> {% endif %}
         </ul>
       </li>
       <li class="treeview">

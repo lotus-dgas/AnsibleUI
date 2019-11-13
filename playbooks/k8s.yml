@@ -1,3 +1,5 @@
+
+# 安装 k8s 集群环境
 - hosts: k8s-master, k8s-node
   vars:
     #- master: 192.168.56.113
