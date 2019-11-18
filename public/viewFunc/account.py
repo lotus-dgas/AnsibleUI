@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 def myLogin(request):
     errors = []
     data = ''
-    next = request.GET.get('next','/')
+    next = request.GET.get('next') or request.GET.get('redirect_to') or '/'
     if request.method == 'POST':
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
@@ -22,7 +22,7 @@ def myLogin(request):
             else:
                 data = '登陆失败，请核对信息'
         print(errors)
-    return render(request, 'login.html', {'errors': errors, 'data': data},)
+    return render(request, 'login2.html', {'errors': errors, 'data': data},)
 
 def myLogout(request):
     next = request.GET.get('next','/')

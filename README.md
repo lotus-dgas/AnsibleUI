@@ -19,6 +19,10 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
 
 **Demo 地址 [www.ansibleui.cn](http://www.ansibleui.cn:10089) admin:12345678 ， demo 未启动 Celery 进程，请勿添加任务**
 
+**QQ群：929411662，群名称：AnsibleUI**
+**群二维码**
+![](tmp/images/qq_qr.png)
+
 **近期内，项目准备重新开发前端页面，使用 AdminLTE 框架**
 
 效果图
