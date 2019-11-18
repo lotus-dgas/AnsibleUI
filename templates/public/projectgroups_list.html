@@ -16,7 +16,12 @@
   <section class="content">
 
       <table class="table table-bordered">
-      <tr style="font-weight: bold;background-color: #3c8dbc80;"><td>组名</td><td>信息</td><td>主机</td><td>描述</td></tr>
+      <tr style="font-weight: bold;background-color: #3c8dbc80;">
+        <td style="width:120px">组名</td>
+        <td style="width:150px">信息</td>
+        <td>主机</td>
+        <td style="width:70px">描述</td>
+      </tr>
       {% for h in object_list %}
           <tr style="background-color: #e4e6e8">
               <td>{{ h.groupName }}</td>

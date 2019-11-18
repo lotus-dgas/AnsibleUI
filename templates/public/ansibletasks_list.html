@@ -24,10 +24,10 @@
             <!-- <td>GroupName</td> -->
             <td>任务</td>
             <td>参数</td>
-            <td style="width:45px">结果</td>
+           <!-- <td style="width:45px">结果</td> -->
             <td style="width:45px">状态</td>
             <td >时间</td>
-            <td>Label</td>
+            <!-- <td>Label</td> -->
           </tr>
         {% for t in object_list reversed %}
         <tr>
@@ -38,10 +38,10 @@
             <!-- <td>{{ t.GroupName }}</td> -->
             <td>{{ t.playbook }}</td>
             <td>{{ t.ExtraVars }}</td>
-            <td><a href="/ansible/get_Ansible_Tasks/?dataKey={{t.AnsibleID}}">点击</a></td>
+            <!-- <td><a href="/ansible/get_Ansible_Tasks/?dataKey={{t.AnsibleID}}">点击</a></td> -->
             <td>{{ t.CeleryResult|celery_status }}</td>
             <td>{{ t.CreateTime }} </td>
-            <td>{{ t.Label }}</td>
+           <!-- <td>{{ t.Label }}</td> -->
         </tr>
         {% endfor %}
       </table>

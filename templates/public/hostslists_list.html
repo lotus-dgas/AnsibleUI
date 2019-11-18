@@ -16,7 +16,11 @@
   <section class="content">
 
       <table class="table table-bordered">
-      <tr style="font-weight: bold;background-color: #3c8dbc80;"><td>主机名</td><td>IP</td><td>所在组</td></tr>
+      <tr style="font-weight: bold;background-color: #3c8dbc80;">
+        <td style="width:150px">主机名</td>
+        <td style="width:120px">IP</td>
+        <td>所在组</td>
+      </tr>
       {% for h in object_list %}
           <tr style="background-color: #e4e6e8">
               <td>{{ h.hostName }}</td>
