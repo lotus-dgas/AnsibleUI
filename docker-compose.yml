@@ -21,11 +21,12 @@ services:
     # image: 'ansible_ui'
     environment:
       ENV: "Docker"
-    volumes:
-      - /root/Ansible:/data/AnsibleUI
+    #volumes:
+      #- .:/data
+      #- /root/Ansible:/data/AnsibleUI
     depends_on:
       - mysql
-    #entrypoint: /data/entrypoint.sh -d mysql:3306
+      - redis
     depends_on:
       - redis
       - mysql
