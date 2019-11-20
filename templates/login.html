@@ -11,15 +11,14 @@
     <!--<title>login</title>-->
     <style>
     #login {
-        position:absolute;
-        width:500px;
-        /*height:200px;*/
-        border:1px solid #8eccaf;
-        left:50%;
-        top:50%;
-        margin-left:-250px;
-        margin-top:-150px;
-        /*background: #89b8ba;*/
+        background: #fff;
+        /*border: 1px solid  #eaeaea; */
+        border: 1px solid  #417690;
+        border-radius: 4px;
+        overflow: hidden;
+        width: 28em;
+        min-width: 300px;
+        margin: 100px auto;
     }
     body {
             /* background-image: url('../../static/images/005.jpg'); */
@@ -30,11 +29,27 @@
         .container {
             width: 100%;
         }
+    #header {
+        height: auto;
+        padding: 15px 16px;
+        justify-content: center;
+        background: #417690;
+        color: #ffc;
+        overflow: hidden;
+        align-items: center;
+        width: auto;
+        display: flex;
+    }
     </style>
 </head>
 <body>
 
 <div class="container" id="login">
+    <div id="header">
+        <div id="branding">
+        <h1 id="site-name"><a href="/">Ansible UI</a></h1>
+        </div>
+    </div>
         <p></p>
     {% if data %}
         <div class="alert alert-warning alert-dismissible" role="alert" style="width:85%;text-align: center;margin-left: 30px">

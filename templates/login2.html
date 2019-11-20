@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" >
+<head>
+    <title>登录 | 运维平台</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/login.css">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+    <meta name="robots" content="NONE,NOARCHIVE">
+</head>
+<body class=" login"
+  data-admin-utc-offset="28800">
+<!-- Container -->
+<div id="container">
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+            <h1 id="site-name"><a href="/">Ansible UI</a></h1>
+        </div>
+    </div>
+    <!-- END Header -->
+    <!-- Content -->
+    <div id="content" class="colM">
+        {% if data %}
+        <p class="errornote">
+        <!--请输入一个正确的 用户名 和密码. 注意他们都是区分大小写的. -->
+        <strong>Warning!</strong> {{data}}
+        </p>
+        {% endif %}
+        <div id="content-main">
+        <form action="" method="post" id="login-form">
+          {% csrf_token %}
+          <div class="form-row">
+            <label class="required" for="id_username">用户名:</label> <input type="text" name="username" autofocus required id="id_username">
+          </div>
+          <div class="form-row">
+            <label class="required" for="id_password">密码:</label> <input type="password" name="password" required id="id_password">
+          </div>
+          <div class="submit-row">
+            <label>&nbsp;</label><input type="submit" value="登录">
+          </div>
+        </form>
+        </div>
+        <br class="clear">
+    </div>
+    <!-- END Content -->
+    <div id="footer"></div>
+</div>
+<!-- END Container -->
+</body>
+</html>
