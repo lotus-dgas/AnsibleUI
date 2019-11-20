@@ -24,6 +24,9 @@ services:
     volumes:
       - /root/Ansible:/data/AnsibleUI
     depends_on:
+      - mysql
+    #entrypoint: /data/entrypoint.sh -d mysql:3306
+    depends_on:
       - redis
       - mysql
     # deploy:
