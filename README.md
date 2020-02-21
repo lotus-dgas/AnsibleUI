@@ -46,7 +46,7 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
 *   服务启动
     * 启动celery，请设置 `export PYTHONOPTIMIZE=1`, 否则celery将无法调用ansible
     * Celery启动，`celery multi start 1 -A myCelery -l info -c4 --pidfile=tmp/celery_%n.pid -f logs/celery.log`
-    * 主程序启动，`uwsgi --socket 127.0.0.1:9801 --module AnsibleUI.wsgi --py-autoreload=1 --daemonize=logs/uwsgi.log`
+    * 主程序启动，`uwsgi --socket 127.0.0.1:9801 --module ansible_ui.wsgi --py-autoreload=1 --daemonize=logs/uwsgi.log`
     * 静态资源及代理，nginx最简配置
     ```conf
         server {
