@@ -4,9 +4,6 @@
 
 AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任务异步处理
 
-##### 本人最近开始看工作，欢迎推荐和骚扰
-* 微信： lwr_dgas
-* 邮箱： lwr_dgas@163.com
 
 #### 软件架构
 
@@ -42,7 +39,7 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
 *   手动部署
     *   安装 Python 环境，开发环境版本为 Python 3.6.4
     *   安装相关pagkage `pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt`
-    *   配置相关参数 config/tools.py，包括redis、mysql，Ansible/settings.py 文件可修改 DATABASES 使用sqlite3
+    *   配置相关参数 tools/config.py，包括redis、mysql，Ansible/settings.py 文件可修改 DATABASES 使用sqlite3
     *   为数据库建表，`python3 manage.py makemigrations && python3 manage.py migrate`
     *   在代码目录下启动Celery，`celery -A myCelery worker -l info`，可参看myCelery.py文件尾注释部分
     *   启动主服务，`python3 manage.py runserver 0.0.0.0:10089`。
@@ -78,7 +75,7 @@ tools/config.py
 
 #### 使用说明
 
-0. 需外部提供MySQl和Redis，参数在tools/config.py内修改
+0. 需外部提供MySQL和Redis，参数在tools/config.py内修改
 
 #### UI
 

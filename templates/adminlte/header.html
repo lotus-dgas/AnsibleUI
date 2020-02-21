@@ -209,10 +209,13 @@
           </ul>
         </li>
         <!-- User Account: style can be found in dropdown.less -->
+{% if user.is_authenticated %}
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <img src="/static/adminlte/img/u.png" class="user-image" alt="User Image">
-            <span class="hidden-xs">{{ user.first_name }}({{ user }})</span>
+            <span class="hidden-xs">
+                    {{ user.first_name }}({{ user }})
+            </span>
           </a>
           <ul class="dropdown-menu">
             <!-- User image -->
@@ -220,21 +223,21 @@
               <img src="/static/adminlte/img/u.png" class="img-circle" alt="User Image">
 
               <p>
-                Alexander Pierce - Web Developer
-                <small>Member since Nov. 2012</small>
+                Web Developer
+                <small>{% now "jS F Y H:i" %}</small>
               </p>
             </li>
             <!-- Menu Body -->
             <li class="user-body">
               <div class="row">
                 <div class="col-xs-4 text-center">
-                  <a href="#">花朵</a>
+                  <a href="{% url 'hostsList' %}">主机</a>
                 </div>
                 <div class="col-xs-4 text-center">
-                  <a href="#">销量</a>
+                  <a href="{% url 'GroupsList' %}">项目</a>
                 </div>
                 <div class="col-xs-4 text-center">
-                  <a href="#">好友</a>
+                  <a href="{% url 'AnsibleTaskList' %}">任务</a>
                 </div>
               </div>
               <!-- /.row -->
@@ -245,11 +248,16 @@
                 <a href="#" class="btn btn-default btn-flat">设置</a>
               </div>
               <div class="pull-right">
-                <a href="#" class="btn btn-default btn-flat">退出</a>
+                <a href="/account/logout" class="btn btn-default btn-flat">退出</a>
               </div>
             </li>
           </ul>
         </li>
+{% else %}
+    <li>
+        <a href="/account/login">登录</a>
+    </li>
+{% endif %}
         <!-- Control Sidebar Toggle Button -->
         <li>
           <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
