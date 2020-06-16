@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #coding: utf8
-"Celery 异步操作Ansible 服务端"
+
+"""Celery 异步操作Ansible 服务端"""
 
 import os, sys
 if os.environ.get("PYTHONOPTIMIZE", ""):
@@ -13,6 +14,7 @@ import time
 from celery import Celery
 from ansibleApi import *
 from tools.config import BACKEND, BROKER, REDIS_ADDR, REDIS_PORT, REDIS_PD, ansible_result_redis_db, inventory, result_db
+from tools.AnsibleApi_v29 import *
 from celery.app.task import Task
 from celery.utils.log import get_task_logger
 from celery.result import AsyncResult
@@ -27,10 +29,15 @@ from public.models import *
 
 celery_logger = get_task_logger(__name__)
 
-appCelery = Celery("tasks",broker=BROKER,backend=BACKEND,)
+appCelery = Celery("tasks", broker=BROKER, backend=BACKEND,)
 appCelery.conf.task_send_sent_event = True
 appCelery.conf.worker_send_task_events = True
+
+redbeat_redis_url = "redis://localhost:6379/1"
+
+
 sources = inventory
+
 
 class MyTask(Task): #毁掉
     abstract = True
@@ -39,7 +46,9 @@ class MyTask(Task): #毁掉
     def after_return(self, status, respose, celery_id, args, *k, **kw):
         r = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=ansible_result_redis_db)
         a = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=result_db)
+        print('MyTask: ------- ', status, respose, celery_id, args, k, kw)
         tid = args[0]
+        print('Ansible Tid: %s' % tid)
         rlist = r.lrange(tid, 0, -1)
         try:
             at = AnsibleTasks.objects.filter(AnsibleID=tid)[0]
@@ -51,13 +60,16 @@ class MyTask(Task): #毁掉
         except: pass
         print("%s - %s - %s - %s - %s - %s" % (status, respose, celery_id, args, k, kw))
 
+    # 任务成功后执行
     def on_success(self, retval, task_id, args, kwargs):
         print("执行成功 notice from on_success")
         return super(MyTask, self).on_success(retval, task_id, args, kwargs)
 
+    # 任务失败时执行
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         print("执行失败 notice from on_failure")
         return super(MyTask, self).on_failure(exc, task_id, args, kwargs, einfo)
+
 
 @appCelery.task
 def ansibleExec(tid, groupname, tasks=[]):
@@ -65,10 +77,12 @@ def ansibleExec(tid, groupname, tasks=[]):
     AnsibleApi(tid, groupname, tasks, sources, vars)
     return None
 
+
 @appCelery.task
 def ansiblePlayBook(tid, pb=["playbooks/t.yml"]):
     AnsiblePlaybookApi(tid, pb, sources)
     return None
+
 
 @appCelery.task(bind=True,base=MyTask)  #
 def ansiblePlayBook_v2(self,tid, pb, extra_vars, **kw):
@@ -78,9 +92,24 @@ def ansiblePlayBook_v2(self,tid, pb, extra_vars, **kw):
     return 'success!!'
 
 
+@appCelery.task(bind=True, base=MyTask)
+def ansbile_exec_api_29(self, tid, tasks):
+    # tid = "AnsibleExec_%s" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    AnsibleExecApi29(tid, tasks)
+    return 'ok'
+
+
+@appCelery.task(bind=True, base=MyTask)
+def ansible_playbook_api_29(self, tid, playbooks):
+    '''tid 必须传入，不能生成'''
+    #, ['playbooks/test_debug.yml']
+    # tid = 'AnsiblePlaybook_%s' % datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    AnsiblePlaybookExecApi29(tid, playbooks)
+    return 'ok'
 
 @appCelery.task(bind=True)
 def syncAnsibleResult(self, ret, *a, **kw):     # 执行结束，结果保持至db
+    '''V1 版本'''
     # celery_logger.info(self.request.__dict__)
     c = AsyncResult(self.request.get('parent_id'))
     celery_logger.info(c.result)
@@ -95,6 +124,7 @@ def syncAnsibleResult(self, ret, *a, **kw):     # 执行结束，结果保持至
         at.CeleryResult = ct
         at.save()
         print("同步结果至db: syncAnsibleResult !!!!!: parent_id: %s" % self.request.get('parent_id'), a, kw)
+        print('Ansible执行结果：%s' % json.dumps([ json.loads(i.decode()) for i in rlist ]))
     else: pass
 
 ############  TEST  ###########
