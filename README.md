@@ -4,6 +4,8 @@
 
 AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任务异步处理
 
+Gitee 地址：https://gitee.com/lwr_dgas/AnsibleUI
+
 
 #### 软件架构
 
@@ -32,7 +34,7 @@ AnsibleUI 是基于Django + Ansible + Celery 的Web平台，用以批量的任�
 
 #### 安装教程
 *   为方便安装，请下载python包到files目录下，https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz
-*   Ansible使用私钥进行登录操作，私钥文件位置：files/id_rsa，或者在ansible.cfg中修改
+*   Ansible使用私钥进行登录操作，私钥文件位置：`files/id_rsa`，或者在ansible.cfg中修改
 *   Docker集群部署，启动端口 10089
     *   docker-compose build
     *   docker-compose up 

@@ -36,7 +36,7 @@ def sync_projects_to_db():  # 从inventory 文件同步到db
             print('新Group：%s' % a)
         p.hostList.clear()
         for h in b:
-            ts = HostsLists.objects.get_or_create(hostAddr=h)
+            ts = HostsLists.objects.get_or_create(ip=h)
             t = ts[0]
             if ts[1]:
                 print('新Host：%s' % h)

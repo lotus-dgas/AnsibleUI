@@ -39,6 +39,7 @@ class CeleyWorker(View):
         data = i.stats()
         return render(request, kw.get('template_file', None) or 'public/celery.html', {'data': data})
 
+    # 控制增减celery worker 数目
     def post(self, request, *a,  **kw):
         data = request.POST.dict()
         if data.get('opt', '') == 'grow':

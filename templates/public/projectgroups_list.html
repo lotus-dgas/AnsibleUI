@@ -28,7 +28,7 @@
               <td>{{ h.nickName }}</td>
               <td>
                       {% for g in h.hostList.all %}
-                      <a href="/ansible/get_hosts/?dataKey={{g.hostAddr}}">{{ g.hostName|default:g.hostAddr }}</a>、
+                      <a href="/ansible/host/">{{ g.hostname|default:g.ip }}</a>、
                       {% endfor %}
               </td>
               <td>{{ h.remark }}</td>

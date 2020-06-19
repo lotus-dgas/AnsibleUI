@@ -1,6 +1,7 @@
 
-# 测试 Debug
-- hosts: localhost
+
+# 测试选择组 Debug
+- hosts: '{{ groupName }}'
   vars:
     - content: 'data from yaml'
   tasks:

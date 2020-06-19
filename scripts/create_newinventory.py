@@ -18,12 +18,12 @@ class inv:
         self.nn = nn
         self.hosts = hosts
 
-hs = HostsLists.objects.prefetch_related('ProjectGroups').values('projectgroups__nickName', 'projectgroups__groupName', 'hostAddr')
+hs = HostsLists.objects.prefetch_related('ProjectGroups').values('projectgroups__nickName', 'projectgroups__groupName', 'ip')
 d = {}
 for h in hs:
     gn = h.get('projectgroups__groupName')
     nn = h.get('projectgroups__nickName')
-    hc = h.get('hostAddr')
+    hc = h.get('ip')
     if gn is None:
         gn = 'extraGroup'
         nn = '额外主机'

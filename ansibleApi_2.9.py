@@ -159,6 +159,7 @@ class PalyBookTaskQueueManager_V2(TaskQueueManager):
 
 
 class MyPlaybookExecutor_V2(PlaybookExecutor):
+
     def __init__(self, task_id, playbooks, inventory, variable_manager, loader, passwords):
         self._playbooks = playbooks
         self._inventory = inventory
@@ -180,6 +181,7 @@ class MyPlaybookExecutor_V2(PlaybookExecutor):
             )
         check_for_controlpersist(C.ANSIBLE_SSH_EXECUTABLE)
 
+
 def AnsiblePlaybookApi_V2(task_id, playbooks):
     context.CLIARGS = ImmutableDict(connection='local', module_path=['/to/mymodules'], forks=10, become=None,
                                     become_method=None, become_user=None, check=False, diff=False, 
@@ -192,6 +194,7 @@ def AnsiblePlaybookApi_V2(task_id, playbooks):
     pb = MyPlaybookExecutor_V2(task_id, playbooks, inventory, variable_manager, loader, passwords)
     result = pb.run()
     print(result)
+
 
 if __name__ == "__main__":
 

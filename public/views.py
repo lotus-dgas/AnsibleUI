@@ -23,29 +23,31 @@ class Index(View):
 class AnsibleTaskList(ListView):
     model = AnsibleTasks
 
+
 class AnsibleTaskDetail(DetailView):
     model = AnsibleTasks
     context_object_name = 't'
-    # def get(self, request, *k, **kw):
-    #     if request.is_ajax():
-    #         return JsonResponse({"msg": "ok"})
-    #     else:
-    #         return super().get(request, *k, **kw)
+
 
 class GroupsDetail(DetailView):
     model = ProjectGroups
 
+
 class GroupsList(ListView):
     model = ProjectGroups
+
 
 class HostsList(ListView):
     model = HostsLists
 
+
 class HostsDetail(DetailView):
     model = HostsLists
 
+
 class PlaybookList(ListView):
     model = Functions
+
 
 class PlaybookDetail(DetailView):
     model = Functions
@@ -58,6 +60,7 @@ class PlaybookDetail(DetailView):
         context['yml_content'] = '```yaml\n%s\n```' % s
 
         return context
+
 
 class TemplateReturn(LoginRequiredMixin, View):
     login_url = '/account/login'

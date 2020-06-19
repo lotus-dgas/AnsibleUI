@@ -56,7 +56,7 @@ class ResultCallback(CallbackBase):
             msg = u"PLAY"
         else:
             msg = u"PLAY [%s]" % name
-        print(msg)
+        print("v2_playbook_on_play_start，开始执行主机: %s， %s" % (play, msg))
 
     def v2_on_any(self,result, *args, **kwargs):
         print("v2_on_any", json.dumps(result, indent=4))
@@ -101,14 +101,6 @@ class ResultCallback(CallbackBase):
                 "host": result._host.get_name(), "status": "unreachable",
                 "task": result.task_name, "result": {"msg": "UNREACHABLE"}}
             )
-
-    def v2_playbook_on_play_start(self, play):
-        name = play.get_name().strip()
-        if not name:
-            msg = u"PLAY"
-        else:
-            msg = u"PLAY [%s]" % name
-        print("v2_playbook_on_play_start，开始执行主机: %s， %s" % (play, msg))
 
     def v2_playbook_on_task_start(self, task, is_conditional):
         print(u"v2_playbook_on_task_start, 任务： %s----%s" % (task._uuid, task.get_name().strip()))

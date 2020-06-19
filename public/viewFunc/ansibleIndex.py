@@ -12,6 +12,8 @@ from public.templatetags.custom_markdown import ansible_result
 from django.core.cache import cache
 from tools.AnsibleModules import data as ansible_modules_gather
 from public.models import *
+from myCelery import ansbile_exec_api_29, ansible_playbook_api_29
+
 from decorators.Proxy import ProxyAuth
 import logging
 logger = logging.getLogger('ansible.ui')
@@ -23,13 +25,20 @@ class AnsibleOpt:       #ansible 执行 jiekou , 传如香港参赛
         if not extra_vars.get('groupName'):
             extra_vars['groupName'] = groupName
         logger.info("添加Ansilb-Playbook执行；(%s - %s - %s - %s)" % (playbook, groupName, extra_vars, kw))
+        # synce
         # celeryTask = ansiblePlayBook_v2.apply_async((tid, playbook, extra_vars), link=syncAnsibleResult.s(tid=tid)) # ansible结果保持
-        celeryTask = ansiblePlayBook_v2.apply_async((tid, playbook, extra_vars)) # ansible结果保持
+        # 旧版 api
+        # celeryTask = ansiblePlayBook_v2.apply_async((tid, playbook, extra_vars)) # ansible结果保持
+        celeryTask = ansible_playbook_api_29.apply_async((tid, playbook, extra_vars))
         label = kw.get('label', '')
-        AnsibleTasks(AnsibleID=tid, CeleryID=celeryTask.task_id,TaskUser=user,
+        at = AnsibleTasks(AnsibleID=tid, CeleryID=celeryTask.task_id,TaskUser=user,
                 GroupName=groupName, ExtraVars=extra_vars,
-                playbook=playbook, Label=label).save()
-        return {"playbook": playbook, "extra_vars": extra_vars, "tid": tid, "celeryTask": celeryTask.task_id, "groupName": groupName}
+                playbook=playbook, Label=label)
+        at.save()
+
+        # return {"playbook": playbook, "extra_vars": extra_vars, "tid": tid, "celeryTask": celeryTask.task_id, "groupName": groupName}
+        return {"id": at.pk, "playbook": playbook, "extra_vars": extra_vars, "tid": tid,
+                "celeryTask": celeryTask.task_id, "groupName": groupName}
     @staticmethod
     def ansible_opt():
         tid = "AnsibleApiOpt-%s" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -61,7 +70,7 @@ class AnsibleData:  #Ansible 数据接口
     def get_hosts(self, *args, **kw):
         print(args)
         if args[0]:
-            hosts = HostsLists.objects.filter(hostAddr=args[0])
+            hosts = HostsLists.objects.filter(ip=args[0])
         else:
             hosts = HostsLists.objects.all()
         return render(self.request, "ansible/lookup.html", {'hosts': hosts})
@@ -70,7 +79,7 @@ class AnsibleData:  #Ansible 数据接口
         if args[0]:
             groups = ProjectGroups.objects.filter(groupName=args[0])
             if groups.count() == 1 and self.request.is_ajax():
-                hosts = list(groups[0].hostList.values('hostName', 'hostAddr'))
+                hosts = list(groups[0].hostList.values('hostName', 'ip'))
                 return JsonResponse({'groupName': groups[0].groupName, 'nickName': groups[0].nickName,'hosts': hosts})
         else:
             groups = ProjectGroups.objects.all()
@@ -162,7 +171,9 @@ class AnsibleTask(LoginRequiredMixin, View):    #ansibe Http 任务推送接口
                 **{'label': request.META.get('REMOTE_ADDR')}
             )
         # s = extra_vars
-        return redirect('/ansible/get_Ansible_Tasks/?dataKey=%s' % s.get('tid'))
+        # return redirect('/ansible/get_Ansible_Tasks/?dataKey=%s' % s.get('tid'))
+        return redirect('/ansible/task/%s/' % s.get('id'))
+
         # 参数： groupName, (playbook | myfunc), 不支持 茉莉花 调用
     def post(self, request, *k, **kw):
         return JsonResponse({"msg": "err"})

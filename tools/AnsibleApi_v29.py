@@ -23,7 +23,7 @@ from collections import defaultdict
 import redis
 
 # redis callback 写入 db
-ansible_result_db = 10
+from tools.config import REDIS_ADDR, REDIS_PORT,REDIS_PD, ansible_remote_user, ansible_result_redis_db
 
 
 Options = namedtuple('Options', [
@@ -43,7 +43,7 @@ def get_default_options():
         connection='ssh',
         forks=10,
         remote_user='root',
-        private_key_file=None,
+        private_key_file='files/id_rsa',
         become=None,
         become_method=None,
         become_user=None,
@@ -164,7 +164,7 @@ class RedisCallBack(CallbackBase):
         super().__init__()
         self.id = task_id
         self.results = []
-        self.r = redis.Redis(db=ansible_result_db)
+        self.r = redis.Redis(host=REDIS_ADDR, port=REDIS_PORT, password=REDIS_PD, db=ansible_result_redis_db)
         self.log = logging.getLogger('AnsibleApiLog')
         self.log.propagate = False
         spath = logging.handlers.RotatingFileHandler("logs/ansible_api.log", "a", 0, 1)
@@ -182,7 +182,7 @@ class RedisCallBack(CallbackBase):
         msg = json.dumps(data, ensure_ascii=False)
         self.log.info(msg)
         self.r.rpush(self.id, msg)
-        print('[bold magenta]RedisCallBack [/bold magenta]', self.id, '*'*20, data)
+        print('[bold magenta]RedisCallBack [/bold magenta]', self.id, '*'*20, self.r ,data)
 
     def v2_playbook_on_start(self, playbook, *k, **kw):
         print('v2_playbook_on_start', playbook.__dict__)
@@ -358,8 +358,20 @@ def AnsibleExecApi29(task_id, tasks=[], inventory_data=None):
         shutil.rmtree(C.DEFAULT_LOCAL_TMP, True)
 
 
+# Ansible 2.9 版本的 vars/manager.py: VariableManager 未有 extra_vars.setter
+class VariableManagerVars(VariableManager):
+
+    @property
+    def extra_vars(self):
+        return self._extra_vars
+
+    @extra_vars.setter
+    def extra_vars(self, value):
+        self._extra_vars = value.copy()
+
+
 # 执行 Ansible Playbook
-def AnsiblePlaybookExecApi29(task_id, playbook_path, inventory_data=None):
+def AnsiblePlaybookExecApi29(task_id, playbook_path, inventory_data=None, extra_vars={}):
     # playbook_path = ['playbooks/test_debug.yml']
     passwords = ""
     options = get_default_options()
@@ -368,7 +380,8 @@ def AnsiblePlaybookExecApi29(task_id, playbook_path, inventory_data=None):
     else:
         inventory = BaseInventory(InventoryInit().get_data())
     loader = DataLoader()
-    variable_manager = VariableManager(loader=loader, inventory=inventory)
+    variable_manager = VariableManagerVars(loader=loader, inventory=inventory)
+    variable_manager.extra_vars = extra_vars
     executor = MyPlaybookExecutor_V2(
         task_id=task_id,
         playbooks=playbook_path,
@@ -394,5 +407,5 @@ if __name__ == '__main__':
     AnsiblePlaybookExecApi29(
         'AnsiblePlaybook_%s' % datetime.datetime.now().strftime('%Y%m%d%H%M%S'),
         ['playbooks/test_debug.yml'],
-        data
+        data, {}
     )

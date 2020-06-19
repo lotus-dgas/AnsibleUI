@@ -63,14 +63,17 @@ for p in ps:
             print("新PlayBook： %s" % p)
 # end insert playbook
 
-h,b = HostsLists.objects.get_or_create(hostName='测试主机', hostAddr='1.1.1.1')
+h1,b = HostsLists.objects.get_or_create(hostname='测试主机', ip='1.1.1.1')
+if b:
+    print('添加测试主机')
+h2,b = HostsLists.objects.get_or_create(hostname='本机', ip='127.0.0.1')
 if b:
     print('添加本机')
-
-g,b = ProjectGroups.objects.get_or_create(groupName='test',nickName='测试')
+g,b = ProjectGroups.objects.get_or_create(groupName='test', nickName='测试')
 if b:
     print('添加测试组')
-g.hostList.add(h)
+g.hostList.add(h1)
+g.hostList.add(h2)
 g.save()
 
 
@@ -79,6 +82,6 @@ data = "# 请勿手动修改该文件\n"
 gs = ProjectGroups.objects.all()
 for g in gs:
     data += '\n# %s\n[%s]\n' % (g.nickName, g.groupName)
-    data += '\n'.join([ i[0] for i in g.hostList.values_list('hostAddr') ])
+    data += '\n'.join([ i[0] for i in g.hostList.values_list('ip') ])
 with open(inventory, 'w') as f:
     f.write(data+ '\n')

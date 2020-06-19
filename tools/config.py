@@ -10,6 +10,7 @@ ansible_result_redis_db = 10
 # ansible_callback_redis_addr = "10.20.88.215"
 # ansible_callback_redis_port = 6379
 
+private_key = 'files/id_rsa'
 
 #### Redis  ~~~ ansible 结果临时存放+Celery
 

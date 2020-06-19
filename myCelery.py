@@ -18,6 +18,10 @@ from tools.AnsibleApi_v29 import *
 from celery.app.task import Task
 from celery.utils.log import get_task_logger
 from celery.result import AsyncResult
+try:
+    from rich import print
+except:
+    pass
 
 import django
 path=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,16 +43,15 @@ redbeat_redis_url = "redis://localhost:6379/1"
 sources = inventory
 
 
-class MyTask(Task): #毁掉
+class MyTask(Task):  #毁掉
     abstract = True
 
     # 任务返回结果后执行
     def after_return(self, status, respose, celery_id, args, *k, **kw):
         r = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=ansible_result_redis_db)
         a = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=result_db)
-        print('MyTask: ------- ', status, respose, celery_id, args, k, kw)
         tid = args[0]
-        print('Ansible Tid: %s' % tid)
+        print('MyTask: 处理 Ansible 任务结果， AnsibleID: %s, %s, %s, %s, %s, %s, %s'% (tid,  status, respose, celery_id, args, k, kw))
         rlist = r.lrange(tid, 0, -1)
         try:
             at = AnsibleTasks.objects.filter(AnsibleID=tid)[0]
@@ -57,7 +60,8 @@ class MyTask(Task): #毁掉
             at.CeleryResult = ct
             at.save()
             print("同步结果至db: syncAnsibleResult !!!!!: parent_id: %s" % self.request.get('parent_id'), a, kw)
-        except: pass
+        except:
+            pass
         print("%s - %s - %s - %s - %s - %s" % (status, respose, celery_id, args, k, kw))
 
     # 任务成功后执行
@@ -84,8 +88,8 @@ def ansiblePlayBook(tid, pb=["playbooks/t.yml"]):
     return None
 
 
-@appCelery.task(bind=True,base=MyTask)  #
-def ansiblePlayBook_v2(self,tid, pb, extra_vars, **kw):
+@appCelery.task(bind=True, base=MyTask)  #
+def ansiblePlayBook_v2(self, tid, pb, extra_vars, **kw):
     psources = kw.get('sources') or extra_vars.get('sources') or sources
     print("myCelery.py PlayBook File: %s，groupName: %s, psources: %s, Vars: %s" % (pb, extra_vars.get("groupName", "None"), psources, extra_vars))
     AnsiblePlaybookApi_v2(tid, ["playbooks/%s"%pb], psources, extra_vars)
@@ -99,13 +103,31 @@ def ansbile_exec_api_29(self, tid, tasks):
     return 'ok'
 
 
+def get_inventory():
+    data = []
+    hs = HostsLists.objects.all()
+    for h in hs:
+        gs = [i.groupName for i in h.projectgroups_set.all()]
+        data.append({
+            'ip': h.ip,
+            'username': h.ansible_user,
+            'password': h.ansible_pass,
+            'private_key': h.ansilbe_key,
+            'groups': gs
+        })
+    return data
+
+
 @appCelery.task(bind=True, base=MyTask)
-def ansible_playbook_api_29(self, tid, playbooks):
-    '''tid 必须传入，不能生成'''
-    #, ['playbooks/test_debug.yml']
-    # tid = 'AnsiblePlaybook_%s' % datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-    AnsiblePlaybookExecApi29(tid, playbooks)
+def ansible_playbook_api_29(self, tid, playbooks, extra_vars, **kw):
+    """tid 必须传入，不能生成"""
+    # psources = kw.get('sources') or extra_vars.get('sources') or sources
+    if isinstance(playbooks, str):
+        playbooks = ['playbooks/%s' % playbooks]
+
+    AnsiblePlaybookExecApi29(tid, playbooks, get_inventory(), extra_vars)
     return 'ok'
+
 
 @appCelery.task(bind=True)
 def syncAnsibleResult(self, ret, *a, **kw):     # 执行结束，结果保持至db

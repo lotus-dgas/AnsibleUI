@@ -1,5 +1,5 @@
 amqp==2.4.2
-ansible==2.7.12
+ansible==2.9.2
 asn1crypto==0.24.0
 backcall==0.1.0
 bcrypt==3.1.6
@@ -8,7 +8,7 @@ celery==4.3.0
 cffi==1.12.3
 cryptography==2.4.2
 decorator==4.4.0
-Django==2.1.11
+Django==3.0.1
 idna==2.8
 ipython==7.5.0
 ipython-genutils==0.2.0

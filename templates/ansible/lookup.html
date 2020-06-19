@@ -8,7 +8,7 @@
     {% for h in hosts %}
         <tr>
             <td>{{ h.hostName }}</td>
-            <td>{{ h.hostAddr }}</td>
+            <td>{{ h.ip }}</td>
             <td>
                     {% for g in h.projectgroups_set.all %}
                     <a href="/ansible/get_groups/?dataKey={{g.groupName}}">{{  g.nickName|default:g.groupName }}</a> 、
@@ -27,7 +27,7 @@
             <td>{{ h.nickName }}</td>
             <td>
                     {% for g in h.hostList.all %}
-                    <a href="/ansible/get_hosts/?dataKey={{g.hostAddr}}">{{ g.hostName|default:g.hostAddr }}</a>、
+                    <a href="/ansible/get_hosts/?dataKey={{g.ip}}">{{ g.hostName|default:g.ip }}</a>、
                     {% endfor %}
             </td>
             <td>{{ h.remark }}</td>

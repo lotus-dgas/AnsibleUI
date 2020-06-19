@@ -19,15 +19,17 @@
       <tr style="font-weight: bold;background-color: #3c8dbc80;">
         <td style="width:150px">主机名</td>
         <td style="width:120px">IP</td>
+        <td>登录名</td>
         <td>所在组</td>
       </tr>
       {% for h in object_list %}
           <tr style="background-color: #e4e6e8">
-              <td>{{ h.hostName }}</td>
-              <td>{{ h.hostAddr }}</td>
+              <td>{{ h.hostname }}</td>
+              <td>{{ h.ip }}</td>
+              <td>{{ h.ansible_user }}</td>
               <td>
                       {% for g in h.projectgroups_set.all %}
-                      <a href="/ansible/get_groups/?dataKey={{g.groupName}}">{{  g.nickName|default:g.groupName }}</a> 、
+                      <a href="/ansible/group/">{{  g.nickName|default:g.groupName }}</a> 、
                       {% endfor %}
               </td>
           </tr>
