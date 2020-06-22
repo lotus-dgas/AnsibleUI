@@ -20,6 +20,7 @@ logger = logging.getLogger('ansible.ui')
 
 from myCelery import appCelery
 
+
 class CeleryControl:
     def __init__(self):
         self.c = appCelery.control.inspect()
@@ -28,7 +29,10 @@ class CeleryControl:
     def grow(self, nodeName, num):
         return appCelery.control.pool_grow(n=num, reply=True, destination=[nodeName])
 
+
 class CeleyWorker(View):
+    """Celery 列表页面"""
+
     def get(self, request, *a, **kw):
         if kw.get('name'):
             name = kw.get('name')

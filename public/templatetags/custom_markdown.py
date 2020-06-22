@@ -3,7 +3,9 @@ from django.template.defaultfilters import stringfilter
 from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
 import markdown
+import json
 register = template.Library()  #自定义filter时必须加上
+
 
 @register.filter(is_safe=True)  #注册template filter
 @stringfilter  #希望字符串作为参数
@@ -14,7 +16,7 @@ def custom_markdown(value):     # 格式化markdown
         safe_mode=True,enable_attributes=False)
     )
 
-import json
+
 @register.filter(is_safe=True)  #注册template filter
 @stringfilter  #希望字符串作为参数
 def celery_status(value):   # 格式化celery
@@ -29,6 +31,7 @@ def celery_status(value):   # 格式化celery
             'RUNNING': '<p style="color:#d600ff">执行中</p>'
         }
     return mark_safe(r.get(s))
+
 
 @register.filter(is_safe=True)
 @stringfilter
@@ -61,11 +64,9 @@ def ansible_result(s):      #ansible_result
 
 @register.filter(is_safe=True)  
 def json_format(s):
-    print('json_format: %s - %s' % (type(s), s) )
     if isinstance(s, dict):
         return json.dumps(s, indent=4)
     elif isinstance(s,str):
-        print(json.dumps(json.loads(s),  indent=4))
-        return json.dumps(json.loads(s),  indent=4) 
+        return json.dumps(json.loads(s),  indent=4)
     else:
         return 'format fail'
