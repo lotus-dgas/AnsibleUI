@@ -1,3 +1,7 @@
+
+__author__ = '独孤傲世'
+
+
 import json
 import shutil
 from ansible.module_utils.common.collections import ImmutableDict
@@ -103,12 +107,12 @@ class BaseInventory(InventoryManager):
     variable_manager_class = VariableManager
     host_manager_class = BaseHost
 
-    def __init__(self, host_list=[], group_list=[]):
+    def __init__(self, host_list=[], group_list=[], inventory_file=None):
         self.host_list = host_list
         self.group_list = group_list
         self.loader = self.loader_class()
         self.variable_manager = self.variable_manager_class()
-        super().__init__(self.loader)
+        super().__init__(self.loader, inventory_file)
 
     def get_groups(self):
         return self._inventory.groups
@@ -267,6 +271,7 @@ class PlayBookTaskQueueManager_V2(TaskQueueManager):
     def load_callbacks(self):   # 为callback 设置存储id
         pass
 
+
 # 重新封装 PlaybookExecutor ， 传入 task_id
 class MyPlaybookExecutor_V2(PlaybookExecutor):
 
@@ -292,29 +297,6 @@ class MyPlaybookExecutor_V2(PlaybookExecutor):
         check_for_controlpersist(C.ANSIBLE_SSH_EXECUTABLE)
 
 
-class InventoryInit():
-
-    data = host_data = [
-        {
-            # "hostname": "testserver",
-            "ip": "172.16.84.138",
-            "port": 22,
-            "username": "root",
-            "password": "`12",
-            "groups": ['test222']
-        },
-        {
-            'ip': 'ansibleui.cn',
-            'username': 'aui',
-            'groups': ['group2', 'group3'],
-            'vars': {'msg': 'love'}
-        },
-    ]
-
-    def get_data(self):
-        return self.data
-
-
 class MyTaskQueueManager(TaskQueueManager):
     # def load_callbacks(self):   # 截断callback，只保留自定义
         pass
@@ -329,10 +311,7 @@ def AnsibleExecApi29(task_id, tasks=[], inventory_data=None):
     passwords = dict(vault_pass='secret')
     results_callback = RedisCallBack(task_id)
     # inventory = InventoryManager(loader=loader, sources='localhost,')
-    if inventory_data:
-        inventory = BaseInventory(inventory_data)
-    else:
-        inventory = BaseInventory(InventoryInit().get_data())
+    inventory = BaseInventory(inventory_data)
     variable_manager = VariableManager(loader=loader, inventory=inventory)
     play_source =  dict(
             name="Ansible Play",
@@ -371,14 +350,11 @@ class VariableManagerVars(VariableManager):
 
 
 # 执行 Ansible Playbook
-def AnsiblePlaybookExecApi29(task_id, playbook_path, inventory_data=None, extra_vars={}):
+def AnsiblePlaybookExecApi29(task_id, playbook_path, inventory_data=[], extra_vars={}):
     # playbook_path = ['playbooks/test_debug.yml']
     passwords = ""
     options = get_default_options()
-    if inventory_data:
-        inventory = BaseInventory(inventory_data)
-    else:
-        inventory = BaseInventory(InventoryInit().get_data())
+    inventory = BaseInventory(inventory_data)
     loader = DataLoader()
     variable_manager = VariableManagerVars(loader=loader, inventory=inventory)
     variable_manager.extra_vars = extra_vars
@@ -402,7 +378,9 @@ if __name__ == '__main__':
     #     dict(action=dict(module='debug', args=dict(msg='{{shell_out.stdout}}')))
     # ]
     # AnsibleExecApi29(task_id, tasks)
-    data = InventoryInit().get_data()
+    data = [
+        {'ip': '127.0.0.1', }
+    ]
     print(data)
     AnsiblePlaybookExecApi29(
         'AnsiblePlaybook_%s' % datetime.datetime.now().strftime('%Y%m%d%H%M%S'),
