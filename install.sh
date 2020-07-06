@@ -19,6 +19,8 @@ PWD=`pwd`
 PYPATH=`pwd`'/.venv/'
 PORT=10089
 
+mkdir logs tmp
+
 if [[ -f  /usr/bin/yum ]]; then
     echo -e '\033[31myum 安装必要插件\033[0m'
     yum -y install epel-release

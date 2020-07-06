@@ -64,7 +64,7 @@ if USE_MYSQL:
             'PASSWORD': MYSQL_PASS,
             'HOST': MYSQL_HOST,
             'PORT': MYSQL_PORT,
-            #'OPTIONS': {'charset': 'utf8mb4'},
+            'OPTIONS': {'charset': 'utf8mb4'},
         }
     }
 else:

@@ -107,12 +107,13 @@ class BaseInventory(InventoryManager):
     variable_manager_class = VariableManager
     host_manager_class = BaseHost
 
-    def __init__(self, host_list=[], group_list=[], inventory_file=None):
+    def __init__(self, host_list=[], group_list=[],):
+        print('BaseInventory: host_list - %s; group_list = %s' % (host_list, group_list))
         self.host_list = host_list
         self.group_list = group_list
         self.loader = self.loader_class()
         self.variable_manager = self.variable_manager_class()
-        super().__init__(self.loader, inventory_file)
+        super().__init__(self.loader)
 
     def get_groups(self):
         return self._inventory.groups
@@ -181,12 +182,15 @@ class RedisCallBack(CallbackBase):
         print('__del__: %s' % self.results)
         # self._write_to_save(json.dumps({"msg": "执行完成"}, ensure_ascii=False))
         # super(ResultCallback, self).__del__()
+        with open('logs/callback_%s.txt' % self.id, 'w') as f:
+            f.write(json.dumps(self.results, indent=4, ensure_ascii=False))
 
     def _write_to_save(self, data):
         msg = json.dumps(data, ensure_ascii=False)
         self.log.info(msg)
         self.r.rpush(self.id, msg)
         print('[bold magenta]RedisCallBack [/bold magenta]', self.id, '*'*20, self.r ,data)
+        self.results.append(data)
 
     def v2_playbook_on_start(self, playbook, *k, **kw):
         print('v2_playbook_on_start', playbook.__dict__)
@@ -350,12 +354,18 @@ class VariableManagerVars(VariableManager):
 
 
 # 执行 Ansible Playbook
-def AnsiblePlaybookExecApi29(task_id, playbook_path, inventory_data=[], extra_vars={}):
+def AnsiblePlaybookExecApi29(task_id, playbook_path, inventory_data=[], extra_vars={}, inventory_file=None):
     # playbook_path = ['playbooks/test_debug.yml']
+    print(task_id, playbook_path, inventory_data, extra_vars, inventory_file)
     passwords = ""
     options = get_default_options()
-    inventory = BaseInventory(inventory_data)
     loader = DataLoader()
+
+    # 如果输入主机与组对应关系，调用自定义关系模块，否则，调用 inventory 文件
+    if inventory_data:
+        inventory = BaseInventory(inventory_data)
+    else:
+        inventory = InventoryManager(loader=loader, sources=inventory_file)
     variable_manager = VariableManagerVars(loader=loader, inventory=inventory)
     variable_manager.extra_vars = extra_vars
     executor = MyPlaybookExecutor_V2(
