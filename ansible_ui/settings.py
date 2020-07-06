@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'channels',
     'public',
 ]
 
@@ -29,6 +30,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'tools.middlewares.RecordRequest',
 ]
 
 ROOT_URLCONF = 'ansible_ui.urls'
@@ -49,6 +51,7 @@ TEMPLATES = [
     },
 ]
 
+# ASGI_APPLICATION = "ansible_ui.routing.application"
 WSGI_APPLICATION = 'ansible_ui.wsgi.application'
 
 if USE_MYSQL:
@@ -56,11 +59,11 @@ if USE_MYSQL:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             #'NAME':'AnsibleUI',
-            'NAME':'ansible_ui',
-            'USER':MYSQL_USER,
-            'PASSWORD':MYSQL_PASS,
-            'HOST':MYSQL_HOST,
-            'PORT':MYSQL_PORT,
+            'NAME': 'ansible_ui',
+            'USER': MYSQL_USER,
+            'PASSWORD': MYSQL_PASS,
+            'HOST': MYSQL_HOST,
+            'PORT': MYSQL_PORT,
             #'OPTIONS': {'charset': 'utf8mb4'},
         }
     }
@@ -96,81 +99,86 @@ CACHES = {
 
 # LOGDIR = os.path.join(BASE_DIR, "ansible_ui")
 LOGDIR = os.path.join(BASE_DIR, "logs")
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'formatters': {
-#         'verbose': {'format': '%(asctime)s %(levelname)s %(funcName)s %(pathname)s:%(lineno)s %(message)s'},
-#         'custom': {'format': '%(asctime)s %(levelname)s %(module)s %(funcName)s %(pathname)s:%(lineno)s %(message)s'},
-#         'simple': {'format': '%(asctime)s %(levelname)s %(module)s %(message)s'},
-#         'basic': {'format': '%(asctime)s %(levelname)s %(message)s'}
-#     },
-#     'filters': {},
-#     'handlers': {
-#         'file': {
-#             'level': 'INFO',
-#             'class': 'logging.FileHandler',
-#             'filename': 'logs/django-debug.log',
-#             'formatter': 'verbose',
-#         },
-#         'file-db': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': 'logs/django-db.log',
-#             'formatter': 'verbose'
-#         },
-#         'file-request': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': 'logs/django-request.log',
-#             'formatter': 'verbose'
-#         },
-#         'file-server': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': 'logs/django-server.log',
-#             'formatter': 'basic'
-#         },
-#         'file-ui': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': 'logs/django-ui.log',
-#             'formatter': 'verbose'
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['file'],
-#             'level': 'DEBUG',
-#             'propagate': False,
-#             'formatter': 'verbose'
-#         },
-#         'django.request': {
-#             'handlers': ['file-request'],
-#             'level': 'DEBUG',
-#             'propagate': False,
-#         },
-#         'django.server': {
-#             'handlers': ['file-server'],
-#             'level': 'DEBUG',
-#             'propagate': False,
-#         },
-#         'django.db.backends': {
-#             'handlers': ['file-db'],
-#             'level': 'DEBUG',
-#             'propagate': False,
-#             'formatter': 'verbose'
-#         },
-#         'ansible.ui': {
-#             'handlers': ['file-ui'],
-#             'level': 'DEBUG',
-#             'propagate': False,
-#             'formatter': 'verbose'
-#         },
-#     },
-# }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {'format': '%(asctime)s %(levelname)s %(funcName)s %(pathname)s:%(lineno)s %(message)s'},
+        'custom': {'format': '%(asctime)s %(levelname)s %(module)s %(funcName)s %(pathname)s:%(lineno)s %(message)s'},
+        'simple': {'format': '%(asctime)s %(levelname)s %(module)s %(message)s'},
+        'basic': {'format': '%(asctime)s %(levelname)s %(message)s'}
+    },
+    'filters': {},
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/django-debug.log',
+            'formatter': 'verbose',
+        },
+        'file-db': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/django-db.log',
+            'formatter': 'verbose'
+        },
+        'file-request': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/django-request.log',
+            'formatter': 'verbose'
+        },
+        'file-server': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/django-server.log',
+            'formatter': 'basic'
+        },
+        'file-ui': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/django-ui.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': False,
+            'formatter': 'verbose'
+        },
+        'django.request': {
+            'handlers': ['file-request'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['file-server'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['file-db'],
+            'level': 'DEBUG',
+            'propagate': False,
+            'formatter': 'verbose'
+        },
+        'ansible.ui': {
+            'handlers': ['file-ui'],
+            'level': 'DEBUG',
+            'propagate': False,
+            'formatter': 'verbose'
+        },
+    },
+}
 
+from django.utils.translation import gettext_lazy as _
+LANGUAGES = [
+    ('zh-Hans', _('Chinese')),
+]
 LANGUAGE_CODE = 'zh-Hans'
+
 TIME_ZONE = 'Asia/Shanghai'
 USE_I18N = True
 USE_L10N = True

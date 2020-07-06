@@ -18,6 +18,7 @@ logger = logging.getLogger("custom")
 develop = logging.getLogger("develop")
 record = logging.getLogger("record")
 
+
 def RecordIP(func):
     @wraps(func)
     def wrapped_func(request, *args, **kw):

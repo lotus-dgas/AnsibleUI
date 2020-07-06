@@ -11,6 +11,8 @@ from public.viewFunc.account import myLogin, myLogout, myApply, notes
 from public.viewFunc.celeryIndex import CeleyWorker, CeleryControl
 
 from django.views.generic.base import TemplateView
+
+
 class WS(TemplateView):
     template_name = 'public/websocker.html'
 

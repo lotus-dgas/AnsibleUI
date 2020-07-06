@@ -75,34 +75,6 @@ class MyTask(Task):  #毁掉
         return super(MyTask, self).on_failure(exc, task_id, args, kwargs, einfo)
 
 
-@appCelery.task
-def ansibleExec(tid, groupname, tasks=[]):
-    vars = {"project": "Lotus"} #额外参数
-    AnsibleApi(tid, groupname, tasks, sources, vars)
-    return None
-
-
-@appCelery.task
-def ansiblePlayBook(tid, pb=["playbooks/t.yml"]):
-    AnsiblePlaybookApi(tid, pb, sources)
-    return None
-
-
-@appCelery.task(bind=True, base=MyTask)  #
-def ansiblePlayBook_v2(self, tid, pb, extra_vars, **kw):
-    psources = kw.get('sources') or extra_vars.get('sources') or sources
-    print("myCelery.py PlayBook File: %s，groupName: %s, psources: %s, Vars: %s" % (pb, extra_vars.get("groupName", "None"), psources, extra_vars))
-    AnsiblePlaybookApi_v2(tid, ["playbooks/%s"%pb], psources, extra_vars)
-    return 'success!!'
-
-
-@appCelery.task(bind=True, base=MyTask)
-def ansbile_exec_api_29(self, tid, tasks):
-    # tid = "AnsibleExec_%s" % datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-    AnsibleExecApi29(tid, tasks)
-    return 'ok'
-
-
 def get_inventory():
     data = []
     hs = HostsLists.objects.all()
@@ -127,35 +99,6 @@ def ansible_playbook_api_29(self, tid, playbooks, extra_vars, **kw):
 
     AnsiblePlaybookExecApi29(tid, playbooks, get_inventory(), extra_vars)
     return 'ok'
-
-
-@appCelery.task(bind=True)
-def syncAnsibleResult(self, ret, *a, **kw):     # 执行结束，结果保持至db
-    '''V1 版本'''
-    # celery_logger.info(self.request.__dict__)
-    c = AsyncResult(self.request.get('parent_id'))
-    celery_logger.info(c.result)
-    tid = kw.get('tid', None)
-    if tid:
-        r = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=ansible_result_redis_db)
-        a = redis.Redis(host=REDIS_ADDR, password=REDIS_PD, port=REDIS_PORT, db=result_db)
-        rlist = r.lrange(tid, 0, -1)
-        at = AnsibleTasks.objects.filter(AnsibleID=tid)[0]
-        at.AnsibleResult = json.dumps([ json.loads(i.decode()) for i in rlist ])
-        ct = a.get('celery-task-meta-%s' % at.CeleryID).decode()
-        at.CeleryResult = ct
-        at.save()
-        print("同步结果至db: syncAnsibleResult !!!!!: parent_id: %s" % self.request.get('parent_id'), a, kw)
-        print('Ansible执行结果：%s' % json.dumps([ json.loads(i.decode()) for i in rlist ]))
-    else: pass
-
-############  TEST  ###########
-@appCelery.task(bind=True,base=MyTask)
-def myTest(self, g, *a, **kw):     #bind 将获取自身信息
-    celery_logger.info(self.request.__dict__)
-    print("myTest: %s, %s, %s" % (g, a, kw))
-    return g
-    # raise RuntimeError('测试 celery 失败')
 
 
 if __name__ == "__main__":

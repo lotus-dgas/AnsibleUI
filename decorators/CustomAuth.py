@@ -20,6 +20,7 @@ develop = logging.getLogger("develop")
 record = logging.getLogger("record")
 cookie_name = "WeiChatCookie"
 
+
 def OAuthCookie(func):
     @wraps(func)
     def wrapped_func(request, *args, **kw):
@@ -56,6 +57,7 @@ def OAuthCookie(func):
         return func(request, *args, **kw)
     return wrapped_func
 
+
 def LocalLogin(func):
     @wraps(func)
     def wrapped_func(request, *args, **kw):
@@ -83,6 +85,7 @@ def LocalLogin(func):
             return HttpResponseRedirect(rUrl)
         return func(request, *args, **kw)
     return wrapped_func
+
 
 def OAuthSession(func):
     @wraps(func)
@@ -121,7 +124,10 @@ def OAuthSession(func):
         return func(request, *args, **kw)
     return wrapped_func
 
+
 OTokenList = [""]
+
+
 def OAuthToken(func):
     @wraps(func)
     def wrapped_func(request, *args, **kw):

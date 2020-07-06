@@ -1,21 +1,12 @@
 #coding: utf8
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import redirect
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views import View
-import json, datetime, redis, os, random, string, ast
-from myCelery import ansiblePlayBook_v2, ansibleExec, syncAnsibleResult
-from tools.config import REDIS_ADDR, REDIS_PORT, REDIS_PD, ansible_result_redis_db
-from public.templatetags.custom_markdown import ansible_result
-# from django.core.cache import caches
-from django.core.cache import cache
-from tools.AnsibleModules import data as ansible_modules_gather
-from public.models import *
-from myCelery import ansbile_exec_api_29, ansible_playbook_api_29
 
-from decorators.Proxy import ProxyAuth
+import datetime
 import logging
+import random
+import string
+from myCelery import ansible_playbook_api_29
+from public.models import *
+
 logger = logging.getLogger('ansible.ui')
 
 
@@ -33,7 +24,7 @@ class AnsibleOpt:       #ansible 执行 jiekou , 传如香港参赛
         # celeryTask = ansiblePlayBook_v2.apply_async((tid, playbook, extra_vars)) # ansible结果保持
         celeryTask = ansible_playbook_api_29.apply_async((tid, playbook, extra_vars))
         label = kw.get('label', '')
-        at = AnsibleTasks(AnsibleID=tid, CeleryID=celeryTask.task_id,TaskUser=user,
+        at = AnsibleTasks(AnsibleID=tid, CeleryID=celeryTask.task_id, TaskUser=user,
                 GroupName=groupName, ExtraVars=extra_vars,
                 playbook=playbook, Label=label)
         at.save()

@@ -1,20 +1,11 @@
 #coding: utf8
-import random, urllib, json, hashlib
-from django.http import Http404
-from django.urls import reverse
-from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.core.exceptions import PermissionDenied
-from django.http import HttpResponsePermanentRedirect
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotFound
-# from tools.weiChat import *
-from django.core.signing import Signer
+
 from functools import wraps
 import re
 
 # from config import Env
 regex = re.compile('^HTTP_')
+
 
 def ProxyAuth(func):
     @wraps(func)

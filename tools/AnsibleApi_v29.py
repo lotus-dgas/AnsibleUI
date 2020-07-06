@@ -313,7 +313,7 @@ def AnsibleExecApi29(task_id, tasks=[], inventory_data=None):
     # inventory = InventoryManager(loader=loader, sources='localhost,')
     inventory = BaseInventory(inventory_data)
     variable_manager = VariableManager(loader=loader, inventory=inventory)
-    play_source =  dict(
+    play_source = dict(
             name="Ansible Play",
             hosts='localhost',
             gather_facts='no',
