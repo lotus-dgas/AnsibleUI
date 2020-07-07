@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 'channels',
     'public',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -191,3 +192,11 @@ STATICFILES_DIRS = (
 )
 
 LOGIN_URL = '/account/login'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAdminUser',
+    ],
+    'PAGE_SIZE': 10
+}

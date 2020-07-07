@@ -1,8 +1,10 @@
 """ansible_ui URL Configuration
 """
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from public.views import *
+from public.viewFunc import api
 from public.viewFunc.celeryIndex import CeleyWorker
+
 
 urlpatterns = [
     # path('tasks/', tasks),
@@ -36,6 +38,9 @@ urlpatterns = [
 
     # re_path(r'(?P<dataName>\w+)/(?P<dataKey>\w+)', ProxyAuth(AnsibleRequestApi.as_view())),
     # re_path(r'(?P<dataName>\w+)', ProxyAuth(AnsibleRequestApi.as_view())),
+
+
+    # re_path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     # 默认首页
     path('', Index.as_view()),

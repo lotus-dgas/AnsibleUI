@@ -12,7 +12,6 @@ else:
 import json
 import time
 from celery import Celery
-from ansibleApi import *
 from tools.config import BACKEND, BROKER, REDIS_ADDR, REDIS_PORT, REDIS_PD, ansible_result_redis_db, inventory, result_db
 from tools.AnsibleApi_v29 import *
 from celery.app.task import Task

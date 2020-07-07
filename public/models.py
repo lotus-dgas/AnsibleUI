@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Functions(models.Model):
@@ -32,20 +33,17 @@ class ProjectGroups(models.Model):
         return self.groupName
 
 
-from django.contrib.auth.models import User
-
-
 class AnsibleTasks(models.Model):
-    AnsibleID  = models.CharField(max_length=80,unique=True, null=True,blank=True)
-    CeleryID = models.CharField(max_length=80,unique=True, null=True,blank=True)
-    TaskUser =  models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    GroupName = models.CharField(max_length=80, null=True,blank=True)
-    playbook = models.CharField(max_length=80, null=True,blank=True)
-    ExtraVars = models.TextField(blank=True, null=True)
+    AnsibleID   = models.CharField(max_length=80,unique=True, null=True,blank=True)
+    CeleryID    = models.CharField(max_length=80,unique=True, null=True,blank=True)
+    TaskUser    =  models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    GroupName   = models.CharField(max_length=80, null=True, blank=True)
+    playbook    = models.CharField(max_length=80, null=True, blank=True)
+    ExtraVars   = models.TextField(blank=True, null=True)
     AnsibleResult = models.TextField(blank=True)
     CeleryResult  = models.TextField(blank=True)
-    Label         = models.CharField(max_length=80, null=True,blank=True)
-    CreateTime      = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    Label         = models.CharField(max_length=80, null=True, blank=True)
+    CreateTime    = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     class Meta:
         ordering = ['id']
