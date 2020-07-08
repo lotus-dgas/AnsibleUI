@@ -1,5 +1,6 @@
 """ansible_ui URL Configuration
 """
+import rest_framework
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic.base import RedirectView
@@ -14,6 +15,11 @@ from django.views.generic.base import TemplateView
 
 from public.viewFunc import api
 from rest_framework import routers
+from rest_framework.documentation import include_docs_urls
+from rest_framework.schemas import get_schema_view
+from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPICodec
+
+schema_view = get_schema_view(title='API', renderer_classes=[SwaggerUIRenderer, OpenAPICodec])
 
 # django drf 路径
 router = routers.DefaultRouter()
@@ -52,6 +58,9 @@ urlpatterns = [
 
     # drf 路径
     path('api/', include(router.urls)),
+    path('doc_v1/', include_docs_urls(title='API 文档')),
+    path('doc_v2/', schema_view, name='API 文档'),
+
 
     # path('', RedirectView.as_view(url='/ansible/'))
     path('', Index.as_view())

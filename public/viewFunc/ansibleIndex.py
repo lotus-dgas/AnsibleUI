@@ -1,4 +1,4 @@
-#coding: utf8
+# coding: utf8
 
 import datetime
 import logging
@@ -10,11 +10,12 @@ from public.models import *
 logger = logging.getLogger('ansible.ui')
 
 
-class AnsibleOpt:       #ansible 执行 jiekou , 传如香港参赛
+# ansible 执行接口, 传如香港参赛
+class AnsibleOpt:
     @staticmethod
     def ansible_playbook(groupName, playbook, user=None, extra_vars={}, **kw):
         tid = "AnsibleApiPlaybook-%s-%s" % (''.join(random.sample(string.ascii_letters + string.digits, 8)),
-                datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
+                                            datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
         if not extra_vars.get('groupName'):
             extra_vars['groupName'] = groupName
         logger.info("添加Ansilb-Playbook执行；(%s - %s - %s - %s)" % (playbook, groupName, extra_vars, kw))
@@ -25,8 +26,8 @@ class AnsibleOpt:       #ansible 执行 jiekou , 传如香港参赛
         celeryTask = ansible_playbook_api_29.apply_async((tid, playbook, extra_vars))
         label = kw.get('label', '')
         at = AnsibleTasks(AnsibleID=tid, CeleryID=celeryTask.task_id, TaskUser=user,
-                GroupName=groupName, ExtraVars=extra_vars,
-                playbook=playbook, Label=label)
+                          GroupName=groupName, ExtraVars=extra_vars,
+                          playbook=playbook, Label=label)
         at.save()
 
         # return {"playbook": playbook, "extra_vars": extra_vars, "tid": tid, "celeryTask": celeryTask.task_id, "groupName": groupName}
@@ -139,7 +140,6 @@ class AnsibleOpt:       #ansible 执行 jiekou , 传如香港参赛
 #             return JsonResponse(ansible_modules_gather.get(module_name))
 #         else:
 #             return JsonResponse(ansible_modules_gather)
-
 
 
 # @ProxyAuth

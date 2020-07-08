@@ -96,7 +96,7 @@ class AnsibleTask(LoginRequiredMixin, View):    #ansibe Http 任务推送接口
         extra_vars = ast.literal_eval(var) if var else {}
         if myfunc and not playbook:
             f = Functions.objects.filter(funcName=myfunc)[0]
-            playbook =  f.playbook
+            playbook = f.playbook
         groupName = request.GET.get("groupName", None)
         if not groupName:
             return JsonResponse({"msg": "参数错误"})

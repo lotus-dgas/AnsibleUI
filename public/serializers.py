@@ -6,28 +6,29 @@ from .models import *
 class HostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = HostsLists
-        fields = ('hostname', 'ip', 'ansible_user', 'ansilbe_key')
+        fields = ('url', 'id', 'hostname', 'ip', 'ansible_user', 'ansilbe_key')
 
 
 class ProjectGroupsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProjectGroups
-        fields = ('groupName', 'nickName', 'hostList')
+        fields = ('url', 'id', 'groupName', 'nickName', 'hostList')
 
 
 class AnsibleTasksSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = AnsibleTasks
-        fields = ('AnsibleID', 'CeleryID', 'TaskUser', 'GroupName', 'playbook', 'ExtraVars', 'AnsibleResult', 'CeleryResult', 'CreateTime')
+        fields = ('url', 'id', 'AnsibleID', 'CeleryID', 'TaskUser', 'GroupName', 'playbook', 'ExtraVars',
+                  'AnsibleResult', 'CeleryResult', 'Label', 'CreateTime')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email')
+        fields = ('url', 'id', 'username', 'email')
 
 
 class FunctionsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Functions
-        fields = ('funcName', 'nickName', 'playbook')
+        fields = ('url', 'id', 'funcName', 'nickName', 'playbook')
