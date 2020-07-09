@@ -5,7 +5,6 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic.base import RedirectView
 
-
 from public.views import Index
 from public.viewFunc.middle import zabbix_api, jenkins_api
 from public.viewFunc.account import myLogin, myLogout, myApply, notes
@@ -19,7 +18,12 @@ from rest_framework.documentation import include_docs_urls
 from rest_framework.schemas import get_schema_view
 from rest_framework_swagger.renderers import SwaggerUIRenderer, OpenAPICodec
 
-schema_view = get_schema_view(title='API', renderer_classes=[SwaggerUIRenderer, OpenAPICodec])
+# swagger api
+schema_view = get_schema_view(
+    title='API 接口首页',
+    description='![](/static/images/wei_1_meitu_3.jpg)![](/static/images/al_1_meitu_4.jpg)',
+    renderer_classes=[SwaggerUIRenderer, OpenAPICodec],
+)
 
 # django drf 路径
 router = routers.DefaultRouter()
@@ -57,11 +61,16 @@ urlpatterns = [
     path('ws/', WS.as_view()),
 
     # drf 路径
-    path('api/', include(router.urls)),
-    path('doc_v1/', include_docs_urls(title='API 文档')),
-    path('doc_v2/', schema_view, name='API 文档'),
+    path('api/', include(router.urls), name='api'),
+    path('doc_v1/', include_docs_urls(
+        title='API 文档v1',
+        description='<img src="/static/images/w_199.jpeg" width="200px"><img src="/static/images/a_199.jpeg" width="200px">')),
+    path('doc_v2/', schema_view, name='API 文档v2'),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
 
+    # 处理 favicon.ico 问题
+    path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico')),
     # path('', RedirectView.as_view(url='/ansible/'))
     path('', Index.as_view())
 ]

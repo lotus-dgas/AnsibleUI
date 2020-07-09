@@ -9,6 +9,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '@^^2s2_gw@$x(x8ooctybo5-m%tnmx^&1$46!gz+o-yz067k!b'
 
 from tools.config import MYSQL_HOST, MYSQL_PASS, MYSQL_PORT, MYSQL_USER, web_debug, USE_MYSQL
+
 DEBUG = web_debug
 ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
@@ -60,7 +61,7 @@ if USE_MYSQL:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            #'NAME':'AnsibleUI',
+            # 'NAME': 'AnsibleUI',
             'NAME': 'ansible_ui',
             'USER': MYSQL_USER,
             'PASSWORD': MYSQL_PASS,
@@ -176,6 +177,7 @@ LOGGING = {
 }
 
 from django.utils.translation import gettext_lazy as _
+
 LANGUAGES = [
     ('zh-Hans', _('Chinese')),
 ]
@@ -197,9 +199,9 @@ LOGIN_URL = '/account/login'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAdminUser',
+        # 'rest_framework.permissions.IsAdminUser',
+        'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.AutoSchema',
     # 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-    'PAGE_SIZE': 10
 }

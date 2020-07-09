@@ -68,6 +68,7 @@ fi
 
 echo -e '\033[34m============>安装所需Python模块<============\033[0m'
 ${PYPATH}bin/pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+#${PYPATH}bin/pip3 install -i http://mirrors.aliyun.com/pypi/simple/ -r requirements.txt  --trusted-host mirrors.aliyun.com
 
 echo '创建数据库表结构'
 ${PYPATH}bin/python3 manage.py makemigrations

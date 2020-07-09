@@ -39,7 +39,7 @@ Gitee 地址：https://gitee.com/lwr_dgas/AnsibleUI
     *   docker-compose build
     *   docker-compose up 
 *   手动部署
-    *   安装 Python 环境，开发环境版本为 Python 3.6.4
+    *   安装 Python 环境，开发环境版本为 Python 3.7.6
     *   安装相关pagkage `pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt`
     *   配置相关参数 tools/config.py，包括redis、mysql，Ansible/settings.py 文件可修改 DATABASES 使用sqlite3
     *   为数据库建表，`python3 manage.py makemigrations && python3 manage.py migrate`

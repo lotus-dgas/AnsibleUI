@@ -7,6 +7,7 @@ admin.site.site_title = "运维平台"
 
 from tools.config import inventory
 
+
 # 修改 hosts 与 groups 后修改 inventory 文件
 def update_inventory(change=True):
     if True:
@@ -19,13 +20,16 @@ def update_inventory(change=True):
             f.write(data+ '\n')
         print('修改 inventory')
 
+
 @admin.register(Functions)
 class FunctionsAdmin(admin.ModelAdmin):
     list_display = ['playbook', 'funcName', 'nickName', ]
 
+
 @admin.register(HostsLists)
 class HostsListsAdmin(admin.ModelAdmin):
     list_display = ['hostname', 'ip', 'ansible_user', 'ansible_pass', 'ansilbe_key']
+
 
 def hostList(obj):
     s = list(obj.hostList.values_list("ip"))
@@ -34,16 +38,20 @@ def hostList(obj):
     else:
         return ''
 
+
 @admin.register(ProjectGroups)
 class ProjectGroupsAdmin(admin.ModelAdmin):
     list_display = ['groupName', 'nickName', hostList, 'remark' ]
     filter_horizontal = ('hostList', 'possessFuncs')
+
     def save_related(self, request, form, formsets, change):
         super().save_related(request, form, formsets, change)
         update_inventory(change)
 
+
 def AnsibleResult(obj):
     return obj.AnsibleResult[:200]
+
 
 @admin.register(AnsibleTasks)
 class AnsibleTasksAdmin(admin.ModelAdmin):
