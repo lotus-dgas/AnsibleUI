@@ -1,0 +1,16 @@
+# 分布式部署example
+
+- name: deploy nginx
+  hosts: nginx
+  roles: 
+    - nginx
+
+- name: deploy mysql
+  hosts: mysql
+  roles: 
+    - mysql
+
+- name: deploy php
+  hosts: php
+  roles: 
+    - php
