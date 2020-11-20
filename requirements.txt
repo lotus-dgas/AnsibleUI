@@ -14,7 +14,7 @@ colorama==0.4.3
 commonmark==0.9.1
 coreapi==2.3.3
 coreschema==0.0.4
-cryptography==2.4.2
+cryptography==3.2
 decorator==4.4.0
 Django==3.0.1
 django-rest-swagger==2.2.0
